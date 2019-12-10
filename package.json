@@ -7,5 +7,20 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Eric Drumheller",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "lokijs": "^1.5.8"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinbinsam/Flashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sinbinsam/Flashboard/issues"
+  },
+  "homepage": "https://github.com/sinbinsam/Flashboard#readme"
 }
