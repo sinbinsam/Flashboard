@@ -18,9 +18,6 @@ app.use('/', routes); //routes file
 
 
 
-
-
-
 // start the server
 app.listen(port, (err) => {
     if (err) {

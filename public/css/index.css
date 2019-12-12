@@ -1,0 +1,24 @@
+.card {
+    margin-top: 10px;
+}
+
+.card-header {
+    padding-left: 20px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 0px;
+    font-size: 18px;
+}
+
+.oi-fork {
+    font-size: 15px;
+    padding-right: 10px;
+}
+
+.oi-chevron-bottom {
+    font-size: 15px;
+}
+
+.rotated {
+    transform: rotate(90deg); /* Equal to rotateZ(45deg) */
+  }
