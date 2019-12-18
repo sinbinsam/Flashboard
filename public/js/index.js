@@ -1,3 +1,4 @@
-$("arrow").click(function(){
-    $("oi-chevron-bottom").addClass("rotated");
+$(".arrow").click(function(){
+    $(".arrow").toggleClass("rotated");
+    console.log("triggered")
   });

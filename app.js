@@ -4,7 +4,7 @@ var port = process.env.PORT || 8080;
 var app = express();
 var loki = require('lokijs');
 var routes = require('./public/js/routes.js');
-var configdb = new loki('config');
+
 
 app.set('view engine', 'ejs');
 
