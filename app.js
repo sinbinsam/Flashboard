@@ -4,6 +4,7 @@ var port = process.env.PORT || 8080;
 var app = express();
 var loki = require('lokijs');
 var routes = require('./public/js/routes.js');
+var rcn = require('./public/js/rcnGet.js');
 
 
 app.set('view engine', 'ejs');
@@ -15,6 +16,8 @@ app.use(express.static(__dirname + '/public')); //stylesheets and js
 app.use('/', routes); //routes file
 
 
+console.log(rcn.rcnGet);
+rcn.rcnGet()
 
 
 
