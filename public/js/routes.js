@@ -30,6 +30,8 @@ router.get('/config/directv', (req, res) => {
         autosaveInterval: 4000
     });
 
+
+
     function databaseInitialize() {
         const tuners = db.getCollection("tuners");
         if (tuners === null) {
@@ -40,7 +42,47 @@ router.get('/config/directv', (req, res) => {
         console.log(tuners)
         res.render("directv-config", {tuners: tuners})
 
-       } 
+       }
 })
+
+router.post('/config/directv/update', (req, res) => {
+    var lokiId = parseInt(req.body.lokiId, 10)
+    var ip = {ip: req.body.ip}
+    var db = new loki('directv', {
+        autoload: true,
+        autoloadCallback : databaseInitialize,
+        autosave: true, 
+        autosaveInterval: 4000
+    });
+        res.send('recieved')
+    function databaseInitialize() {
+        const tuners = db.getCollection("tuners");
+        if (tuners === null) {
+        const tuners = db.addCollection("tuners");
+        }
+
+        tuners.findOne({'$loki': lokiId}, (err) => {
+            if (err) {
+                console.log(err)
+            } else {
+                tuners.updateOne({'$loki': lokiId}, {'$set': ip}, () => {
+                    console.log(tuners)
+                })
+            }
+        });
+
+
+        let single = tuners.find({ '$loki' : lokiId });
+
+        //replaceObjectWith({$loki: single.$loki, ip: ip}, tuners);
+        
+        console.log(tuners)
+
+
+
+       }
+
+})
+
 
 module.exports = router;

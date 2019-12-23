@@ -5,8 +5,8 @@
 .card-header {
     padding-left: 20px;
     padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     font-size: 18px;
 }
 
@@ -19,6 +19,23 @@
     font-size: 15px;
 }
 
-.rotated {
-    transform: rotate(90deg); /* Equal to rotateZ(45deg) */
-  }
+.nodule {
+    border-width: .2rem;
+    border-top-width: 0.2rem;
+    border-right-width: 0.2rem;
+    border-bottom-width: 0.2rem;
+    border-left-width: 0.2rem;
+    border-top-color: rgb(82, 44, 87);
+    border-top-style: solid;
+    border-right-color: rgb(82, 44, 87);
+    border-right-style: solid;
+    border-bottom-color: rgb(82, 44, 87);
+    border-bottom-style: solid;
+    border-left-color: rgb(82, 44, 87);
+    border-left-style: solid;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+}

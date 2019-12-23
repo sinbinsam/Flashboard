@@ -7,6 +7,7 @@ module.exports = {
 
 rcnGet: function() {
 
+/*
 axios('https://www.rtn.tv/schedule/schedule.aspx')
 .then((response) => {
     // handle success
@@ -18,7 +19,8 @@ axios('https://www.rtn.tv/schedule/schedule.aspx')
 console.log(typeof response);
 console.log(util.inspect(texts))
   })
-
+*/
 }
 
 }
+

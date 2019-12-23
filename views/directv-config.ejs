@@ -1,7 +1,38 @@
 <%- include("partials/header") %>
 <link rel="stylesheet" href="/css/index.css">
+<script type="text/javascript" src='/js/jquery-3.4.1.min.js'></script>
+<script type="text/javascript" src='/js/config.js'></script>
 
-<%= JSON.stringify(tuners.data) %>
+<%= JSON.stringify(tuners.data[1].$loki) %>
+
+<% for (i = 0; i < tuners.data.length; i++) { %>
+<div class="card meta<%= [i] %>" loki = '<%= tuners.data[i].$loki %>' ip = '<%= tuners.data[i].ip %>' channel = '<%= tuners.data[i].channel %>'>
+    <div class="input-group mb-3">
+        <span class="oi oi-fork"></span>
+        <input id = 'chan<%= [i] %>' type="text" class="form-control" value = "Channel <%= tuners.data[i].channel %>" disabled placeholder="Name" aria-label="channel number" aria-describedby="button-addon2">
+        <div class="input-group-append">
+          <a class="btn btn-outline-secondary edit" edit = 'chan<%= [i] %>' data-toggle="collapse" data-target="#collapse<%= [i] %>" href="#collapse" role="button" aria-expanded="false" aria-controls="collapse">
+            Edit
+        </a>
+        </div>
+      </div>
+    <div class="collapse" id="collapse<%= [i] %>">
+         <div class="card card-body">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">IP</span>
+                </div>
+                <input type="text" class="form-control" value = '<%= tuners.data[i].ip %>' placeholder="192.168.1.1" aria-label="IP" aria-describedby="basic-addon1">
+              </div>
+              <button id = '<%= [i] %>' type="button" class="btn btn-info save">Save</button>
+              <button id = '<%= [i] %>' type="button" class="btn btn-primary test">Test</button>
+              <button id = '<%= [i] %>' type="button" class="btn btn-danger cancel">Cancel</button>
+        </div> 
+      </div>
+</div>
+<% } %>
+
+
 
 
                 </main>
