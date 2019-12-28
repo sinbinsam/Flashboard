@@ -24,7 +24,8 @@ console.log(util.inspect(texts))
 let config = {
   baseURL: 'http://10.160.1.1:49200/upnp/control/EchoSTB2',
   method: 'post',
-
+  responseType: 'text',
+  
 }
 
 axios.request(config)
