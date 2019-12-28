@@ -43,10 +43,10 @@ $('.new').click(() => {
   $('#addTuner').submit()
 })
 
-$('.delete').click(() => {
-  let id = 4 //$(this).attr('id')
+$('.delete').click(function() {
+  let id = $('.meta' + $(this).attr('id')).attr('loki')
   console.log(id)
-  $('#deleteTunerId').attr('lokiid', $('.meta' + id).attr('loki'))
+  $('#deleteTunerId').attr('value', id)
   $('#deleteTuner').submit()
 })
 

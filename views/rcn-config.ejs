@@ -1,7 +1,60 @@
 <%- include("partials/header") %>
 <link rel="stylesheet" href="/css/index.css">
+<script type="text/javascript" src='/js/jquery-3.4.1.min.js'></script>
+<script type="text/javascript" src='/js/rcnConfig.js'></script>
 
-
+<% for (i = 0; i < tuners.data.length; i++) { %>
+    <div class="card meta<%= [i] %>" loki = '<%= tuners.data[i].$loki %>' ip = '<%= tuners.data[i].ip %>' channel = '<%= tuners.data[i].channel %>'>
+        <div class="input-group mb-3">
+            <span class="oi oi-fork"></span>
+            <input id = 'chan<%= [i] %>' type="text" class="form-control" value = "<%= tuners.data[i].channel %>" disabled placeholder="Name" aria-label="channel number" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <a class="btn btn-outline-secondary edit" id = 'edit<%= [i] %>' edit = 'chan<%= [i] %>' data-toggle="collapse" data-target="#collapse<%= [i] %>" href="#collapse" role="button" aria-expanded="false" aria-controls="collapse">
+                Edit
+            </a>
+            </div>
+          </div>
+        <div class="collapse" id="collapse<%= [i] %>">
+             <div class="card card-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">IP</span>
+                    </div>
+                    <input type="text" class="form-control newIp<%= [i] %>" value = '<%= tuners.data[i].ip %>' placeholder="192.168.1.1" aria-label="IP" aria-describedby="basic-addon1">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect<%= [i] %>">Stack</label>
+                      </div>
+                      <select class="custom-select" id="inputGroupSelect<%= [i] %>">
+                          
+                          <% if (tuners.data[i].stack == 0) { %>
+                            <option selected value='<%= tuners.data[i].stack %>'>1</option>
+                            <option value="1">2</option>
+                            <% } if (tuners.data[i].stack == 1) { %>
+                                <option selected value='<%= tuners.data[i].stack %>'>2</option>
+                                <option value="0">1</option>
+                                <% } if (tuners.data[i].stack == null) { %>
+                                    <option selected value=''></option>
+                                    <option value="0">1</option>
+                                    <option value="1">2</option>
+                                    <% } %>
+                      </select>
+                </div>
+                  <button id = '<%= [i] %>' type="button" class="btn btn-info save">Save</button>
+                  <button id = '<%= [i] %>' type="button" class="btn btn-danger cancel">Cancel</button>
+                  <button id = '<%= [i] %>' type="button" class="btn btn-danger delete">Delete</button>
+            </div> 
+          </div>
+    </div>
+    <% } %>
+   
+    
+    <button type="button" class="btn btn-info new">New RCN Tuner</button>
+    
+    <form id = 'addTuner' action = '/config/rcn/update/add' method = 'POST'></form>
+    
+    <form id = 'deleteTuner' action = '/config/rcn/update/delete' method = 'POST'>
+    <input id = 'deleteTunerId' name = 'deleteTunerId' type = 'hidden' value = ''>
+    </form>
 
 
                 </main>
