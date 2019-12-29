@@ -1,73 +1,169 @@
 var loki = require('lokijs');
 var axios = require('axios');
 var htmlToText = require('html-to-text');
-const util = require('util')
+var parser = require('fast-xml-parser');
+
 
 module.exports = {
 
 rcnGet: function() {
 
-/*
-axios('https://www.rtn.tv/schedule/schedule.aspx')
-.then((response) => {
-    // handle success
- let texts = htmlToText.fromString(response.data, {
-    tables: ['.schedulelist'],
-    singleNewLineParagraphs: true,
-    wordwrap: false
-        });
-console.log(typeof response);
-console.log(util.inspect(texts))
-  })
-*/
-
-let config = {
-  baseURL: 'http://10.160.1.1:49200/upnp/control/EchoSTB2',
-  method: 'post',
-  responseType: 'text',
-  
-}
-
-axios.request(config)
 
 
-function sendGhettoRequest(url, port, headers, body, callback) {
-  var htmlBody = [].concat(headers);
-  htmlBody.push('Content-Length: ' + body.length); // might have to add 2 to this if rosstalk adds linebreak
-  htmlBody.push(''); // empty line is required before post body
-  htmlBody.push(body);
-  
-  console.log('sending request: ' + JSON.stringify({
-   url: url,
-   port: port,
-   body: htmlBody.join('\r\n'),
-  }, null, true));
  
-  axios(url, port, htmlBody.join('\r\n'), 'EricIsASillyGoose', callback);
- }
+},
 
- sendGhettoRequest(location, 49200, [
-  'POST /upnp/control/EchoSTB2 HTTP/1.1',
-  'Content-Type: text/xml; charset="utf-8"',
-  'SOAPACTION: "urn:schemas-echostar-com:service:EchoSTB:2#GetTunerStatus"',
- ], [
-  '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">',
-   '<s:Body>',
-    '<u:GetTunerStatus xmlns:u="urn:schemas-echostar-com:service:EchoSTB:2">',
-     '<Tuner>',
-      tunern,
-     '</Tuner>',
-    '</u:GetTunerStatus>',
-   '</s:Body>',
-  '</s:Envelope>',
- ].join(''), function () {
- console.log('yes hello I have been called');
-
- Status = JSON.stringify(arguments);
- if (callback) { callback(Status) }
- });
- 
+  rcnTunerInfo: function() {
+    console.log(sendTunerInfoRequest('0', '10.160.27.189'))
+  }
 }
 
+
+
+function sendTunerInfoRequest(stack, ip) {
+  let reqBody = '<s:Envelope\
+    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
+    s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
+      <s:Body>\
+        <u:GetChannelInfo\
+          xmlns:u="urn:schemas-echostar-com:service:EchoSTB:2">\
+          <Tuner>'
+            + stack + '\
+          </Tuner>\
+        </u:GetChannelInfo>\
+      </s:Body>\
+    </s:Envelope>'
+
+    let config = {
+      url: '/upnp/control/EchoSTB2',
+      baseURL: 'http://' + ip + ':49200',
+      method: 'post',
+      data: reqBody,
+      responseType: 'text',
+      headers: {
+        'SOAPACTION': '"urn:schemas-echostar-com:service:EchoSTB:2#GetChannelInfo"',
+        'Content-Type': 'text/xml; charset="utf-8"'
+      }
+    }
+
+      axios.request(config).then((res) => {
+        let jsonObj = parser.parse(res.data);
+        console.log(jsonObj['s:Envelope'])
+        return jsonObj['s:Envelope'];
+      }).catch(err => {
+        console.log('there was an error processing the request')
+        return 'error'
+      });
 }
 
+function sendTunerStatusRequest(stack, ip) {
+  let reqBody = '<s:Envelope\
+  xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
+  s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
+    <s:Body>\
+      <u:GetTunerStatus\
+        xmlns:u="urn:schemas-echostar-com:service:EchoSTB:2">\
+        <Tuner>'
+          + stack + '\
+        </Tuner>\
+      </u:GetTunerStatus>\
+    </s:Body>\
+  </s:Envelope>'
+
+  let config = {
+    url: '/upnp/control/EchoSTB2',
+    baseURL: 'http://' + ip + ':49200',
+    method: 'post',
+    data: reqBody,
+    responseType: 'text',
+    headers: {
+      'SOAPACTION': '"urn:schemas-echostar-com:service:EchoSTB:2#GetTunerStatus"',
+      'Content-Type': 'text/xml; charset="utf-8"'
+    }
+  }
+
+    axios.request(config).then((res) => {
+      let jsonObj = parser.parse(res.data);
+      console.log(jsonObj['s:Envelope'])
+      return jsonObj['s:Envelope'];
+    }).catch(err => {
+      console.log('there was an error processing the request')
+      return 'error'
+    });
+}
+
+function sendTunerWakeUpRequest(stack, ip) {
+  let reqBody = '<s:Envelope\
+  xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
+  s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
+    <s:Body>\
+      <u:WakeUp\
+        xmlns:u="urn:schemas-echostar-com:service:EchoSTB:2">\
+        <Tuner>'
+          + stack + '\
+        </Tuner>\
+      </u:WakeUp>\
+    </s:Body>\
+  </s:Envelope>'
+
+  let config = {
+    url: '/upnp/control/EchoSTB2',
+    baseURL: 'http://' + ip + ':49200',
+    method: 'post',
+    data: reqBody,
+    responseType: 'text',
+    headers: {
+      'SOAPACTION': '"urn:schemas-echostar-com:service:EchoSTB:2#WakeUp"',
+      'Content-Type': 'text/xml; charset="utf-8"'
+    }
+  }
+
+  axios.request(config).then((res) => {
+    let jsonObj = parser.parse(res.data);
+    console.log(jsonObj['s:Envelope'])
+    return jsonObj['s:Envelope'];
+  }).catch(err => {
+    console.log('there was an error processing the request')
+    return 'error'
+  });
+
+}
+
+  function sendTunerChannelChangeRequest(stack, ip, channel) {
+    let reqBody = '<s:Envelope\
+    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
+    s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
+      <s:Body>\
+        <u:SetChannel\
+          xmlns:u="urn:schemas-echostar-com:service:EchoSTB:2">\
+          <Tuner>'
+            + stack + '\
+          </Tuner>\
+          <Channel>'
+            + channel + '\
+          </Channel>\
+        </u:SetChannel>\
+      </s:Body>\
+    </s:Envelope>'
+
+    let config = {
+      url: '/upnp/control/EchoSTB2',
+      baseURL: 'http://' + ip + ':49200',
+      method: 'post',
+      data: reqBody,
+      responseType: 'text',
+      headers: {
+        'SOAPACTION': '"urn:schemas-echostar-com:service:EchoSTB:2#SetChannel"',
+        'Content-Type': 'text/xml; charset="utf-8"'
+      }
+  }
+
+  axios.request(config).then((res) => {
+    let jsonObj = parser.parse(res.data);
+    console.log(jsonObj['s:Envelope'])
+    return jsonObj['s:Envelope'];
+  }).catch(err => {
+    console.log('there was an error processing the request')
+    return 'error'
+  });
+}
