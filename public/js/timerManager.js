@@ -36,28 +36,34 @@ rcnTunerDbUpdate: function() {
         function find1 (callback) {
             let filter1 = tuners.find({'stack': '0'});
             for (i = 0; i < filter1.length; i++) {
-                let result = rcn.sendTunerStatusRequest('0', filter1[i].ip.toString())
-                    if (!result) {
-                        console.log('error')
-                        continue;
+                rcn.sendTunerStatusRequest('0', filter1[i].ip.toString(), filter1[i],  function(res, data) {
+                    if (res == 'error') {
+                        console.log('returned an error')
+                    } else {
+                    //console.log(data)
+                        data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
+                            tuners.update(data)
+                                db.saveDatabase();
                     }
-                        filter1[i].channel = result['s:Body']['u:GetTunerStatusResponse']['Channel'];
-                            db.saveDataBase();
+                })
             }
             callback()
         }
         function find2 () {
             let filter2 = tuners.find({'stack': '1'});
             for (i = 0; i < filter2.length; i++) {
-                let result = rcn.sendTunerStatusRequest('1', filter2[i].ip.toString())
-                    if (!result) {
-                        console.log('error')
-                        continue;
+                rcn.sendTunerStatusRequest('1', filter2[i].ip.toString(), filter2[i], function(res, data) {
+                    if (res == 'error') {
+                        console.log('returned an error')
+                    } else {
+                    //console.log(data)
+                        data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
+                            tuners.update(data)
+                                db.saveDatabase();
                     }
-                        filter2[i].channel = result['s:Body']['u:GetTunerStatusResponse']['Channel'];
-                            db.saveDataBase();
+                    console.log(tuners)
+                })
             }
-            console.log(tuners)
         }
 
         find1(find2)

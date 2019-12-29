@@ -42,7 +42,7 @@ sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoRespon
 
       axios.request(config).then((res) => {
         let jsonObj = parser.parse(res.data);
-        console.log(jsonObj['s:Envelope'])
+        //console.log(jsonObj['s:Envelope'])
         return jsonObj['s:Envelope'];
       }).catch(err => {
         console.log('RCN tuner error')
@@ -50,7 +50,7 @@ sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoRespon
       });
 },
 
-sendTunerStatusRequest: function(stack, ip) { //['s:Body']['u:GetTunerStatusResponse']TunerStatus, TunerSignalStrength, Channel
+sendTunerStatusRequest: function(stack, ip, data, callback) { //['s:Body']['u:GetTunerStatusResponse']TunerStatus, TunerSignalStrength, Channel
   let reqBody = '<s:Envelope\
   xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
   s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -78,11 +78,11 @@ sendTunerStatusRequest: function(stack, ip) { //['s:Body']['u:GetTunerStatusResp
 
     axios.request(config).then((res) => {
       let jsonObj = parser.parse(res.data);
-      console.log(jsonObj['s:Envelope'])
-      return jsonObj['s:Envelope'];
+      //console.log(jsonObj['s:Envelope'])
+      callback(jsonObj['s:Envelope'], data);
     }).catch(err => {
-      console.log('RCN tuner error')
-      return 'error'
+      console.log(err)
+      callback('error')
     });
 },
 
