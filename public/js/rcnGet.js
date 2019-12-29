@@ -2,25 +2,19 @@ var loki = require('lokijs');
 var axios = require('axios');
 var htmlToText = require('html-to-text');
 var parser = require('fast-xml-parser');
+var loadDb = require(__dirname + '/loadDBs.js');
 
 
 module.exports = {
 
-rcnGet: function() {
 
 
 
- 
-},
-
-  rcnTunerInfo: function() {
-    console.log(sendTunerInfoRequest('0', '10.160.27.189'))
-  }
-}
 
 
 
-function sendTunerInfoRequest(stack, ip) {
+
+sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoResponse']Event_Name, Event_Description, Start, End
   let reqBody = '<s:Envelope\
     xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
     s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -51,12 +45,12 @@ function sendTunerInfoRequest(stack, ip) {
         console.log(jsonObj['s:Envelope'])
         return jsonObj['s:Envelope'];
       }).catch(err => {
-        console.log('there was an error processing the request')
+        console.log('RCN tuner error')
         return 'error'
       });
-}
+},
 
-function sendTunerStatusRequest(stack, ip) {
+sendTunerStatusRequest: function(stack, ip) { //['s:Body']['u:GetTunerStatusResponse']TunerStatus, TunerSignalStrength, Channel
   let reqBody = '<s:Envelope\
   xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
   s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -87,12 +81,12 @@ function sendTunerStatusRequest(stack, ip) {
       console.log(jsonObj['s:Envelope'])
       return jsonObj['s:Envelope'];
     }).catch(err => {
-      console.log('there was an error processing the request')
+      console.log('RCN tuner error')
       return 'error'
     });
-}
+},
 
-function sendTunerWakeUpRequest(stack, ip) {
+sendTunerWakeUpRequest: function(stack, ip) { //irrelevant response
   let reqBody = '<s:Envelope\
   xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
   s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -123,13 +117,13 @@ function sendTunerWakeUpRequest(stack, ip) {
     console.log(jsonObj['s:Envelope'])
     return jsonObj['s:Envelope'];
   }).catch(err => {
-    console.log('there was an error processing the request')
+    console.log('RCN tuner error')
     return 'error'
   });
 
-}
+},
 
-  function sendTunerChannelChangeRequest(stack, ip, channel) {
+  sendTunerChannelChangeRequest: function(stack, ip, channel) { //['s:Body']['u:SetChannelResponse']['New_Channel']
     let reqBody = '<s:Envelope\
     xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
     s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -163,7 +157,9 @@ function sendTunerWakeUpRequest(stack, ip) {
     console.log(jsonObj['s:Envelope'])
     return jsonObj['s:Envelope'];
   }).catch(err => {
-    console.log('there was an error processing the request')
+    console.log('RCN tuner error')
     return 'error'
   });
+}
+
 }
