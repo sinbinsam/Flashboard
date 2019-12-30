@@ -32,7 +32,7 @@ sendTunerInfoRequest: function(stack, ip, data, filter1, callback) { //['s:Body'
       url: '/upnp/control/EchoSTB2',
       baseURL: 'http://' + ip + ':49200',
       method: 'post',
-      timeout: 1000,
+      timeout: 3000,
       data: reqBody,
       responseType: 'text',
       headers: {
@@ -46,7 +46,7 @@ sendTunerInfoRequest: function(stack, ip, data, filter1, callback) { //['s:Body'
         //console.log(jsonObj['s:Envelope'])
         callback(jsonObj['s:Envelope'], data, stack, ip, filter1);
       }).catch(err => {
-        //console.log('RCN tuner error')
+        //console.log(err)
         //callback('error')
         callback('error', data, stack, ip, filter1);
       });
@@ -70,7 +70,7 @@ sendTunerStatusRequest: function(stack, ip, data, filter1, callback) { //['s:Bod
     url: '/upnp/control/EchoSTB2',
     baseURL: 'http://' + ip + ':49200',
     method: 'post',
-    timeout: 1000,
+    timeout: 3000,
     data: reqBody,
     responseType: 'text',
     headers: {

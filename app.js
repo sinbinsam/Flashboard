@@ -20,9 +20,10 @@ app.use(express.static(__dirname + '/public')); //stylesheets and js
 app.use('/', routes); //routes file
 
 
-//timer.timedRcnCheck()
+timer.timedRcnCheck()
 
-timer.rcnTunerDbUpdate()
+//timer.rcnTunerDbUpdate()
+
 
 
 // start the server

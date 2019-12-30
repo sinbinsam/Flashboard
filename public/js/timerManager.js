@@ -10,10 +10,12 @@ module.exports = {
 
 timedRcnCheck: function() {
     var rule = new schedule.RecurrenceRule();
-    rule.second = [new schedule.Range(0, 59, 5)]
+    rule.second = [new schedule.Range(0, 59, 15)]
     var j = schedule.scheduleJob(rule, function() {
         loadDb.loadTimerCollection('timers', function (timers, db) {
             var data = timers.findOne({'group': 'rcn'})
+                data.enabled = true;
+                    //db.saveDataBase()
             if (!data) {
                 console.log('rcn timer group not found, inserting')
                 timers.insert({'group': 'rcn',
@@ -24,6 +26,7 @@ timedRcnCheck: function() {
             }
             if (data.enabled == true) {
             console.log('timer is enabled')
+            module.exports.rcnTunerDbUpdate()
             } else if (data.enabled == false) {
             console.log('timer is disabled')
             }
@@ -43,26 +46,29 @@ rcnTunerDbUpdate: function() {
                 rcn.sendTunerStatusRequest(stack, ip, data, filter1, function(res, data, stack, ip, filter1) {
                     if (res == 'error') {
                         console.log('status returned an error')
+                        console.log(ip)
                     } else {
                     //console.log(data)
                         data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
                             data.signalStrength = res['s:Body']['u:GetTunerStatusResponse']['TunerSignalStrength']
-                                data.status = res['s:Body']['u:GetTunerStatusResponse']['TunerStatus']
+                                data.status = res['s:Body']['u:GetTunerStatusResponse']['AV_Status']
                                     tuners.update(data)
                                         db.saveDatabase();
+                                            console.log('successfully updated status database');
                     }
                         rcn.sendTunerInfoRequest(stack, ip, data, filter1, function(res, data, stack, ip, filter1) {
                             if (res == 'error') {
                                 console.log('info returned an error')
+                                console.log(ip)
                                     if (data == filter1[filter1.length - 1]) {
                                         callback()
                                     }
                             } else {
                             //console.log(data)
-                                data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
-                                    data.programName = res['s:Body']['u:GetTunerStatusResponse']['Event_Name']
+                                    data.programName = res['s:Body']['u:GetChannelInfoResponse']['Event_Name']
                                         tuners.update(data)
                                             db.saveDatabase();
+                                            console.log('successfully updated info database');
                                                 if (data == filter1[filter1.length - 1] && stack == '0') {
 
                                                     callback()
@@ -79,7 +85,11 @@ rcnTunerDbUpdate: function() {
             find1('1', function() {
             })
         })
+console.log(tuners.data)
+
     })
+
+    
   }
 
 
