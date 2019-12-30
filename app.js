@@ -5,10 +5,10 @@ var app = express();
 var loki = require('lokijs');
 var routes = require(__dirname + '/public/js/routes.js');
 var rcn = require(__dirname + '/public/js/rcnGet.js');
+var dtv = require(__dirname + '/public/js/dtvGet.js');
 var timer = require(__dirname + '/public/js/timerManager.js')
 var rcnGet = rcn.rcnGet;
 var rcnTunerInfo = rcn.rcnTunerInfo;
-var dtvTunerStore = require(__dirname + '/public/js/dtvTunerStore.js');
 
 
 app.set('view engine', 'ejs');
@@ -22,7 +22,7 @@ app.use('/', routes); //routes file
 
 timer.timedRcnCheck()
 
-//timer.rcnTunerDbUpdate()
+dtv.sendTunerStatusRequest()
 
 
 

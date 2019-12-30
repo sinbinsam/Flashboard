@@ -14,8 +14,6 @@ timedRcnCheck: function() {
     var j = schedule.scheduleJob(rule, function() {
         loadDb.loadTimerCollection('timers', function (timers, db) {
             var data = timers.findOne({'group': 'rcn'})
-                data.enabled = true;
-                    //db.saveDataBase()
             if (!data) {
                 console.log('rcn timer group not found, inserting')
                 timers.insert({'group': 'rcn',
@@ -28,7 +26,7 @@ timedRcnCheck: function() {
             console.log('timer is enabled')
             module.exports.rcnTunerDbUpdate()
             } else if (data.enabled == false) {
-            console.log('timer is disabled')
+            //console.log('timer is disabled')
             }
         })
     })
@@ -40,7 +38,6 @@ rcnTunerDbUpdate: function() {
             console.log('starting stack: ' + stack)
             let filter1 = tuners.find({'stack': stack});
             for (i = 0; i < filter1.length; i++) {
-                //'0', filter1[i].ip.toString(), filter1[i]
                 let ip = filter1[i].ip.toString()
                 let data = filter1[i]
                 rcn.sendTunerStatusRequest(stack, ip, data, filter1, function(res, data, stack, ip, filter1) {
@@ -48,7 +45,6 @@ rcnTunerDbUpdate: function() {
                         console.log('status returned an error')
                         console.log(ip)
                     } else {
-                    //console.log(data)
                         data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
                             data.signalStrength = res['s:Body']['u:GetTunerStatusResponse']['TunerSignalStrength']
                                 data.status = res['s:Body']['u:GetTunerStatusResponse']['AV_Status']
@@ -64,7 +60,6 @@ rcnTunerDbUpdate: function() {
                                         callback()
                                     }
                             } else {
-                            //console.log(data)
                                     data.programName = res['s:Body']['u:GetChannelInfoResponse']['Event_Name']
                                         tuners.update(data)
                                             db.saveDatabase();
@@ -73,21 +68,20 @@ rcnTunerDbUpdate: function() {
 
                                                     callback()
                                                 }
-                                            
                             }
                             
                         })
                 })
             }
-            
         }
         find1('0', function() {
             find1('1', function() {
             })
         })
-console.log(tuners.data)
-
     })
+
+
+
 
     
   }
