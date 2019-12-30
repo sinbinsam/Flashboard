@@ -22,7 +22,9 @@ app.use('/', routes); //routes file
 
 timer.timedRcnCheck()
 
-dtv.sendTunerStatusRequest()
+timer.dtvTunerUpdateDb()
+
+//dtv.sendTunerStatusRequest()
 
 
 

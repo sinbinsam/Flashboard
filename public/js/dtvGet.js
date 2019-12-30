@@ -1,21 +1,21 @@
-var loki = require('lokijs');
 var axios = require('axios');
 
 module.exports = {
 
-    sendTunerStatusRequest: function(ip) {
+    sendTunerStatusRequest: function(tuners, data) { //callsign(ESPN),date,duration,episodeTitle,isOffAir,isPclocked,isPpv,isRecording,isVod,major(channelnum),minor,
         let config = {
           url: '/tv/getTuned',
-          baseURL: 'http://' + ip + ':8080',
+          baseURL: 'http://' + tuners.ip + ':8080',
           method: 'get',
           timeout: 3000,
           responseType: 'json'
         }
 
         axios.request(config).then((res) => {
-            console.log(res.data)
+            callback(res.data, data, tuners)
         }).catch(err => {
-            console.log(err)
+            //console.log(err)
+            callback('error', data)
           });
 
 

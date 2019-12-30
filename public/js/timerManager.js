@@ -1,5 +1,6 @@
 var loki = require('lokijs');
 var rcn = require(__dirname + '/rcnGet.js');
+var dtv = require(__dirname + '/dtvGet.js');
 var schedule = require('node-schedule');
 var loadDb = require(__dirname + '/loadDBs.js');
 
@@ -79,15 +80,31 @@ rcnTunerDbUpdate: function() {
             })
         })
     })
+  },
 
+dtvTunerUpdateDb: function() {
+    loadDb.loadDirectvCollection('dtv', function (tuners, db) {
+        console.log(tuners)
+        for (i = 0; i < tuners.length; i++) {
+            dtv.sendTunerStatusRequest(tuners[i], tuners, function(res, data, tuners) {
+                if (ress == 'error') {
+                    console.log('dtv returned an error');
+                    console.log(data.ip)
+                } else {
+                    data.channelName = res.callsign;
+                        data.channelMajor = res.major;
+                            data.channeMinor = res.minor;
+                                data.program = res.episodeTitle;
+                                    tuners.update(data);
+                                        db.saveDatabast();
+                                            console.log('successfully saved dtv to database')
+                }
+                
+            })
+        }
+    })
 
-
-
-    
-  }
-
-
-
+}
 
 
 
