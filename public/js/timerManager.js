@@ -33,44 +33,52 @@ timedRcnCheck: function() {
 
 rcnTunerDbUpdate: function() {
     loadDb.loadRcnCollection('rcn', function (tuners, db) {
-        function find1 (callback) {
-            let filter1 = tuners.find({'stack': '0'});
+        function find1 (stack, callback) {
+            console.log('starting stack: ' + stack)
+            let filter1 = tuners.find({'stack': stack});
             for (i = 0; i < filter1.length; i++) {
-                rcn.sendTunerStatusRequest('0', filter1[i].ip.toString(), filter1[i],  function(res, data) {
+                //'0', filter1[i].ip.toString(), filter1[i]
+                let ip = filter1[i].ip.toString()
+                let data = filter1[i]
+                rcn.sendTunerStatusRequest(stack, ip, data, filter1, function(res, data, stack, ip, filter1) {
                     if (res == 'error') {
-                        console.log('returned an error')
+                        console.log('status returned an error')
                     } else {
                     //console.log(data)
                         data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
-                            tuners.update(data)
-                                db.saveDatabase();
+                            data.signalStrength = res['s:Body']['u:GetTunerStatusResponse']['TunerSignalStrength']
+                                data.status = res['s:Body']['u:GetTunerStatusResponse']['TunerStatus']
+                                    tuners.update(data)
+                                        db.saveDatabase();
                     }
+                        rcn.sendTunerInfoRequest(stack, ip, data, filter1, function(res, data, stack, ip, filter1) {
+                            if (res == 'error') {
+                                console.log('info returned an error')
+                                    if (data == filter1[filter1.length - 1]) {
+                                        callback()
+                                    }
+                            } else {
+                            //console.log(data)
+                                data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
+                                    data.programName = res['s:Body']['u:GetTunerStatusResponse']['Event_Name']
+                                        tuners.update(data)
+                                            db.saveDatabase();
+                                                if (data == filter1[filter1.length - 1] && stack == '0') {
+
+                                                    callback()
+                                                }
+                                            
+                            }
+                            
+                        })
                 })
             }
-            callback()
+            
         }
-        function find2 () {
-            let filter2 = tuners.find({'stack': '1'});
-            for (i = 0; i < filter2.length; i++) {
-                rcn.sendTunerStatusRequest('1', filter2[i].ip.toString(), filter2[i], function(res, data) {
-                    if (res == 'error') {
-                        console.log('returned an error')
-                    } else {
-                    //console.log(data)
-                        data.channelNumber = res['s:Body']['u:GetTunerStatusResponse']['Channel']
-                            tuners.update(data)
-                                db.saveDatabase();
-                    }
-                    console.log(tuners)
-                })
-            }
-        }
-
-        find1(find2)
-
-
-        
-        
+        find1('0', function() {
+            find1('1', function() {
+            })
+        })
     })
   }
 

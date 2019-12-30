@@ -14,7 +14,7 @@ module.exports = {
 
 
 
-sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoResponse']Event_Name, Event_Description, Start, End
+sendTunerInfoRequest: function(stack, ip, data, filter1, callback) { //['s:Body']['u:GetChannelInfoResponse']Event_Name, Event_Description, Start, End
   let reqBody = '<s:Envelope\
     xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
     s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -32,6 +32,7 @@ sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoRespon
       url: '/upnp/control/EchoSTB2',
       baseURL: 'http://' + ip + ':49200',
       method: 'post',
+      timeout: 1000,
       data: reqBody,
       responseType: 'text',
       headers: {
@@ -43,14 +44,15 @@ sendTunerInfoRequest: function(stack, ip) { //['s:Body']['u:GetChannelInfoRespon
       axios.request(config).then((res) => {
         let jsonObj = parser.parse(res.data);
         //console.log(jsonObj['s:Envelope'])
-        return jsonObj['s:Envelope'];
+        callback(jsonObj['s:Envelope'], data, stack, ip, filter1);
       }).catch(err => {
-        console.log('RCN tuner error')
-        return 'error'
+        //console.log('RCN tuner error')
+        //callback('error')
+        callback('error', data, stack, ip, filter1);
       });
 },
 
-sendTunerStatusRequest: function(stack, ip, data, callback) { //['s:Body']['u:GetTunerStatusResponse']TunerStatus, TunerSignalStrength, Channel
+sendTunerStatusRequest: function(stack, ip, data, filter1, callback) { //['s:Body']['u:GetTunerStatusResponse']TunerStatus, TunerSignalStrength, Channel
   let reqBody = '<s:Envelope\
   xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"\
   s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">\
@@ -68,6 +70,7 @@ sendTunerStatusRequest: function(stack, ip, data, callback) { //['s:Body']['u:Ge
     url: '/upnp/control/EchoSTB2',
     baseURL: 'http://' + ip + ':49200',
     method: 'post',
+    timeout: 1000,
     data: reqBody,
     responseType: 'text',
     headers: {
@@ -75,14 +78,14 @@ sendTunerStatusRequest: function(stack, ip, data, callback) { //['s:Body']['u:Ge
       'Content-Type': 'text/xml; charset="utf-8"'
     }
   }
-
     axios.request(config).then((res) => {
       let jsonObj = parser.parse(res.data);
       //console.log(jsonObj['s:Envelope'])
-      callback(jsonObj['s:Envelope'], data);
+      callback(jsonObj['s:Envelope'], data, stack, ip, filter1);
     }).catch(err => {
-      console.log(err)
-      callback('error')
+      //console.log(err)
+      callback('error', data, stack, ip, filter1);
+      //callback('error')
     });
 },
 
