@@ -2,7 +2,8 @@ var axios = require('axios');
 
 module.exports = {
 
-    sendTunerStatusRequest: function(tuners, data) { //callsign(ESPN),date,duration,episodeTitle,isOffAir,isPclocked,isPpv,isRecording,isVod,major(channelnum),minor,
+    sendTunerStatusRequest: function(tuners, data, callback) { //callsign(ESPN),date,duration,episodeTitle,isOffAir,isPclocked,isPpv,isRecording,isVod,major(channelnum),minor,
+          //console.log(tuners.ip)
         let config = {
           url: '/tv/getTuned',
           baseURL: 'http://' + tuners.ip + ':8080',

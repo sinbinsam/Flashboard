@@ -83,20 +83,19 @@ rcnTunerDbUpdate: function() {
   },
 
 dtvTunerUpdateDb: function() {
-    loadDb.loadDirectvCollection('dtv', function (tuners, db) {
-        console.log(tuners)
-        for (i = 0; i < tuners.length; i++) {
-            dtv.sendTunerStatusRequest(tuners[i], tuners, function(res, data, tuners) {
-                if (ress == 'error') {
+    loadDb.loadDirectvCollection('tuners', function (tuners, db) {
+        for (i = 0; i < tuners.data.length; i++) {
+            dtv.sendTunerStatusRequest(tuners.data[i], tuners.data, function(res, data, tuners) {
+                if (res == 'error') {
                     console.log('dtv returned an error');
-                    console.log(data.ip)
+                    //console.log(data.ip)
                 } else {
                     data.channelName = res.callsign;
                         data.channelMajor = res.major;
                             data.channeMinor = res.minor;
                                 data.program = res.episodeTitle;
                                     tuners.update(data);
-                                        db.saveDatabast();
+                                        db.saveDatabase();
                                             console.log('successfully saved dtv to database')
                 }
                 
