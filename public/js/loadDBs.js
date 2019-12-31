@@ -20,7 +20,7 @@ loadRcnCollection: function(colName, callback) {
 
         if (!_collection) {
             console.log("Collection %s does not exit. Creating ...", colName);
-            _collection = db.addCollection('rcn');
+            _collection = db.addCollection(colName);
         }
         callback(_collection, db);
     });

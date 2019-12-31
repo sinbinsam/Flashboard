@@ -12,9 +12,9 @@ const HtmlTableToJson = require('html-table-to-json');
 module.exports = {
 
 timedRcnCheck: function() {
-    var rule = new schedule.RecurrenceRule();
+    let rule = new schedule.RecurrenceRule();
     rule.second = [new schedule.Range(0, 59, 15)]
-    var j = schedule.scheduleJob(rule, function() {
+    let j = schedule.scheduleJob(rule, function() {
         loadDb.loadTimerCollection('timers', function (timers, db) {
             var data = timers.findOne({'group': 'rcn'})
             if (!data) {
@@ -32,6 +32,14 @@ timedRcnCheck: function() {
             //console.log('timer is disabled')
             }
         })
+    })
+},
+
+timedRtnWebCheck: function() {
+    let rule = new schedule.RecurrenceRule();
+    rule.hour = [new schedule.Range(0, 23, 3)]
+    let j = schedule.scheduleJob(rule, function() {
+        module.exports.dtvTunerUpdateDb()
     })
 },
 
@@ -107,19 +115,67 @@ dtvTunerUpdateDb: function() {
 
 },
 
-rtnWebUpdateDb: function() {
+rtnWebUpdateDb: function() { //saves rtn simulcast info to database rcn, collection webGet, type: 'rtn'
     rcn.rtnWebGet(function(res) {
-        //console.log(res)
+        if (res == 'error') {
+            console.log('there was a problem contacting rcn\'s servers' )
+        } else {
         let regex = /((<table id="MainContent_tblScheduleList)((.|[\r\n])*)(<\/table>))/g
         let table = res.match(regex)
-        console.log(typeof table)
-        const jsonTables = new HtmlTableToJson(table.toString())
-        console.log(jsonTables.results);
+        let jsonTables = new HtmlTableToJson(table.toString())
+            loadDb.loadRcnCollection('webGets', function (tuners, db) {
+                if (!tuners.findOne({type: 'rtn'})) {
+                    console.log('cant find')
+                        tuners.insert({type: 'rtn'})
+                            db.saveDatabase()
+                                updateRtnDb(jsonTables, tuners, db)
+                } else {
+            updateRtnDb(jsonTables, tuners, db)
+            }
+                function updateRtnDb(jsonTables, tuners, db) {
+                    //console.log(jsonTables.results)
+                    var data = tuners.findOne({type: 'rtn'})
+                        data.channelInfo = jsonTables.results;
+                            tuners.update(data);
+                                db.saveDatabase()
+                                    console.log(data.channelInfo[0])
+                }
+                
+                
+            })
+        }
+
+            
 
     }) 
 
 
+},
+
+formatRtn: function() {
+    loadDb.loadRcnCollection('webGets', function (tuners, db) {
+        var data = tuners.findOne({type: 'rtn'})
+        data.channelInfo[0].splice(0, 1);
+            let dateString = data.channelInfo[0][data.channelInfo[0].length - 1][1]
+                let regex = /(?:Schedule generated )(.*)(?: Eastern)/g
+                    data.lastUpdated = regex.exec(dateString)[1]
+                        data.channelInfo[0].splice(data.channelInfo[0].length - 1, 1)
+        for (i = 0; i < data.channelInfo[0].length; i++) {
+            console.log(data.channelInfo[0])
+            let formattedObj = {
+                trackName: data.channelInfo[0][i]['2'],
+                timeStart: data.channelInfo[0][i]['3'],
+                timeEnd: data.channelInfo[0][i]['4'],
+                rtnChan: data.channelInfo[0][i]['1']
+            }
+            
+        }
+
+            console.log(data.channelInfo)
+    })
 }
+
+
 
 
 
