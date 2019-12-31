@@ -3,6 +3,8 @@ var rcn = require(__dirname + '/rcnGet.js');
 var dtv = require(__dirname + '/dtvGet.js');
 var schedule = require('node-schedule');
 var loadDb = require(__dirname + '/loadDBs.js');
+const HtmlTableToJson = require('html-table-to-json');
+
 
 
 
@@ -102,6 +104,20 @@ dtvTunerUpdateDb: function() {
             })
         }
     })
+
+},
+
+rtnWebUpdateDb: function() {
+    rcn.rtnWebGet(function(res) {
+        //console.log(res)
+        let regex = /((<table id="MainContent_tblScheduleList)((.|[\r\n])*)(<\/table>))/g
+        let table = res.match(regex)
+        console.log(typeof table)
+        const jsonTables = new HtmlTableToJson(table.toString())
+        console.log(jsonTables.results);
+
+    }) 
+
 
 }
 

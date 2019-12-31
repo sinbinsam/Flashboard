@@ -5,9 +5,16 @@ var parser = require('fast-xml-parser');
 var loadDb = require(__dirname + '/loadDBs.js');
 
 
+
 module.exports = {
 
-
+rtnWebGet: function(callback) {
+  axios.get('https://www.rtn.tv/schedule/schedule.aspx').then((res) => {
+      callback(res.data)
+  }).catch(err => {
+    console.log(err)
+  })
+},
 
 
 
