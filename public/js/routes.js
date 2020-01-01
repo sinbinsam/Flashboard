@@ -89,4 +89,12 @@ router.post('/config/rcn/update', (req, res) => {
         })
 })
 
+router.get('/rtn', (req, res) => {
+    loadDb.loadRcnCollection('webGets', function (tuners, db) {
+        let data = tuners.findOne({'type': 'rtn'});
+        console.log(data)
+            res.render('rtnWeb', {data: data})
+    })
+})
+
 module.exports = router;

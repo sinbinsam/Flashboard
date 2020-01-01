@@ -35,7 +35,7 @@ timedRcnCheck: function() {
     })
 },
 
-timedRtnWebCheck: function() {
+timedRtnWebCheck: function() { //timed web update of rcn channels
     let rule = new schedule.RecurrenceRule();
     rule.hour = [new schedule.Range(0, 23, 3)]
     let j = schedule.scheduleJob(rule, function() {
@@ -133,15 +133,40 @@ rtnWebUpdateDb: function() { //saves rtn simulcast info to database rcn, collect
             updateRtnDb(jsonTables, tuners, db)
             }
                 function updateRtnDb(jsonTables, tuners, db) {
-                    //console.log(jsonTables.results)
                     var data = tuners.findOne({type: 'rtn'})
-                        data.channelInfo = jsonTables.results;
+                    let unfiltered = jsonTables.results;
+                    //console.log(unfiltered)
+                    unfiltered[0].splice(0, 1);
+                        let dateString = unfiltered[0][unfiltered[0].length - 1][1]
+                            let regex = /(?:Schedule generated )(.*)(?: Eastern)/g
+                            data.lastUpdated = regex.exec(dateString)[1]
+                            unfiltered[0].splice(unfiltered[0].length - 1, 1)
+                                var arr = []
+                    for (i = 0; i < unfiltered[0].length; i++) {
+                        //console.log(data.channelInfo[0])
+                        let formattedObj = {
+                            trackName: unfiltered[0][i]['2'],
+                            timeStart: unfiltered[0][i]['3'],
+                            timeEnd: unfiltered[0][i]['4'],
+                            rtnChan: unfiltered[0][i]['1']
+                        }
+                        let regex2 = / \(HD\)/g
+                        if (regex2.exec(unfiltered[0][i]['2'])) {
+                            formattedObj.isHd = true
+                            let regex3 = /(.*)(?: \(HD\))/g
+                            formattedObj.trackName = regex3.exec(unfiltered[0][i]['2'])[1]
+                        } else {
+                            formattedObj.isHd = false
+                        }
+            
+                        arr.push(formattedObj)
+                    }
+                    data.channelInfo = arr
+                        //data.channelInfo = jsonTables.results;
                             tuners.update(data);
                                 db.saveDatabase()
-                                    console.log(data.channelInfo[0])
+                                    console.log(data.channelInfo)
                 }
-                
-                
             })
         }
 
@@ -158,20 +183,32 @@ formatRtn: function() {
         data.channelInfo[0].splice(0, 1);
             let dateString = data.channelInfo[0][data.channelInfo[0].length - 1][1]
                 let regex = /(?:Schedule generated )(.*)(?: Eastern)/g
-                    data.lastUpdated = regex.exec(dateString)[1]
+                data.lastUpdated = regex.exec(dateString)[1]
                         data.channelInfo[0].splice(data.channelInfo[0].length - 1, 1)
+                            var arr = []
         for (i = 0; i < data.channelInfo[0].length; i++) {
-            console.log(data.channelInfo[0])
+            //console.log(data.channelInfo[0])
+            
             let formattedObj = {
                 trackName: data.channelInfo[0][i]['2'],
                 timeStart: data.channelInfo[0][i]['3'],
                 timeEnd: data.channelInfo[0][i]['4'],
                 rtnChan: data.channelInfo[0][i]['1']
             }
-            
-        }
+            let regex2 = / \(HD\)/g
+            if (regex2.exec(data.channelInfo[0][i]['2'])) {
+                formattedObj.isHd = true
+                let regex3 = /(.*)(?: \(HD\))/g
+                formattedObj.trackName = regex3.exec(data.channelInfo[0][i]['2'])[1]
+            } else {
+                formattedObj.isHd = false
+            }
 
-            console.log(data.channelInfo)
+            arr.push(formattedObj)
+        }
+        data.channelInfo = arr
+
+            console.log(data)
     })
 }
 

@@ -1,0 +1,34 @@
+<%- include("partials/header") %>
+
+
+
+
+<h4>Last Updated: <%= data.lastUpdated %></h1>
+
+
+    <table class="table table-striped">
+        <tbody>
+            <thead>
+                <th scope="col">Track Name</th>
+                <th scope="col">Channel</th>
+                <th scope="col">HD Status</th>
+                <th scope="col">Ending Time</th>
+            </thead>
+            <% for (i = 0; i < data.channelInfo.length; i++) { %>
+                <tr>
+                    <td><%= data.channelInfo[i].trackName %></td>
+                    <td><%= data.channelInfo[i].rtnChan %></td>
+                    <td>HD: <%= data.channelInfo[i].isHd %></td>
+                    <td>Ends: <%= data.channelInfo[i].timeEnd %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+
+
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
