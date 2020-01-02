@@ -36,6 +36,20 @@ loadTimerCollection(colName, callback) {
         }
         callback(_collection, db);
     });
+},
+loadScheduleCollection(colName, callback) {
+    var db = new loki('schedule');
+    db.loadDatabase({}, function() {
+        var _collection = db.getCollection('rcn');
+        if (!_collection) {
+            console.log('Collection %s does not exist. Creating...', colName);
+            _collection = db.addCollection('rcn')
+            db.saveDatabase();
+            callback(_collection, db)
+        } else {
+           callback(_collection, db) 
+        }
+    })
 }
 
 }

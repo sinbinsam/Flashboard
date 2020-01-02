@@ -1,4 +1,5 @@
 var express = require('express');
+var moment = require('moment');
 var app = express();
 var port = process.env.PORT || 8080;
 var app = express();
@@ -7,6 +8,7 @@ var routes = require(__dirname + '/public/js/routes.js');
 var rcn = require(__dirname + '/public/js/rcnGet.js');
 var dtv = require(__dirname + '/public/js/dtvGet.js');
 var timer = require(__dirname + '/public/js/timerManager.js')
+var schedule = require(__dirname + '/public/js/scheduleManager.js')
 var rcnGet = rcn.rcnGet;
 var rcnTunerInfo = rcn.rcnTunerInfo;
 
@@ -22,6 +24,46 @@ app.use('/', routes); //routes file
 
 timer.timedRcnCheck()
 
+schedule.rcnTunerChangeAll()
+
+let scheduleObj = {
+    date: '01/27/2020',
+    isSent: false,
+    channelPlan: [
+        {
+            name: 'Aqueduct',
+            channel: '4,6,9',
+            isHd: true
+        },
+        {
+            name: 'Mahoning Valley',
+            channel: '2,3',
+            isHd: false
+        },
+        {
+            name: 'Monticello Raceway',
+            channel: '5',
+            isHd: false
+        },
+        {
+            name: 'PARX',
+            channel: '7,10,11',
+            isHd: false
+        },
+        {
+            name: 'Tampa Bay',
+            channel: '12',
+            isHd: true
+        },
+        {
+            name: 'Turf Paradise',
+            channel: '13',
+            isHd: true
+        },
+    ]
+}
+
+//schedule.rcnSchedule(scheduleObj)
 
 //timer.rtnWebUpdateDb()
 
