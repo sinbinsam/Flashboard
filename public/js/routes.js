@@ -97,4 +97,15 @@ router.get('/rtn', (req, res) => {
     })
 })
 
+router.get('/schedule', (req, res) => {
+    res.render('scheduleEdit')
+})
+
+router.get('/schedule/:date', (req, res) => {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({'date': req.params.date})
+            res.render('scheduleEdit', {schedule: data})
+    })
+})
+
 module.exports = router;

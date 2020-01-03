@@ -22,43 +22,48 @@ app.use(express.static(__dirname + '/public')); //stylesheets and js
 app.use('/', routes); //routes file
 
 
-timer.timedRcnCheck()
+//timer.timedRcnCheck()
 
-schedule.rcnTunerChangeAll()
-
+//schedule.rcnTunerChangeAll()
 let scheduleObj = {
-    date: '01/27/2020',
-    isSent: false,
+    date: '02/02/2020',
+    isSentAll: false,
     channelPlan: [
         {
             name: 'Aqueduct',
             channel: '4,6,9',
-            isHd: true
+            isHd: true,
+            isSent: true
         },
         {
             name: 'Mahoning Valley',
             channel: '2,3',
-            isHd: false
+            isHd: false,
+            isSent: true
         },
         {
             name: 'Monticello Raceway',
             channel: '5',
-            isHd: false
+            isHd: false,
+            isSent: false
         },
         {
-            name: 'PARX',
-            channel: '7,10,11',
-            isHd: false
+            name: 'Drumheller Downs',
+            channel: '69',
+            isHd: false,
+            isSent: true
         },
         {
-            name: 'Tampa Bay',
-            channel: '12',
-            isHd: true
+            name: 'Santacaterina Downs',
+            channel: '69',
+            isHd: false,
+            isSent: false
         },
         {
-            name: 'Turf Paradise',
-            channel: '13',
-            isHd: true
+            name: 'yes',
+            channel: '12,13',
+            isHd: false,
+            isSent: false
         },
     ]
 }

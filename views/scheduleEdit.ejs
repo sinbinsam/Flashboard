@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+
+
+
+
+
+    <table class="table table-striped">
+        <tbody>
+            <thead>
+                <th scope="col">Track Name</th>
+                <th scope="col">Channel</th>
+                <th scope="col">HD Status</th>
+                <th scope="col">Time to switch</th>
+            </thead>
+<!-- for loop start--> <% if (schedule) { %>
+        <% for (i = 0; i < schedule.channelPlan.length; i++) { %>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" value = "<%= schedule.channePlan[i].name %>">
+                    </td>
+                    <td>
+                        <input class="form-control" type="text" placeholder="disabled" readonly value = "<%= schedule.channePlan[i].channel %>">
+                    </td>
+                    <td>
+                        <input class="form-check-input" type="checkbox">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control">
+                    </td>
+                </tr>
+                <!-- for loop end--> <% }} %>
+        </tbody>
+    </table>
+
+
+
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
