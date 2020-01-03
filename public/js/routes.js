@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var loki = require('lokijs');
 var loadDb = require(__dirname + '/loadDBs.js');
+var moment = require('moment')
+var schedule = require(__dirname + '/scheduleManager.js');
 
 
 
@@ -103,9 +105,19 @@ router.get('/schedule', (req, res) => {
 
 router.get('/schedule/:date', (req, res) => {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        let data = collection.findOne({'date': req.params.date})
-            res.render('scheduleEdit', {schedule: data})
+        console.log(collection)
+        let date =  moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
+        let data = collection.findOne({'date': date})
+            res.render('scheduleEdit', {schedule: data, date: req.params.date})
     })
+})
+
+router.get('schedule/:date/update', (req, res) => {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY');
+        let obj = req.params.obj
+        schedule.rcnSchedule(obj)
+    });
 })
 
 module.exports = router;

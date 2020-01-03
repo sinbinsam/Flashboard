@@ -43,7 +43,8 @@ rcnSchedule: function(obj) {
                             'name': obj.channelPlan[i].name,
                             'channel': obj.channelPlan[i].channel,
                             'isHd': obj.channelPlan[i].isHd,
-                            'isSent': false
+                            'isSent': false,
+                            'timeToSend': obj.channelPlan[i].timeToSend
                           }
                           newData.push(pushObj)
                       } else if (foundEntry) {
@@ -51,7 +52,8 @@ rcnSchedule: function(obj) {
                             'name': obj.channelPlan[i].name,
                             'channel': obj.channelPlan[i].channel,
                             'isHd': obj.channelPlan[i].isHd,
-                            'isSent': foundEntry.isSent
+                            'isSent': foundEntry.isSent,
+                            'timeToSend': obj.channelPlan[i].timeToSend
                           }
                           newData.push(pushObj)
                       }

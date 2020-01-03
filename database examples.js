@@ -6,37 +6,43 @@ let scheduleObj = {
             name: 'Aqueduct',
             channel: '4,6,9',
             isHd: true,
-            isSent: false
+            isSent: false,
+            timeToSend: '5:00 AM'
         },
         {
             name: 'Mahoning Valley',
             channel: '2,3',
             isHd: false,
-            isSent: false
+            isSent: false,
+            timeToSend: '6:00 AM'
         },
         {
             name: 'Monticello Raceway',
             channel: '5',
             isHd: false,
-            isSent: false
+            isSent: false,
+            timeToSend: '10:00 AM'
         },
         {
             name: 'PARX',
             channel: '7,10,11',
             isHd: false,
-            isSent: false
+            isSent: false,
+            timeToSend: '5:00 PM'
         },
         {
             name: 'Tampa Bay',
             channel: '12',
             isHd: true,
-            isSent: false
+            isSent: false,
+            timeToSend: '5:00 AM'
         },
         {
             name: 'Turf Paradise',
             channel: '13',
             isHd: true,
-            isSent: false
+            isSent: false,
+            timeToSend: '5:00 AM'
         },
     ]
 }
