@@ -1,10 +1,20 @@
 <%- include("partials/header") %>
 
 <link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
-<script src = '/js/jquery.timepicker.min.js'></script>
+<link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
+<script src = '/js/jquery/jquery-ui.min.js'></script>
+<script src = '/js/jquery/jquery.timepicker.min.js'></script>
 <script src = '/js/scheduleEdit.js'></script>
+<script src = '/js/moment.min.js'></script>
 
-<h1 id = 'date'><%= schedule.date %></h1>
+<h1 id = 'date' unmoment = '<%= date %>'></h1>
+
+<!-- <p>Date: <input type="text" id="picker"></p> -->
+<input id = 'picker' type="button" class="btn btn-info btn-lg"></input>
+
+ <% if (schedule) { %>
+
+
 
 <button id = 'save' type="button" class="btn btn-success">Save</button>
 
@@ -19,7 +29,7 @@
             </thead>
             <tbody id='yes'>
             
- <% if (schedule) { %>
+
         <% for (i = 0; i < schedule.channelPlan.length; i++) { %>
                 <tr>
                     <td>
@@ -32,10 +42,9 @@
                         <input class="form-check-input hd" type="checkbox">
                     </td>
                     <td>
-                        <input class="timepicker time">
+                        <input class="timepicker time" value = "<%= schedule.channelPlan[i].timeToSend %>">
                     </td>
                 </tr>
-            <% } %>
             <% } %>
                 <tr class = 'cloneItem'>
                     <td>
@@ -48,15 +57,49 @@
                         <input class="form-check-input hd" type="checkbox">
                     </td>
                     <td>
-                        <input class="timepicker time">
+                        <input class="timepicker time" value = "5:00 AM">
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+            <% } %>
+
+<% if (!schedule) { %> <!--to be rendered when no date is present-->
+    <button id = 'save' type="button" class="btn btn-success">Save</button>
+
+    <table class="table table-striped">
+        
+        
+            <thead>
+                <th scope="col">Track Name</th>
+                <th scope="col">Channel</th>
+                <th scope="col">HD Status</th>
+                <th scope="col">Time to switch</th>
+            </thead>
+            <tbody id='yes'>
+                <tr class = 'cloneItem'>
+                    <td>
+                        <input type="text" class="form-control name" value = "">
+                    </td>
+                    <td>
+                        <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
+                    </td>
+                    <td>
+                        <input class="form-check-input hd" type="checkbox">
+                    </td>
+                    <td>
+                        <input class="timepicker time" value = "5:00 AM">
                     </td>
                 </tr>
         </tbody>
     </table>
 
 
-    <form>
-        <%= date %>
+<% } %>
+
+    <form id = 'update' method = 'POST' action = '/schedule/rcn'>
+        <input type="hidden" id="dateObj" name="dateObj" value="">
+        <input type="hidden" id="dateStr" name="date" value="<%= date %>">
     </form>
 
 

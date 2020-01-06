@@ -1,0 +1,44 @@
+<%- include("partials/header") %>
+
+<script src = '/js/rcnAuths.js'></script>
+
+<button id = 'save' type="button" class="btn btn-success">Save</button>
+        <% if (tuners) { %>
+        <% for (i = 0; i < tuners.length; i++) { %>
+
+    <table class="table table-striped">
+            <thead>
+                <th scope="col"><%= tuners[i].channel %></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control name" value = "">
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+        <% }} %>
+
+
+
+ 
+
+
+
+
+    <form id = 'update' method = 'POST' action = '/config/rcn/auth'>
+        <input type="hidden" id="dateObj" name="dateObj" value="">
+        <input type="hidden" id="dateStr" name="date" value="">
+    </form>
+
+
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

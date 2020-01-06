@@ -4,21 +4,8 @@ var rcn = require(__dirname + '/rcnGet.js');
 module.exports = {
 
 rcnSchedule: function(obj) {
-    loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        /*collection.insert(obj)
-        //console.log(data)
-            collection.insert({
-                'date': obj.date,
-                'isSentAll': false,
-                'channelPlan': obj.channelPlan,
-                'isSent': false
-            })
-            console.log('dont execute this function')
-            db.saveDatabase()
-            console.log(collection)*/
-        
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {        
         let data = collection.findOne({'date': obj.date})
-        //console.log(data)
         if (data == null) {
             collection.insert({
                 'date': obj.date,
@@ -26,18 +13,15 @@ rcnSchedule: function(obj) {
                 'channelPlan': obj.channelPlan,
                 'isSent': false
             })
-            console.log('dont execute this function')
             db.saveDatabase()
         } else {
             let data = collection.findOne({'date': obj.date});
             let newData = [];
-            //console.log(data)
                 for (i = 0; i < obj.channelPlan.length; i++) {
                     function isInList(oldObj) { 
                         return oldObj.name === obj.channelPlan[i].name;
                       }
                     let foundEntry = data.channelPlan.find(isInList, obj.channelPlan[i].name)
-                    //console.log(foundEntry.isSent)
                       if (!foundEntry) {
                           let pushObj = {
                             'name': obj.channelPlan[i].name,
@@ -61,7 +45,6 @@ rcnSchedule: function(obj) {
                 data.channelPlan = newData
                 collection.update(data);
                     db.saveDatabase();
-                        console.log(data)
         }
     })
 },

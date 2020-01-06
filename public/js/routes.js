@@ -88,13 +88,28 @@ router.post('/config/rcn/update', (req, res) => {
                             tuners.update(data)
                                 db.saveDatabase()
                                     res.send('recieved')
+                                    console.log(tuners.data)
         })
+});
+
+router.get('/config/rcn/auth', (req, res) => {
+    loadDb.loadRcnCollection('rcn', function (tuners, db) {
+        console.log(tuners.data)
+        res.render('rcnAuths', {tuners: tuners.data})
+    })
+})
+
+router.post('/config/rcn/auth', (req, res) => {
+    loadDb.loadRcnCollection('rcn', function (tuners, db) {
+        for (i = 0; i < tuners.data.length; i++) {
+            
+        }
+    });
 })
 
 router.get('/rtn', (req, res) => {
     loadDb.loadRcnCollection('webGets', function (tuners, db) {
         let data = tuners.findOne({'type': 'rtn'});
-        console.log(data)
             res.render('rtnWeb', {data: data})
     })
 })
@@ -103,21 +118,22 @@ router.get('/schedule', (req, res) => {
     res.render('scheduleEdit')
 })
 
-router.get('/schedule/:date', (req, res) => {
+router.get('/schedule/rcn/:date', (req, res) => {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        console.log(collection)
+        //console.log(collection)
         let date =  moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
         let data = collection.findOne({'date': date})
             res.render('scheduleEdit', {schedule: data, date: req.params.date})
     })
 })
 
-router.get('schedule/:date/update', (req, res) => {
-    loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        let date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY');
-        let obj = req.params.obj
+router.post('/schedule/rcn', (req, res) => {
+        let date = req.body.date
+        let obj = req.body
         schedule.rcnSchedule(obj)
-    });
-})
+        res.send('success')
+});
+
+
 
 module.exports = router;

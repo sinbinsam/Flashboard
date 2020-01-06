@@ -1,25 +1,20 @@
-/*(function($) {
-    $(function() {
-        $('input.timepicker').timepicker({
-            timeFormat: 'h:mm p',
-            interval: 30,
-            minTime: '5',
-            maxTime: '11:00pm',
-            startTime: '5:00',
-            dropDown: false,
-            scrollbar: true
-        });
+$( document ).ready(function() {
+
+    $('#picker').val(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
+
+
+    $( "#picker" ).datepicker({
+        dateFormat:'mmddyy',
+        onSelect: function() {
+            window.location.replace("http://localhost:8080/schedule/rcn/" + $(this).val());
+        }
     });
 
 
+        
+    
 
-
-
-
-
-})(jQuery);*/
-
-$( document ).ready(function() {
+    $('#date').html(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
 
     $('.timepicker').timepicker({
         timeFormat: 'h:mm p',
@@ -33,7 +28,6 @@ $( document ).ready(function() {
 
 let checkEmpty = []
 var checkEmptyFun = function() {
-    console.log('activated')
     let checkEmpty = []
         $('.name').each( function() {
             checkEmpty.push($(this).val())
@@ -46,10 +40,9 @@ var checkEmptyFun = function() {
             return true;
          }
             if (checkArray(checkEmpty) == true) {
-                console.log('added')
                 let t = $('.cloneItem').clone().removeClass('cloneItem')
                 t.find('.name').val('')
-                t.find('.time').val('')
+                t.find('.time').val('5:00 AM')
                 t.find('.timepicker').timepicker({
                     timeFormat: 'h:mm p',
                     interval: 30,
@@ -83,9 +76,16 @@ $('#save').on('click', function() {
         'date': $('#date').html(),
         channelPlan: obj
     }
-    console.log(objSend)
+    $('#dateObj').attr('value', objSend)
+    $.ajax({
+        type: "POST",
+        url: "/schedule/rcn",
+        data: JSON.stringify(objSend),
+        success: function(){},
+        dataType: "json",
+        contentType : "application/json"
+      });
 })
-
 
 
 
