@@ -94,17 +94,16 @@ router.post('/config/rcn/update', (req, res) => {
 
 router.get('/config/rcn/auth', (req, res) => {
     loadDb.loadRcnCollection('rcn', function (tuners, db) {
-        console.log(tuners.data)
+        //console.log(tuners.data)
         res.render('rcnAuths', {tuners: tuners.data})
     })
 })
 
 router.post('/config/rcn/auth', (req, res) => {
-    loadDb.loadRcnCollection('rcn', function (tuners, db) {
-        for (i = 0; i < tuners.data.length; i++) {
-            
-        }
-    });
+    console.log(req.body)
+    res.send('success')
+    schedule.rcnAuthDbUpdate(req.body)
+
 })
 
 router.get('/rtn', (req, res) => {

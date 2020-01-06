@@ -3,6 +3,17 @@ var rcn = require(__dirname + '/rcnGet.js');
 
 module.exports = {
 
+rcnAuthDbUpdate: function(obj) {
+    loadDb.loadRcnCollection('rcn', function(tuners, db) {
+        for (i = 0; i < obj.length; i++) { 
+            let data = tuners.findOne({'$loki': parseInt(obj[i]['$loki'])})
+                data.auth = obj[i].auth
+                    tuners.update(data);
+                        db.saveDatabase();
+        }
+    });
+},
+
 rcnSchedule: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {        
         let data = collection.findOne({'date': obj.date})

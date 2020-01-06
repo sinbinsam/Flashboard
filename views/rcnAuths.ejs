@@ -10,8 +10,8 @@
             <thead>
                 <th scope="col"><%= tuners[i].channel %></th>
             </thead>
-            <tbody>
-                <tr>
+            <tbody loki = '<%= tuners[i]["$loki"] %>'>
+                <tr class = 'cloneItem'>
                     <td>
                         <input type="text" class="form-control name" value = "">
                     </td>

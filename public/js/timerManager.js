@@ -43,6 +43,7 @@ timedRtnWebCheck: function() { //timed web update of rcn channels
     })
 },
 
+
 rcnTunerDbUpdate: function() {
     loadDb.loadRcnCollection('rcn', function (tuners, db) {
         function find1 (stack, callback) {
