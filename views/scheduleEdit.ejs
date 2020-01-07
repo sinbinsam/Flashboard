@@ -7,10 +7,11 @@
 <script src = '/js/scheduleEdit.js'></script>
 <script src = '/js/moment.min.js'></script>
 
-<h1 id = 'date' unmoment = '<%= date %>'></h1>
+
+<h1 id = 'date' unmoment = ''><%= date %></h1>
 
 <!-- <p>Date: <input type="text" id="picker"></p> -->
-<input id = 'picker' type="button" class="btn btn-info btn-lg"></input>
+<input id = 'picker' type="button" class="btn btn-info btn-lg" value = '<%= date %>'></input>
 
  <% if (schedule) { %>
 

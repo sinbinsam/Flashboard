@@ -10,6 +10,7 @@ rcnAuthDbUpdate: function(obj) {
                 data.auth = obj[i].auth
                     tuners.update(data);
                         db.saveDatabase();
+                        console.log(tuners.data)
         }
     });
 },
@@ -72,7 +73,8 @@ rcnTunerChangeAll: function(dateObj) {
     })
 
 
-}
+},
+
 
 
 

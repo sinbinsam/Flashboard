@@ -1,0 +1,40 @@
+<%- include("partials/header") %>
+
+<h1 id = 'date' unmoment = ''><%= data.date %></h1>
+
+<table class="table table-striped">
+        
+    <thead>
+        <th scope="col">Track Name</th>
+        <th scope="col">Channel</th>
+        <th scope="col">HD Status</th>
+        <th scope="col">Time to switch</th>
+    </thead>
+    <tbody id='yes'>
+    
+
+
+        <tr>
+            <td>
+                <input type="text" class="form-control name" value = "">
+            </td>
+            <td>
+                <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
+            </td>
+            <td>
+                <input class="form-check-input hd" type="checkbox">
+            </td>
+            <td>
+                <input class="timepicker time" value = "">
+            </td>
+        </tr>
+</tbody>
+</table>
+
+
+
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

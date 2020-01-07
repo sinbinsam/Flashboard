@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-    $('#picker').val(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
+    //$('#picker').val(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
 
 
     $( "#picker" ).datepicker({
@@ -14,7 +14,7 @@ $( document ).ready(function() {
         
     
 
-    $('#date').html(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
+    //$('#date').html(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
 
     $('.timepicker').timepicker({
         timeFormat: 'h:mm p',

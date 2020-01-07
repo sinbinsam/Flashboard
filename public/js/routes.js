@@ -117,13 +117,31 @@ router.get('/schedule', (req, res) => {
     res.render('scheduleEdit')
 })
 
+router.get('/schedule/rcn/live', (req, res) => {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({date: (moment().format("MM/DD/YYYY"))})
+        if (!data) {
+            let data = {}
+            data.date = (moment().format("MM/DD/YYYY"))
+            res.render('liveSchedule', {data: data})
+        } else {
+            res.render('liveSchedule', {data: data})
+        }
+        
+    })
+})
+
 router.get('/schedule/rcn/:date', (req, res) => {
+    var date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
+    if (date == moment().format("MM/DD/YYYY")) {
+        res.redirect('/schedule/rcn/live')
+    } else {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
         //console.log(collection)
-        let date =  moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
         let data = collection.findOne({'date': date})
-            res.render('scheduleEdit', {schedule: data, date: req.params.date})
+            res.render('scheduleEdit', {schedule: data, date: date})
     })
+    }
 })
 
 router.post('/schedule/rcn', (req, res) => {
@@ -131,7 +149,9 @@ router.post('/schedule/rcn', (req, res) => {
         let obj = req.body
         schedule.rcnSchedule(obj)
         res.send('success')
-});
+})
+
+
 
 
 

@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-$( document ).on('focusout', 'input', function() {
+$( document ).on('keydown', 'input', function() {
     function checkArray(my_arr){
         for(var i=0;i<my_arr.length;i++){
             if(my_arr[i] === "")   
@@ -8,25 +8,23 @@ $( document ).on('focusout', 'input', function() {
         }
         return true;
      }
-  let children = $(this).closest('tbody').children('.name')
+  let children = $(this).closest('tbody').find('.name')
 
-  console.log(children.length)
 
     let arr = []
-    $(this).parent('td').find('input').each(function() {
-        arr.push($(this).val())
-        //console.log('yes')
-    })
-    //console.log(arr)
+    for (i = 0; i < children.length; i++) {
+            arr.push(children[i].value)
+    }
+    
+    
     if (checkArray(arr) == true) {
         let t = $(this).closest('.cloneItem').clone()
         t.find('.name').val('')
         $(this).closest('tbody').append(t)
         //console.log()
     }
-    $('.table').each(function() {
-        //console.log($(this).children('tbody').children('tr').children('td').children('input').val())
-    })
+    
+
 })
 
 
@@ -36,7 +34,9 @@ let sendObj = []
     $('.table').each(function() {
     let arr = []
         $(this).children('tbody').children('tr').children('td').children('input').each(function() {
+            if ($(this).val()) {
             arr.push($(this).val())
+            }
         })
         
         

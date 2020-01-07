@@ -2,6 +2,7 @@
 
 <script src = '/js/rcnAuths.js'></script>
 
+
 <button id = 'save' type="button" class="btn btn-success">Save</button>
         <% if (tuners) { %>
         <% for (i = 0; i < tuners.length; i++) { %>
@@ -11,15 +12,18 @@
                 <th scope="col"><%= tuners[i].channel %></th>
             </thead>
             <tbody loki = '<%= tuners[i]["$loki"] %>'>
+                <% for (x = 0; x < tuners[i].auth.length; x++) { %>
                 <tr class = 'cloneItem'>
                     <td>
-                        <input type="text" class="form-control name" value = "">
+                        <input type="text" class="form-control name" value = "<%= tuners[i].auth[x] %>">
                     </td>
                 </tr>
-
-
-
-
+                <% } %>
+                <tr class = 'cloneItem'>
+                    <td>
+                        <input type="text" class="form-control name" value = "<%= tuners[i].auth[x] %>">
+                    </td>
+                </tr>
         </tbody>
     </table>
         <% }} %>
