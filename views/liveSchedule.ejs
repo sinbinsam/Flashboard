@@ -1,5 +1,5 @@
 <%- include("partials/header") %>
-
+<%= JSON.stringify(data) %>
 <h1 id = 'date' unmoment = ''><%= data.date %></h1>
 
 <table class="table table-striped">
@@ -13,10 +13,10 @@
     <tbody id='yes'>
     
 
-
+<% for (i = 0; i < data.channelPlan.length; i++) { %>
         <tr>
             <td>
-                <input type="text" class="form-control name" value = "">
+                <input type="text" class="form-control name" value = "<%= data.channelPlan[i].name %>">
             </td>
             <td>
                 <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
@@ -25,9 +25,11 @@
                 <input class="form-check-input hd" type="checkbox">
             </td>
             <td>
-                <input class="timepicker time" value = "">
+                <input class="timepicker time" value = "<%= data.channelPlan[i].timeToSend %>">
             </td>
         </tr>
+<% } %>
+
 </tbody>
 </table>
 

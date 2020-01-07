@@ -7,17 +7,29 @@
 <script src = '/js/scheduleEdit.js'></script>
 <script src = '/js/moment.min.js'></script>
 
+                                <% if (!date) { %>
+<h1 id = 'date' unmoment = ''>Please select a date below</h1>
 
+                                <% } else {  %>
 <h1 id = 'date' unmoment = ''><%= date %></h1>
 
+                                <% } %>
+
 <!-- <p>Date: <input type="text" id="picker"></p> -->
+<% if (date) { %>
+
 <input id = 'picker' type="button" class="btn btn-info btn-lg" value = '<%= date %>'></input>
+
+<% } else { %>
+<input id = 'picker' type="button" class="btn btn-info btn-lg" value = 'Select Date'></input>
+<% } %>
 
  <% if (schedule) { %>
 
 
-
+<% if (date) { %>
 <button id = 'save' type="button" class="btn btn-success">Save</button>
+<% } %>
 
     <table class="table table-striped">
         
@@ -65,7 +77,7 @@
     </table>
             <% } %>
 
-<% if (!schedule) { %> <!--to be rendered when no date is present-->
+<% if (!schedule && date) { %> <!--to be rendered when no date is present-->
     <button id = 'save' type="button" class="btn btn-success">Save</button>
 
     <table class="table table-striped">
