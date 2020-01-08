@@ -75,7 +75,13 @@ rcnTunerChangeAll: function(dateObj) {
 
 },
 
-
+rcnMatchChannels: function(input) {
+    loadDb.loadRcnCollection('webGets', function (tuners, db) {
+        let data = tuners.findOne({type: 'rtn'});
+        console.log(data)
+        console.log(tuners.find({'trackName': input}));
+    });
+}
 
 
 

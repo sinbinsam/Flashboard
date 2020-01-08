@@ -82,7 +82,7 @@ let scheduleObj = {
 
 //dtv.sendTunerStatusRequest()
 
-
+schedule.rcnMatchChannels('Southland')
 
 // start the server
 app.listen(port, (err) => {
