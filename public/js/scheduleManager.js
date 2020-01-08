@@ -1,5 +1,6 @@
 var loadDb = require(__dirname + '/loadDBs.js');
 var rcn = require(__dirname + '/rcnGet.js');
+var moment = require('moment')
 
 module.exports = {
 
@@ -75,12 +76,41 @@ rcnTunerChangeAll: function(dateObj) {
 
 },
 
-rcnMatchChannels: function(input) {
+rcnMatchAllChannels: function(input, callback) {
     loadDb.loadRcnCollection('webGets', function (tuners, db) {
         let data = tuners.findOne({type: 'rtn'});
-        console.log(data)
-        console.log(tuners.find({'trackName': input}));
+        let arr = []
+        for (i = 0; i < input.channelPlan.length; i++) {
+            var results = data.channelInfo.find(obj => {
+            return obj.trackName == input.channelPlan[i].name
+            })
+                if (results) {
+                    input.channelPlan[i].rcnChan = results.rtnChan
+                    arr.push(input.channelPlan[i]);
+                } else if (!results) {
+                    input.channelPlan[i].rcnChan = undefined
+                    arr.push(input.channelPlan[i]);
+                }
+        }
+        callback(arr)
+    })
+},
+
+rcnMatchLiveSchedule: function() {
+    let currentDate = moment().format("MM/DD/YYYY")
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({date: currentDate})
+            if (data) {
+                module.exports.rcnMatchAllChannels(data, function() {
+                    collection.update(data);
+                    db.saveDatabase()
+                    console.log(data)
+                });
+            }
+        
     });
+
+
 }
 
 

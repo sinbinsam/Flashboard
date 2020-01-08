@@ -82,7 +82,8 @@ let scheduleObj = {
 
 //dtv.sendTunerStatusRequest()
 
-schedule.rcnMatchChannels('Southland')
+schedule.rcnMatchLiveSchedule()
+//console.log(schedule.rcnMatchSingleChannel('Gulfstream Park', function(results) {console.log(results)}))
 
 // start the server
 app.listen(port, (err) => {
