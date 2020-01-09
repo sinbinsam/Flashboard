@@ -19,9 +19,17 @@ $( document ).ready(function() {
     $('.timepicker').timepicker({
         timeFormat: 'h:mm p',
         interval: 30,
-        minTime: '5',
+        minTime: '12:00PM',
         maxTime: '11:00pm',
-        startTime: '5:00',
+        dropDown: false,
+        scrollbar: true
+    });
+
+    $('.timepicker2').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 30,
+        minTime: '12:00pm',
+        maxTime: '11:00pm',
         dropDown: false,
         scrollbar: true
     });
@@ -42,13 +50,20 @@ var checkEmptyFun = function() {
             if (checkArray(checkEmpty) == true) {
                 let t = $('.cloneItem').clone().removeClass('cloneItem')
                 t.find('.name').val('')
-                t.find('.time').val('5:00 AM')
+                t.find('.time').val('')
                 t.find('.timepicker').timepicker({
                     timeFormat: 'h:mm p',
                     interval: 30,
-                    minTime: '5',
+                    minTime: '12:00PM',
                     maxTime: '11:00pm',
-                    startTime: '5:00',
+                    dropDown: false,
+                    scrollbar: true
+                });
+                t.find('.timepicker2').timepicker({
+                    timeFormat: 'h:mm p',
+                    interval: 30,
+                    minTime: '5:00am',
+                    maxTime: '11:00pm',
                     dropDown: false,
                     scrollbar: true
                 });
@@ -68,7 +83,8 @@ $('#save').on('click', function() {
             'name': $(this).val(),
             'channel': $(this).closest('tr').find('.channel').val(),
             'isHd': $(this).closest('tr').find('.hd').val(),
-            'timeToSend': $(this).closest('tr').find('.time').val()
+            'timeToSend': $(this).closest('tr').find('.time').val(),
+            'postTime': $(this).closest('tr').find('.time2').val()
         })
         }
     })

@@ -11,7 +11,7 @@ rcnAuthDbUpdate: function(obj) {
                 data.auth = obj[i].auth
                     tuners.update(data);
                         db.saveDatabase();
-                        console.log(tuners.data)
+                        //console.log(tuners.data)
         }
     });
 },
@@ -41,6 +41,7 @@ rcnSchedule: function(obj) {
                             'channel': obj.channelPlan[i].channel,
                             'isHd': obj.channelPlan[i].isHd,
                             'isSent': false,
+                            'postTime': obj.channelPlan[i].postTime,
                             'timeToSend': obj.channelPlan[i].timeToSend
                           }
                           newData.push(pushObj)
@@ -50,6 +51,8 @@ rcnSchedule: function(obj) {
                             'channel': obj.channelPlan[i].channel,
                             'isHd': obj.channelPlan[i].isHd,
                             'isSent': foundEntry.isSent,
+                            'postTime': obj.channelPlan[i].isSent,
+                            'rcnChan': foundEntry.rcnChan,
                             'timeToSend': obj.channelPlan[i].timeToSend
                           }
                           newData.push(pushObj)
@@ -60,20 +63,6 @@ rcnSchedule: function(obj) {
                     db.saveDatabase();
         }
     })
-},
-
-
-rcnTunerChangeAll: function(dateObj) {
-    rcn.sendTunerStatusRequest('0', '10.160.27.189', null, null, function(res) {
-        if (res == 'error') {
-            console.log('there was an error')
-        } else {
-            console.log(res)
-        }
-        
-    })
-
-
 },
 
 rcnMatchAllChannels: function(input, callback) {
@@ -104,12 +93,26 @@ rcnMatchLiveSchedule: function() {
                 module.exports.rcnMatchAllChannels(data, function() {
                     collection.update(data);
                     db.saveDatabase()
-                    console.log(data)
                 });
             }
-        
     });
+},
 
+rcnMatchAuth: function(input, callback) {
+    loadDb.loadRcnCollection('rcn', function(tuners, db) {
+        let data = tuners.data
+        let arr = []
+        for (i = 0; i < input.length; i++) {
+            var results = data.find(obj => {
+                return obj.auth.includes(input)
+            })
+            arr.push(results)
+        }
+        callback(arr)
+    });
+},
+
+rcnMatchAuthSchedule: function() {
 
 }
 

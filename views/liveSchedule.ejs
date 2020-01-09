@@ -1,6 +1,11 @@
 <%- include("partials/header") %>
+
+<script src = '/js/liveSchedule.js'></script>
+
+
 <%= JSON.stringify(data) %>
 <h1 id = 'date' unmoment = ''><%= data.date %></h1>
+<button type = 'button' class = 'btn btn-primary' id = 'updateRtnChannels'>Match RTN Channels</button>
 
 <table class="table table-striped">
         

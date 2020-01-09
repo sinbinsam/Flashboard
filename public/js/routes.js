@@ -129,6 +129,11 @@ router.get('/schedule/rcn/live', (req, res) => {
         }
         
     })
+}),
+
+router.post('/schedule/rcn/live/getRtnChannels', (req, res) => {
+    schedule.rcnMatchLiveSchedule()
+    res.send('success')
 })
 
 router.get('/schedule/rcn/:date', (req, res) => {
@@ -150,6 +155,7 @@ router.post('/schedule/rcn', (req, res) => {
         schedule.rcnSchedule(obj)
         res.send('success')
 })
+
 
 
 

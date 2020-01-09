@@ -74,16 +74,18 @@ let scheduleObj = {
     ]
 }
 
-//schedule.rcnSchedule(scheduleObj)
+//schedule.rcnSchedule(scheduleObj) //stores schedule
 
-//timer.rtnWebUpdateDb()
+//timer.rtnWebUpdateDb() //updates rcn website channels
 
-//timer.dtvTunerUpdateDb()
+//timer.dtvTunerUpdateDb() //updates db with dtv tuner info
 
-//dtv.sendTunerStatusRequest()
+//dtv.sendTunerStatusRequest() //updates db with rcn tuner info
 
-schedule.rcnMatchLiveSchedule()
-//console.log(schedule.rcnMatchSingleChannel('Gulfstream Park', function(results) {console.log(results)}))
+//schedule.rcnMatchLiveSchedule() //matchs rcn channels with names and adds them to schedule
+
+schedule.rcnMatchAuth('Penn National')
+
 
 // start the server
 app.listen(port, (err) => {
