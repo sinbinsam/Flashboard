@@ -159,8 +159,11 @@ matchClosestRtnLive: function() {
         let data = collection.findOne({date: currentDate})
             module.exports.matchClosestRtn(data.channelPlan, function(arr) {
                 data.channelPlan = arr
-                collection.update(data);
+                module.exports.rcnMatchAllChannels(data, function() {
+                    collection.update(data);
                     db.saveDatabase()
+                })
+                
             })
     });
 },
@@ -172,8 +175,6 @@ authSequence: function() {
       }
 
     module.exports.matchClosestRtnLive()
-    sleep(1000)
-    module.exports.rcnMatchLiveSchedule()
 
     
 }

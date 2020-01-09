@@ -86,7 +86,7 @@ let scheduleObj = {
 
 //schedule.rcnMatchAuthLiveSchedule() //matches rcn auth with live schedule
 
-schedule.authSequence();
+//schedule.authSequence();
 
 
 
