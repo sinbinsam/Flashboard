@@ -5,16 +5,13 @@
 
 <%= JSON.stringify(data) %>
 <h1 id = 'date' unmoment = ''><%= data.date %></h1>
-<button type = 'button' class = 'btn btn-primary' id = 'updateRtnChannels'>Match RTN Channels</button>
+
+<button type = 'button' class = 'btn btn-primary' id = 'updateRtnAuth'>Match RTN Auth</button>
 
 <table class="table table-striped">
         
     <thead>
-        <th scope="col">Track Name</th>
-        <th scope="col">Channel</th>
-        <th scope="col">HD Status</th>
-        <th scope="col">Time to switch</th>
-        <th scope="col">RCN Channel</th>
+        <th scope="col">Simulcast Schedule</th>
         <th scope="col">Status</th>
     </thead>
     <tbody id='yes'>
@@ -22,6 +19,35 @@
 
 <% for (i = 0; i < data.channelPlan.length; i++) { %>
         <tr>
+            <td>
+                <h3><%= data.channelPlan[i].name %></h3>
+
+                <% if (data.channelPlan[i].timeToSend) { %>
+                <p>time to switch: <%= data.channelPlan[i].timeToSend %></p>
+                <% } else if (data.channelPlan[i].timeToSend == '') { %>
+                <p>time to switch: ASAP</p>
+                <% } %>
+
+                <% if (data.channelPlan[i].rcnChan) { %>
+                    <p>RCN Channel: <%= data.channelPlan[i].rcnChan %></p>
+                    <% } else if (data.channelPlan[i].rcnChan !== '') { %>
+                    <p>RCN Channel: not recieved yet</p>
+                    <% } else if (!data.channelPlan[i].rcnChan) { %>
+                    <p>RCN Channel: not found</p>
+                    <% } %>
+
+                    <% if (data.channelPlan[i].authName) { %>
+                    <p>authorization: <%= data.channelPlan[i].authName %></p>
+                    <% } else if (data.channelPlan[i].authName !== '') { %>
+                    <p>authorization: not recieved yet</p>
+                    <% } else if (!data.channelPlan[i].authName) { %>
+                    <p>authorization: not found</p>
+                    <% } %>
+            </td>
+            <td>
+                <input type = 'button' class='btn btn-primary send' value = 'unsent'>
+            </td>
+            <!--
             <td>
                 <input type="text" class="form-control name" value = "<%= data.channelPlan[i].name %>">
             </td>
@@ -44,8 +70,9 @@
                 <% } %>
             </td>
             <td>
-                <input type = 'button' class='btn btn-primary' value = 'unsent'>
+                <input type = 'button' class='btn btn-primary send' value = 'unsent'>
             </td>
+            -->
         </tr>
 <% } %>
 

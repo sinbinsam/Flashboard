@@ -1,0 +1,62 @@
+<%- include("partials/header") %>
+
+<script src = '/js/liveSchedule.js'></script>
+
+
+<%= JSON.stringify(data) %>
+<h1 id = 'date' unmoment = ''><%= data.date %></h1>
+<button type = 'button' class = 'btn btn-primary' id = 'updateRtnChannels'>Match RTN Channels</button>
+<button type = 'button' class = 'btn btn-primary' id = 'updateRtnAuth'>Match RTN Auth</button>
+
+<table class="table table-striped">
+        
+    <thead>
+        <th scope="col">Track Name</th>
+        <th scope="col">Channel</th>
+        <th scope="col">HD Status</th>
+        <th scope="col">Time to switch</th>
+        <th scope="col">RCN Channel</th>
+        <th scope="col">Status</th>
+    </thead>
+    <tbody id='yes'>
+    
+
+<% for (i = 0; i < data.channelPlan.length; i++) { %>
+        <tr>
+            <td>
+                <input type="text" class="form-control name" value = "<%= data.channelPlan[i].name %>">
+            </td>
+            <td>
+                <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
+            </td>
+            <td>
+                <input class="form-check-input hd" type="checkbox">
+            </td>
+            <td>
+                <input class="timepicker time" value = "<%= data.channelPlan[i].timeToSend %>">
+            </td>
+            <td>
+                <% if (data.channelPlan[i].rcnChan) { %>
+                <input class='form-control' value = '<%= data.channelPlan[i].rcnChan %>'>
+                <% } else if (data.channelPlan[i].rcnChan !== '') { %>
+                <input class='form-control' value = '' placeholder = 'RCN channel not recieved yet...'>
+                <% } else if (!data.channelPlan[i].rcnChan) { %>
+                <input class='form-control' value = '' placeholder = 'RCN channel not found'>
+                <% } %>
+            </td>
+            <td>
+                <input type = 'button' class='btn btn-primary send' value = 'unsent'>
+            </td>
+        </tr>
+<% } %>
+
+</tbody>
+</table>
+
+
+
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

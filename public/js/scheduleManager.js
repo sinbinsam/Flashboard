@@ -1,6 +1,7 @@
 var loadDb = require(__dirname + '/loadDBs.js');
 var rcn = require(__dirname + '/rcnGet.js');
 var moment = require('moment')
+const didYouMean = require('didyoumean2').default
 
 module.exports = {
 
@@ -46,15 +47,12 @@ rcnSchedule: function(obj) {
                           }
                           newData.push(pushObj)
                       } else if (foundEntry) {
-                          let pushObj = {
-                            'name': obj.channelPlan[i].name,
-                            'channel': obj.channelPlan[i].channel,
-                            'isHd': obj.channelPlan[i].isHd,
-                            'isSent': foundEntry.isSent,
-                            'postTime': obj.channelPlan[i].isSent,
-                            'rcnChan': foundEntry.rcnChan,
-                            'timeToSend': obj.channelPlan[i].timeToSend
-                          }
+                          let pushobj = foundEntry
+                            pushObj.isSent = foundEntry.isSent
+                            pushObj.rcnChan = foundEntry.rcnChan
+                            pushObj.authName = foundEntry.authName
+                            pushObj.authIp = foundEntry.authIp
+                            pushObj.authStack = foundEntry.authStack
                           newData.push(pushObj)
                       }
                 }
@@ -71,13 +69,18 @@ rcnMatchAllChannels: function(input, callback) {
         let arr = []
         for (i = 0; i < input.channelPlan.length; i++) {
             var results = data.channelInfo.find(obj => {
-            return obj.trackName == input.channelPlan[i].name
+                if(!input.channelPlan[i].officialRtn) {
+                    return obj.trackName == input.channelPlan[i].name
+                } else {
+                    return obj.trackName == input.channelPlan[i].officialRtn
+                }
+            
             })
                 if (results) {
                     input.channelPlan[i].rcnChan = results.rtnChan
                     arr.push(input.channelPlan[i]);
                 } else if (!results) {
-                    input.channelPlan[i].rcnChan = undefined
+                    input.channelPlan[i].rcnChan = ''
                     arr.push(input.channelPlan[i]);
                 }
         }
@@ -85,17 +88,18 @@ rcnMatchAllChannels: function(input, callback) {
     })
 },
 
-rcnMatchLiveSchedule: function() {
-    let currentDate = moment().format("MM/DD/YYYY")
-    loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        let data = collection.findOne({date: currentDate})
-            if (data) {
-                module.exports.rcnMatchAllChannels(data, function() {
-                    collection.update(data);
-                    db.saveDatabase()
-                });
-            }
-    });
+rcnMatchLiveSchedule: function() { //matches rcn channels to names in live schedule
+        let currentDate = moment().format("MM/DD/YYYY")
+            loadDb.loadScheduleCollection('rcn', function(collection, db) {
+                let data = collection.findOne({date: currentDate})
+                    if (data) {
+                        module.exports.rcnMatchAllChannels(data, function() {
+                            collection.update(data);
+                            db.saveDatabase()
+                        });
+                    }
+            });
+
 },
 
 rcnMatchAuth: function(input, callback) {
@@ -104,22 +108,75 @@ rcnMatchAuth: function(input, callback) {
         let arr = []
         for (i = 0; i < input.length; i++) {
             var results = data.find(obj => {
-                return obj.auth.includes(input)
+                return obj.auth.includes(input[i].name)
             })
             arr.push(results)
         }
         callback(arr)
+        //console.log(arr)
     });
 },
 
-rcnMatchAuthSchedule: function() {
+rcnMatchAuthLiveSchedule: function() { //matches authorized tuners to live schedule
+    let currentDate = moment().format("MM/DD/YYYY")
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({date: currentDate})
+            module.exports.rcnMatchAuth(data.channelPlan, function(arr) {
+                for (i = 0; i < data.channelPlan.length; i++) {
+                    if (arr[i]) {
+                    data.channelPlan[i].authName = arr[i].channel
+                    data.channelPlan[i].authIp = arr[i].ip
+                    data.channelPlan[i].authStack = arr[i].stack
+                    } else {
+                    data.channelPlan[i].authName = ''
+                    data.channelPlan[i].authIp = ''
+                    data.channelPlan[i].authStack = ''
+                    }
+                }
+                collection.update(data);
+                    db.saveDatabase()
+            })
+    });
+},
 
+matchClosestRtn: function(input, callback) { //finds official RTN name
+    loadDb.loadRcnCollection('webGets', function (tuners, db) {
+        let data = tuners.findOne({type: 'rtn'})
+        let webArr = []
+        for (i = 0; i < data.channelInfo.length; i++) {
+            webArr.push(data.channelInfo[i].trackName)
+        }
+        for (i = 0; i < input.length; i++) {
+            input[i].officialRtn = didYouMean(input[i].name, webArr)
+        }
+        callback(input)
+    });
+},
+
+matchClosestRtnLive: function() {
+    let currentDate = moment().format("MM/DD/YYYY")
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({date: currentDate})
+            module.exports.matchClosestRtn(data.channelPlan, function(arr) {
+                data.channelPlan = arr
+                collection.update(data);
+                    db.saveDatabase()
+            })
+    });
+},
+
+
+authSequence: function() {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+    module.exports.matchClosestRtnLive()
+    sleep(1000)
+    module.exports.rcnMatchLiveSchedule()
+
+    
 }
-
-
-
-
-
 
 
 }

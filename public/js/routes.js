@@ -88,7 +88,6 @@ router.post('/config/rcn/update', (req, res) => {
                             tuners.update(data)
                                 db.saveDatabase()
                                     res.send('recieved')
-                                    console.log(tuners.data)
         })
 });
 
@@ -100,7 +99,6 @@ router.get('/config/rcn/auth', (req, res) => {
 })
 
 router.post('/config/rcn/auth', (req, res) => {
-    console.log(req.body)
     res.send('success')
     schedule.rcnAuthDbUpdate(req.body)
 
@@ -131,6 +129,20 @@ router.get('/schedule/rcn/live', (req, res) => {
     })
 }),
 
+router.get('/schedule/rcn/live/edit', (req, res) => {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        let data = collection.findOne({date: (moment().format("MM/DD/YYYY"))})
+        if (!data) {
+            let data = {}
+            data.date = (moment().format("MM/DD/YYYY"))
+            res.render('liveScheduleEdit', {data: data})
+        } else {
+            res.render('liveScheduleEdit', {data: data})
+        }
+        
+    })
+}),
+
 router.post('/schedule/rcn/live/getRtnChannels', (req, res) => {
     schedule.rcnMatchLiveSchedule()
     res.send('success')
@@ -155,6 +167,12 @@ router.post('/schedule/rcn', (req, res) => {
         schedule.rcnSchedule(obj)
         res.send('success')
 })
+
+router.post('/schedule/rcn/live/getAuth', (req, res) => {
+    schedule.authSequence()
+    res.send('success')
+})
+
 
 
 

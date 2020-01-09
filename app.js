@@ -82,9 +82,12 @@ let scheduleObj = {
 
 //dtv.sendTunerStatusRequest() //updates db with rcn tuner info
 
-//schedule.rcnMatchLiveSchedule() //matchs rcn channels with names and adds them to schedule
+//schedule.rcnMatchLiveSchedule() //matchs rcn channels with names
 
-schedule.rcnMatchAuth('Penn National')
+//schedule.rcnMatchAuthLiveSchedule() //matches rcn auth with live schedule
+
+schedule.authSequence();
+
 
 
 // start the server
