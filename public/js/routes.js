@@ -169,7 +169,7 @@ router.post('/schedule/rcn', (req, res) => {
 })
 
 router.post('/schedule/rcn/live/getAuth', (req, res) => {
-    schedule.authSequence()
+    schedule.matchClosestRtnLive()
     res.send('success')
 })
 
