@@ -38,6 +38,8 @@
 
                     <% if (data.channelPlan[i].authName) { %>
                     <p>authorization: <%= data.channelPlan[i].authName %></p>
+                    <% } else if (data.channelPlan[i].authName !== '') { %>
+                    <p>authorization: not recieved yet</p>
                     <% } else if (!data.channelPlan[i].authName) { %>
                     <p>authorization: not found check <a href='/config/rcn/auth'>list</a></p>
                     <% } %>

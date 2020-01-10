@@ -1,12 +1,14 @@
 <%- include("partials/header") %>
 
-<script src = '/js/liveSchedule.js'></script>
+<script src = '/js/liveScheduleEdit.js'></script>
 
 
 <%= JSON.stringify(data) %>
+
+<% if (data && data.channelPlan.length > 0) { %>
+
 <h1 id = 'date' unmoment = ''><%= data.date %></h1>
-<button type = 'button' class = 'btn btn-primary' id = 'updateRtnChannels'>Match RTN Channels</button>
-<button type = 'button' class = 'btn btn-primary' id = 'updateRtnAuth'>Match RTN Auth</button>
+
 
 <table class="table table-striped">
         
@@ -48,6 +50,45 @@
                 <input type = 'button' class='btn btn-primary send' value = 'unsent'>
             </td>
         </tr>
+<% } %>
+<% } %>
+
+<% if (!data || data.channelPlan == '') { %>
+
+<button id = 'save' type="button" class="btn btn-success">Save</button>
+
+<table class="table table-striped">
+    
+    
+        <thead>
+            <th scope="col">Track Name</th>
+            <th scope="col">Channel</th>
+            <th scope="col">HD Status</th>
+            <th scope="col">Time to switch</th>
+            <th scope="col">Post Time</th>
+        </thead>
+        <tbody id='yes'>
+            <tr class = 'cloneItem'>
+                <td>
+                    <input type="text" class="form-control name" value = "">
+                </td>
+                <td>
+                    <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
+                </td>
+                <td>
+                    <input class="btn btn-primary hd" type="button" value = "false">
+                </td>
+                <td>
+                    <input class="timepicker time" value = "">
+                </td>
+                <td>
+                    <input class="timepicker2 time2" value = "">
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+
 <% } %>
 
 </tbody>

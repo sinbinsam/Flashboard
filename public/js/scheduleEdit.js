@@ -74,6 +74,15 @@ var checkEmptyFun = function() {
 
 $(document).on('focusout', '.name', checkEmptyFun)
 
+$(document).on('click', '.hd', function() {
+    $(this).toggleClass('btn-success')
+    if ($(this).val() == 'false') {
+        $(this).val('true') 
+    } else {
+        $(this).val('false')
+    }
+})
+
 
 $('#save').on('click', function() {
     let obj = []

@@ -78,9 +78,11 @@ rcnMatchAllChannels: function(input, callback) {
             })
                 if (results) {
                     input[i].rcnChan = results.rtnChan
+                    input[i].isHdChannel = results.isHd
                     arr.push(input[i]);
                 } else if (!results) {
                     input[i].rcnChan = ''
+                    input[i].isHdChannel = ''
                     arr.push(input[i]);
                 }
         }
