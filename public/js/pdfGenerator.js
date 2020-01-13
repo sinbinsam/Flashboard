@@ -14,6 +14,7 @@ generateJson: function(month, year) { //input MM or 01, and YYYY or 2020
 loadDb.loadScheduleCollection('rcn', function(collection, db) {
 
 function eraseMonth(monthNum, yearNum, calObj) {
+    let erasedcalObj = []
     for (i = 0; i < calObj.monthly.length; i++) {
         //console.log(calObj.monthly[i].startdate)
         for (x = 1; x < moment(yearNum + monthNum, 'YYYYMM').daysInMonth() + 1; x++) {
