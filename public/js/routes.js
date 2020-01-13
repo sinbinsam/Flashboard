@@ -173,6 +173,9 @@ router.post('/schedule/rcn/live/getAuth', (req, res) => {
     res.send('success')
 })
 
+router.get('/schedule/calendar', (req, res) => {
+    res.render('calendar')
+})
 
 
 

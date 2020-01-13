@@ -9,6 +9,7 @@ var rcn = require(__dirname + '/public/js/rcnGet.js');
 var dtv = require(__dirname + '/public/js/dtvGet.js');
 var timer = require(__dirname + '/public/js/timerManager.js')
 var schedule = require(__dirname + '/public/js/scheduleManager.js')
+var pdfGenerator = require(__dirname + '/public/js/pdfGenerator.js')
 var rcnGet = rcn.rcnGet;
 var rcnTunerInfo = rcn.rcnTunerInfo;
 
@@ -86,7 +87,7 @@ let scheduleObj = {
 
 //schedule.rcnMatchAuthLiveSchedule() //matches rcn auth with live schedule
 
-
+pdfGenerator.generateJson();
 
 
 

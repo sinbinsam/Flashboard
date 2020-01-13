@@ -1,0 +1,134 @@
+{
+    "monthly": [
+      {
+        "id": "012020",
+        "name": "Gulfstream 12:00",
+        "startdate": "2020-01-02",
+        "enddate": "",
+        "starttime": "12:00",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 2,
+        "name": "Mahoning Valley 12:15",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "12:15",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Laurel 12:25",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "12:12",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "PARX 12:25",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "12:25",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Aqueduct 12:30",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "12:30",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Tampa Bay 12:45",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "12:45",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Hawthorne 1:55",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "1:55",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Fair Grounds 1:30",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "1:30",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Hawthorne 1:55",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "1:55",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Santa Anita 2:30",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "2:30",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Turf Paradise 2:40",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "2:40",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Golden Gate 3:45",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "3:45",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      },
+      {
+        "id": 1,
+        "name": "Penn National 6:00",
+        "startdate": "2020-1-15",
+        "enddate": "",
+        "starttime": "6:00",
+        "endtime": "",
+        "color": "#ffffff",
+        "url": ""
+      }
+    ]
+  }
