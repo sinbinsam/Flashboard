@@ -97,6 +97,7 @@ $('#save').on('click', function() {
         })
         }
     })
+    console.log(obj)
     let objSend = {
         'date': $('#date').html(),
         channelPlan: obj

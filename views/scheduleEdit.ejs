@@ -52,7 +52,12 @@
                         <input class="form-control channel" type="text" placeholder="disabled" readonly value = "<%= schedule.channelPlan[i].channel %>">
                     </td>
                     <td>
+                        <% if (schedule.channelPlan[i].isHd == 'false') { %>
                         <input class="btn btn-primary hd" type="button" value = "false">
+                        <% } else if (schedule.channelPlan[i].isHd == 'true') { %>
+                        <input class="btn btn-primary btn-success hd" type="button" value = "true">
+                        <% } %>
+                        
                     </td>
                     <td>
                         <input class="timepicker time" value = "<%= schedule.channelPlan[i].timeToSend %>">

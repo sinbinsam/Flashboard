@@ -47,12 +47,13 @@ rcnSchedule: function(obj) {
                           }
                           newData.push(pushObj)
                       } else if (foundEntry) {
-                          let pushobj = foundEntry
-                            pushObj.isSent = foundEntry.isSent
-                            pushObj.rcnChan = foundEntry.rcnChan
-                            pushObj.authName = foundEntry.authName
-                            pushObj.authIp = foundEntry.authIp
-                            pushObj.authStack = foundEntry.authStack
+                          let pushObj = foundEntry
+                            pushObj.isSent = obj.channelPlan[i].isSent
+                            pushObj.rcnChan = obj.channelPlan[i].rcnChan
+                            pushObj.authName = obj.channelPlan[i].authName
+                            pushObj.authIp = obj.channelPlan[i].authIp
+                            pushObj.authStack = obj.channelPlan[i].authStack
+                            pushObj.isHd = obj.channelPlan[i].isHd
                           newData.push(pushObj)
                       }
                 }
