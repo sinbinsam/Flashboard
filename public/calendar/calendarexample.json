@@ -1,0 +1,34 @@
+{
+  "monthly": [
+    {
+      "id": 1,
+      "name": "Gulfstream 2:30",
+      "startdate": "2020-01-15",
+      "enddate": "2020-01-15",
+      "starttime": "15:30",
+      "endtime": "16:30",
+      "color": "#ffffff",
+      "url": ""
+    },
+    {
+      "id": 2,
+      "name": "Mahoning Valley 12:15",
+      "startdate": "2020-01-15",
+      "enddate": "2020-01-15",
+      "starttime": "12:15",
+      "endtime": "13:15",
+      "color": "#ffffff",
+      "url": ""
+    },
+    {
+      "id": 3,
+      "name": "Laurel 12:25",
+      "startdate": "2020-01-15",
+      "enddate": "2020-01-15",
+      "starttime": "12:12",
+      "endtime": "13:12",
+      "color": "#ffffff",
+      "url": ""
+    }
+  ]
+}

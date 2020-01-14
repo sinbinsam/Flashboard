@@ -2,6 +2,7 @@ var loadDb = require(__dirname + '/loadDBs.js');
 var rcn = require(__dirname + '/rcnGet.js');
 var moment = require('moment')
 const didYouMean = require('didyoumean2').default
+var pdfGenerator = require(__dirname + '/pdfGenerator.js');
 
 module.exports = {
 
@@ -46,7 +47,7 @@ rcnSchedule: function(obj) {
                             'timeToSend': obj.channelPlan[i].timeToSend
                           }
                           newData.push(pushObj)
-                      } else if (foundEntry) {
+                      } else if (foundEntry && obj.channelPlan[i].rcnChan) {
                           let pushObj = foundEntry
                             pushObj.isSent = obj.channelPlan[i].isSent
                             pushObj.rcnChan = obj.channelPlan[i].rcnChan
@@ -55,11 +56,23 @@ rcnSchedule: function(obj) {
                             pushObj.authStack = obj.channelPlan[i].authStack
                             pushObj.isHd = obj.channelPlan[i].isHd
                           newData.push(pushObj)
+                      } else if (foundEntry) {
+                            let pushObj = foundEntry
+                            pushObj.channel = obj.channelPlan[i].channel
+                            pushObj.postTime = obj.channelPlan[i].postTime
+                            pushObj.isHd = obj.channelPlan[i].isHd
+                            pushObj.isSent = obj.channelPlan[i].isSent
+                            pushObj.postTime = obj.channelPlan[i].postTime
+                            pushObj.timeToSend = obj.channelPlan[i].timeToSend
+
+                            newData.push(pushObj)
                       }
                 }
                 data.channelPlan = newData
                 collection.update(data);
+                //console.log(data)
                     db.saveDatabase();
+                        pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         }
     })
 },

@@ -18,20 +18,20 @@ $( document ).ready(function() {
 
     $('.timepicker').timepicker({
         timeFormat: 'h:mm p',
-        interval: 30,
-        minTime: '12:00PM',
+        interval: 60,
+        minTime: '10:00am',
         maxTime: '11:00pm',
         dropDown: false,
-        scrollbar: true
+        scrollbar: false
     });
 
     $('.timepicker2').timepicker({
         timeFormat: 'h:mm p',
-        interval: 30,
-        minTime: '12:00pm',
+        interval: 60,
+        minTime: '10:00am',
         maxTime: '11:00pm',
         dropDown: false,
-        scrollbar: true
+        scrollbar: false
     });
 
 let checkEmpty = []
@@ -53,19 +53,19 @@ var checkEmptyFun = function() {
                 t.find('.time').val('')
                 t.find('.timepicker').timepicker({
                     timeFormat: 'h:mm p',
-                    interval: 30,
-                    minTime: '12:00PM',
+                    interval: 60,
+                    minTime: '10:00am',
                     maxTime: '11:00pm',
                     dropDown: false,
-                    scrollbar: true
+                    scrollbar: false
                 });
                 t.find('.timepicker2').timepicker({
                     timeFormat: 'h:mm p',
-                    interval: 30,
-                    minTime: '5:00am',
+                    interval: 60,
+                    minTime: '10:00am',
                     maxTime: '11:00pm',
                     dropDown: false,
-                    scrollbar: true
+                    scrollbar: false
                 });
                 $('tbody').append(t)
             }

@@ -87,7 +87,7 @@ let scheduleObj = {
 
 //schedule.rcnMatchAuthLiveSchedule() //matches rcn auth with live schedule
 
-pdfGenerator.generateJson();
+//pdfGenerator.generateJson();
 
 
 

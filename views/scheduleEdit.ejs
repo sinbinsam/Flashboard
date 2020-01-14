@@ -39,6 +39,7 @@
                 <th scope="col">Channel</th>
                 <th scope="col">HD Status</th>
                 <th scope="col">Time to switch</th>
+                <th scope="col">Post Time</th>
             </thead>
             <tbody id='yes'>
             
@@ -62,6 +63,9 @@
                     <td>
                         <input class="timepicker time" value = "<%= schedule.channelPlan[i].timeToSend %>">
                     </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "<%= schedule.channelPlan[i].postTime %>">
+                    </td>
                 </tr>
             <% } %>
                 <tr class = 'cloneItem'>
@@ -76,6 +80,9 @@
                     </td>
                     <td>
                         <input class="timepicker time" value = "">
+                    </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "">
                     </td>
                 </tr>
         </tbody>

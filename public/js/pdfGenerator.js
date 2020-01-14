@@ -7,39 +7,65 @@ const fs = require('fs');
 
 module.exports = {
 
-generateJson: function(month, year) { //input MM or 01, and YYYY or 2020
+generateJson: function(date, dbObj) { //updates calendar by DAY, input MMDDYYYY and findOne of day from db
 
-
-
-loadDb.loadScheduleCollection('rcn', function(collection, db) {
-
-function eraseMonth(monthNum, yearNum, calObj) {
-    let erasedcalObj = []
+function eraseMonth(date, calObj, callback) {
+    let erasedCalObj = []
     for (i = 0; i < calObj.monthly.length; i++) {
         //console.log(calObj.monthly[i].startdate)
-        for (x = 1; x < moment(yearNum + monthNum, 'YYYYMM').daysInMonth() + 1; x++) {
-                if (calObj.monthly[i].startdate == yearNum + '-' + monthNum + '-' + x) {
-                    calObj.monthly.splice(i, 1)
-                }
-
-
-            
-        }
-        
+            //console.log(monthNum + yearNum)
+                if (calObj.monthly[i].id !== date) {
+                    
+                    erasedCalObj.push(calObj.monthly[i])
+                } 
     }
-    console.log(calObj)
+    callback(erasedCalObj)
 }
 
     fs.readFile(path.join(__dirname, '../calendar/calendarObj.json'), (err, data) => {
         if (err) throw err;
-        var calJson = JSON.parse(data);
-        eraseMonth('01', '2020', calJson)
+        let calJson = JSON.parse(data);
+        let arr = []
+        for (i = 0; i < dbObj.channelPlan.length; i++) {
+            let entry = {
+                "id": date,
+                "name": dbObj.channelPlan[i].name + ' ' + dbObj.channelPlan[i].postTime.slice(0, -3),
+                "startdate": moment(date, 'MMDDYYYY').format('YYYY-MM-DD'),
+                "enddate": "",
+                "starttime": moment(dbObj.channelPlan[i].postTime, 'hh:mm a').format('HH:mm'),
+                "endtime": "",
+                "color": "#ffffff",
+                "url": ""
+            }
+            arr.push(entry)
+        }
+        eraseMonth(date, calJson, function(erasedCalObj) {
+
+            function compare(a, b) {
+                const compA = a.starttime;
+                const compB = b.starttime;
+              
+                let comparison = 0;
+                if (compA > compB) {
+                  comparison = 1;
+                } else if (compA < compB) {
+                  comparison = -1;
+                }
+                return comparison;
+              }
+            let dataToWrite = {
+                "monthly": erasedCalObj.concat(arr).sort(compare)
+            }
+            fs.writeFile(path.join(__dirname, '../calendar/calendarObj.json'), JSON.stringify(dataToWrite), (err) => {
+                if (err) throw err;
+            })
+        })
     });
 
 
 
 
-});
+
 
 
 },
