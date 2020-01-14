@@ -103,6 +103,8 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 			$(parent + " .monthly-day, " + parent + " .monthly-day-blank").remove();
 			$(parent + " .monthly-event-list, " + parent + " .monthly-day-wrap").empty();
 			// Print out the days
+
+			
 			for(var dayNumber = 1; dayNumber <= dayQty; dayNumber++) {
 				// Check if it's a day in the past
 				var isInPast = options.stylePast && (
@@ -112,6 +114,9 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 						|| (month === currentMonth && dayNumber < currentDay)
 					))),
 					innerMarkup = '<div class="monthly-day-number">' + dayNumber + '</div><div class="monthly-indicator-wrap"></div>';
+					// ADD var HERE
+					
+					//if (_getEventDetail(event, "enddate") && _getEventDetail(event, "id") == )
 				if(options.mode === "event") {
 					var thisDate = new Date(year, mZeroed, dayNumber, 0, 0, 0, 0);
 					$(parent + " .monthly-day-wrap").append("<div"
@@ -120,13 +125,14 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 							+ " dt" + thisDate.toISOString().slice(0, 10)
 							)
 						+ attr("data-number", dayNumber)
-						+ ">" + innerMarkup + "</div>");
+						+ ">" + innerMarkup /* ADD NOTES HERE */ + "</div>");
 					$(parent + " .monthly-event-list").append("<div"
 						+ attr("class", "monthly-list-item")
 						+ attr("id", uniqueId + "day" + dayNumber)
 						+ attr("data-number", dayNumber)
-						+ '><div class="monthly-event-list-date">' + dayNames[thisDate.getDay()] + "<br>" + dayNumber + "</div></div>");
-				} else {
+						+ '><div class="monthly-event-list-date">' + dayNames[thisDate.getDay()] + "<br>" + dayNumber + "</div></div>")
+				
+					} else {
 					$(parent + " .monthly-day-wrap").append("<a"
 						+ attr("href", "#")
 						+ attr("class", "m-d monthly-day monthly-day-pick" + (isInPast ? " monthly-past-day" : ""))
@@ -188,8 +194,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				showEventTitleOnDay = startDay,
 				startsThisMonth = startMonth === setMonth && startYear === setYear,
 				happensThisMonth = startsThisMonth;
-
-			if(fullEndDate) {
+			/*if(fullEndDate) {
 				// If event has an end date, determine if the range overlaps this month
 				var	endArr = fullEndDate.split("-"),
 					endYear = parseInt(endArr[0], 10),
@@ -204,7 +209,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					endDayNumber = endsThisMonth ? endDay : daysInMonth(setMonth, setYear);
 					showEventTitleOnDay = startsThisMonth ? startDayNumber : 1;
 				}
-			}
+			}*/
 			if(!happensThisMonth) {
 				return;
 			}
