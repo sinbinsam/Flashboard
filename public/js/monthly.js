@@ -252,6 +252,16 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					+ (eventColor ? attr("style", "background:" + eventColor) : "")
 					+ attr("title", eventTitle)
 					+ ">" + eventTitle + " " + timeHtml + "</a>";
+
+						function textSizeClass(title) { //adds class if length is long or short
+							console.log(title.length)
+							if (title.length < 17) {
+								return 'class = "bigger"'
+							} else {
+								return 'class = "smaller"'
+							}
+						}
+
 			for(var index = startDayNumber; index <= endDayNumber; index++) {
 				var doShowTitle = index === showEventTitleOnDay;
 				// Add to calendar view
@@ -261,7 +271,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 							// Include a class marking if this event continues from the previous day
 							+ (doShowTitle ? "" : " monthly-event-continued")
 							)
-						+ "><span>" + (doShowTitle ? eventTitle : "") + dayEndTags);
+						+ "><span " + textSizeClass(eventTitle) + ">" + (doShowTitle ? eventTitle : "") + dayEndTags);
 				// Add to event list
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")

@@ -8,7 +8,6 @@ const fs = require('fs');
 module.exports = {
 
 generateJson: function(date, dbObj) { //updates calendar by DAY, input MMDDYYYY and findOne of day from db
-
 function eraseMonth(date, calObj, callback) {
     let erasedCalObj = []
     for (i = 0; i < calObj.monthly.length; i++) {
@@ -26,10 +25,23 @@ function eraseMonth(date, calObj, callback) {
         if (err) throw err;
         let calJson = JSON.parse(data);
         let arr = []
+        if (dbObj.channelPlan.length >= 1) {
         for (i = 0; i < dbObj.channelPlan.length; i++) {
+
+            let postTime = findPostTime()
+            
+            function findPostTime () {
+                if (dbObj.channelPlan[i].postTime) {
+                return dbObj.channelPlan[i].postTime
+                } else {
+                    return ''
+                }
+            }
+
+
             let entry = {
                 "id": date,
-                "name": dbObj.channelPlan[i].name + ' ' + dbObj.channelPlan[i].postTime.slice(0, -3),
+                "name": dbObj.channelPlan[i].name + ' ' + postTime.slice(0, -3),
                 "startdate": moment(date, 'MMDDYYYY').format('YYYY-MM-DD'),
                 "enddate": "",
                 "starttime": moment(dbObj.channelPlan[i].postTime, 'hh:mm a').format('HH:mm'),
@@ -54,8 +66,10 @@ function eraseMonth(date, calObj, callback) {
                 return comparison;
               }
               let sortedArr = arr.sort(compare)
-              sortedArr[sortedArr.length - 1].enddate = dbObj.subtitles.subtitle2
-              sortedArr[sortedArr.length - 1].endtime = dbObj.subtitles.subtitle1
+              if (sortedArr.length >= 1) {
+                sortedArr[sortedArr.length - 1].enddate = dbObj.subtitles.subtitle2
+                sortedArr[sortedArr.length - 1].endtime = dbObj.subtitles.subtitle1
+              }
             let dataToWrite = {
                 "monthly": erasedCalObj.concat(arr).sort(compare)
             }
@@ -63,6 +77,7 @@ function eraseMonth(date, calObj, callback) {
                 if (err) throw err;
             })
         })
+    }
     });
 
 
@@ -82,7 +97,11 @@ generatePdf: function() {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto('http://localhost:8080/schedule/calendar', {waitUntil: 'networkidle2'});
-        await page.pdf({path: 'hn.pdf', format: 'A4'});
+        await page.emulateMedia('screen')
+        await page.pdf({path: 'hn.pdf',
+                        format: 'A4',
+                        printBackground: true,
+                    });
        
         await browser.close();
       })();

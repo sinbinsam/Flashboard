@@ -19,6 +19,7 @@ rcnAuthDbUpdate: function(obj) {
 },
 
 rcnSchedule: function(obj) {
+    //console.log(obj)
     loadDb.loadScheduleCollection('rcn', function(collection, db) {        
         let data = collection.findOne({'date': obj.date})
         if (data == null) {
@@ -29,6 +30,9 @@ rcnSchedule: function(obj) {
                 'isSent': false
             })
             db.saveDatabase()
+            let data = collection.findOne({'date': obj.date})
+                data.subtitles = obj.subtitles
+                pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         } else {
             let data = collection.findOne({'date': obj.date});
             let newData = [];
@@ -69,9 +73,8 @@ rcnSchedule: function(obj) {
                       }
                 }
                 data.channelPlan = newData
-                data.subtitles = obj.channelPlan[obj.channelPlan.length - 1]
+                data.subtitles = obj.subtitles
                 collection.update(data);
-                //console.log(data)
                     db.saveDatabase();
                         pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         }
@@ -192,7 +195,6 @@ matchClosestRtnLive: function() {
                 module.exports.rcnMatchAllChannels(arr, function(arr) {
                     module.exports.rcnMatchAuth(arr, function(arr) {
                         data.channelPlan = arr
-                        console.log(arr)
                         collection.update(data);
                             db.saveDatabase()
                     })

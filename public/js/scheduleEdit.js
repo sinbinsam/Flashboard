@@ -34,7 +34,6 @@ $( document ).ready(function() {
         scrollbar: false
     });
 
-let checkEmpty = []
 var checkEmptyFun = function() {
     let checkEmpty = []
         $('.name').each( function() {
@@ -51,6 +50,7 @@ var checkEmptyFun = function() {
                 let t = $('.cloneItem').clone().removeClass('cloneItem')
                 t.find('.name').val('')
                 t.find('.time').val('')
+                t.find('.time2').val('')
                 t.find('.timepicker').timepicker({
                     timeFormat: 'h:mm p',
                     interval: 60,
@@ -97,13 +97,17 @@ $('#save').on('click', function() {
         })
         }
     })
-            obj.push({
-            'subtitle1': $('.subtitle1').val(),
-            'subtitle2': $('.subtitle2').val()
-        })
+        if ($('.name').val()) {
+            var subtitles = {
+                'subtitle1': $('.subtitle1').val(),
+                'subtitle2': $('.subtitle2').val()
+            }
+        }
+
     let objSend = {
         'date': $('#date').html(),
-        channelPlan: obj
+        channelPlan: obj,
+        subtitles: subtitles
     }
     $('#dateObj').attr('value', objSend)
     $.ajax({
