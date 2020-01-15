@@ -132,7 +132,7 @@
 	table-layout: fixed;
 	width: 100%;
 	background: #fff;
-	border-bottom: 1px solid #EBEBEB;
+	border-bottom: 1px solid rgb(27, 27, 27);
 }
 .monthly-day-title-wrap div {
 	width: 14.28%!important;
@@ -163,7 +163,7 @@
 	position: relative;
 	color: inherit;
 	background: #fff;
-	box-shadow: 0 0 0 1px #EBEBEB;
+	box-shadow: 0 0 0 1.5px rgb(0, 0, 0); /* border color */
 	-webkit-transition: .25s;
 	transition: .25s;
 	padding: 0;
@@ -185,7 +185,7 @@
 
 /* Days that are part of previous or next month */
 .monthly-day-blank {
-	background: #F3F3F5;
+	background: rgb(194, 192, 192);
 }
 
 /* Event calendar day number styles */
@@ -232,8 +232,8 @@
 
 /* Current day style */
 .monthly-today .monthly-day-number {
-	color: #FFF;
-	background: #EA6565;
+	color: rgb(0, 0, 0);
+	background: rgb(255, 255, 255);
 	border-radius: 0.75em;
 	top: 0.08em;
 	left: 0.05em;
@@ -433,4 +433,51 @@ establish the rules based on the calendar element width rather than the device w
 		font-size: .8rem;
 	}
 
+}
+
+.subs {
+	display: block;
+	width: auto;
+	margin: 1px;
+	color: rgb(0, 0, 0);
+	padding-top: 5px;
+	padding-bottom: 7px;
+	white-space: normal;
+	overflow: normal;
+	text-overflow: ellipsis;
+	line-height: 1.2em;
+}
+
+#trackName {
+	text-align: center;
+	display: block;
+	width: auto;
+	margin: 1px;
+	color: rgb(255, 255, 255);
+	padding-top: 5px;
+	padding-bottom: 7px;
+
+}
+
+.block {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-bottom: 2px;
+	background-color: black;
+}
+
+#subtitle {
+	text-align: center;
+	display: block;
+	width: auto;
+	margin: 1px;
+	color: rgb(255, 255, 255);
+	padding-top: 5px;
+	padding-bottom: 7px;
+}
+
+.container {
+	box-shadow: 0 0 0 1.5px rgb(0, 0, 0);
+	padding-left: 0;
+	padding-right: 0;
 }

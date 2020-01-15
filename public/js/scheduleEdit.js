@@ -67,7 +67,7 @@ var checkEmptyFun = function() {
                     dropDown: false,
                     scrollbar: false
                 });
-                $('tbody').append(t)
+                $('#yes').append(t)
             }
  }
 
@@ -97,7 +97,10 @@ $('#save').on('click', function() {
         })
         }
     })
-    console.log(obj)
+            obj.push({
+            'subtitle1': $('.subtitle1').val(),
+            'subtitle2': $('.subtitle2').val()
+        })
     let objSend = {
         'date': $('#date').html(),
         channelPlan: obj

@@ -32,7 +32,7 @@ rcnSchedule: function(obj) {
         } else {
             let data = collection.findOne({'date': obj.date});
             let newData = [];
-                for (i = 0; i < obj.channelPlan.length; i++) {
+                for (i = 0; i < obj.channelPlan.length - 1; i++) {
                     function isInList(oldObj) { 
                         return oldObj.name === obj.channelPlan[i].name;
                       }
@@ -69,6 +69,7 @@ rcnSchedule: function(obj) {
                       }
                 }
                 data.channelPlan = newData
+                data.subtitles = obj.channelPlan[obj.channelPlan.length - 1]
                 collection.update(data);
                 //console.log(data)
                     db.saveDatabase();

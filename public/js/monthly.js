@@ -77,7 +77,9 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 		$(parent).addClass("monthly-locale-" + primaryLanguageCode + " monthly-locale-" + locale);
 
 		// Add Header & event list markup
-		$(parent).prepend('<div class="monthly-header"><div class="monthly-header-title"><a href="#" class="monthly-header-title-date" onclick="return false"></a></div><a href="#" class="monthly-prev"></a><a href="#" class="monthly-next"></a></div>').append('<div class="monthly-event-list"></div>');
+
+		//HEADER WITH ARROW BUTTONS
+		//$(parent).prepend('<div class="monthly-header"><div class="monthly-header-title"><a href="#" class="monthly-header-title-date" onclick="return false"></a></div><a href="#" class="monthly-prev"></a><a href="#" class="monthly-next"></a></div>').append('<div class="monthly-event-list"></div>');
 
 		// Set the calendar the first time
 		setMonthly(currentMonth, currentYear);
@@ -115,7 +117,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					))),
 					innerMarkup = '<div class="monthly-day-number">' + dayNumber + '</div><div class="monthly-indicator-wrap"></div>';
 					// ADD var HERE
-					
+						
 					//if (_getEventDetail(event, "enddate") && _getEventDetail(event, "id") == )
 				if(options.mode === "event") {
 					var thisDate = new Date(year, mZeroed, dayNumber, 0, 0, 0, 0);
@@ -220,6 +222,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventTitle = _getEventDetail(event, "name"),
 				eventClass = _getEventDetail(event, "class"),
 				eventColor = _getEventDetail(event, "color"),
+				endDate = _getEventDetail(event, "enddate"),
 				eventId = _getEventDetail(event, "id"),
 				customClass = eventClass ? " " + eventClass : "",
 				dayStartTag = "<div",
@@ -263,6 +266,18 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")
 					.append(markupListEvent);
+
+						//ERIC APPEND SUBTITLES
+
+						if (endTime) {
+							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub1">' + endTime + '</p>')
+						}
+
+						if (endDate) {
+							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub1">' + endDate + '</p>')
+						}
+
+
 			}
 		}
 

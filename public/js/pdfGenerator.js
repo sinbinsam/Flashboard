@@ -53,6 +53,9 @@ function eraseMonth(date, calObj, callback) {
                 }
                 return comparison;
               }
+              let sortedArr = arr.sort(compare)
+              sortedArr[sortedArr.length - 1].enddate = dbObj.subtitles.subtitle2
+              sortedArr[sortedArr.length - 1].endtime = dbObj.subtitles.subtitle1
             let dataToWrite = {
                 "monthly": erasedCalObj.concat(arr).sort(compare)
             }
