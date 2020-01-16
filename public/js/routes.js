@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var loki = require('lokijs');
 var loadDb = require(__dirname + '/loadDBs.js');
-var moment = require('moment')
+var moment = require('moment');
 var schedule = require(__dirname + '/scheduleManager.js');
-
+var pdfGenerator = require(__dirname + '/pdfGenerator.js');
+var fs = require('fs');
 
 
 router.get('/', (req, res) => {
@@ -173,8 +174,17 @@ router.post('/schedule/rcn/live/getAuth', (req, res) => {
     res.send('success')
 })
 
-router.get('/schedule/calendar', (req, res) => {
+router.get('/schedule/calendar/html', (req, res) => {
     res.render('calendar')
+})
+
+router.get('/schedule/calendar', (req, res) => {
+    pdfGenerator.generatePdf(function() {
+        var data =fs.readFileSync('./public/pdf/hn.pdf');
+        res.contentType("application/pdf");
+        res.send(data);
+    });
+    //res.render('calendar')
 })
 
 

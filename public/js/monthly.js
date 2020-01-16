@@ -179,9 +179,14 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 			}
 			var divs = $(parent + " .m-d");
 			for(index = 0; index < divs.length; index += 7) {
-				divs.slice(index, index + 7).wrapAll('<div class="monthly-week"></div>');
+				console.log(index)
+				if (index == divs.length - 7) {
+				divs.slice(index, index + 7).wrapAll('<div class="monthly-week last-row" style="page-break-inside: avoid;"></div>');
+				} else {
+				divs.slice(index, index + 7).wrapAll('<div class="monthly-week" style="page-break-inside: avoid;"></div>');
+				}
 			}
-		}
+		} //<div style="page-break-inside: avoid;"></div>
 
 		function addEvent(event, setMonth, setYear) {
 			// Year [0]   Month [1]   Day [2]
@@ -244,7 +249,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					+ attr("data-eventid", eventId)
 					+ attr("title", eventTitle)
 					// BG and FG colors must match for left box shadow to create seamless link between dates
-					+ (eventColor ? attr("style", "background:" + eventColor + ";color:" + eventColor) : ""),
+					/*+ (eventColor ? attr("style", "background:" + 'eventColor' + ";color:" + eventColor) : "")*/, //UNCOMMENT FOR COLORs
 				markupListEvent = "<a"
 					+ attr("href", eventURL)
 					+ attr("class", "listed-event" + customClass)
@@ -254,15 +259,18 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					+ ">" + eventTitle + " " + timeHtml + "</a>";
 
 						function textSizeClass(title) { //adds class if length is long or short
-							console.log(title.length)
-							if (title.length < 17) {
+							if (title.length < 15) {
 								return 'class = "bigger"'
+							} else if (title.length >= 15 && title.length <= 20) {
+								return 'class = "medium"'
 							} else {
-								return 'class = "smaller"'
+								return 'class = "smallest"'
 							}
 						}
 
 			for(var index = startDayNumber; index <= endDayNumber; index++) {
+
+
 				var doShowTitle = index === showEventTitleOnDay;
 				// Add to calendar view
 				$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append(
@@ -284,7 +292,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 						}
 
 						if (endDate) {
-							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub1">' + endDate + '</p>')
+							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub2">' + endDate + '</p>')
 						}
 
 
@@ -517,6 +525,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				event.preventDefault();
 			}
 		});
+
 
 		// Clicking an event within the list
 		$(document.body).on("click", parent + " .listed-event", function (event) {

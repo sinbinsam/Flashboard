@@ -89,19 +89,24 @@ function eraseMonth(date, calObj, callback) {
 },
 
 
-generatePdf: function() {
+generatePdf: function(callback) {
 
 
 
     (async () => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto('http://localhost:8080/schedule/calendar', {waitUntil: 'networkidle2'});
+        await page.goto('http://localhost:8080/schedule/calendar/html', {waitUntil: 'networkidle2'});
         await page.emulateMedia('screen')
-        await page.pdf({path: 'hn.pdf',
+        await page.pdf({path: './public/pdf/hn.pdf',
                         format: 'A4',
                         printBackground: true,
-                    });
+                        displayHeaderFooter: true,
+                        footerTemplate: '<p style = "font-size: 10px;">poopy</p>',
+                        margin : {top: '0px',right: '0px',bottom: '50px',left: '0px' },
+                    }).then(() => {
+                        callback()
+                    })
        
         await browser.close();
       })();

@@ -1,14 +1,18 @@
 
 /* Overall wrapper */
+
+/*#mycalendar {
+	page-break-after:always;
+}*/
+
 .monthly {
-	background: #F3F3F5;
-	color: #545454;
+	background: rgba(22, 22, 22, 0);
+	color: #181818;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 	position: relative;
-	height: 950px;
 }
 
 /* Top bar containing title, navigation, and buttons */
@@ -29,7 +33,7 @@
 .monthly-header-title a:link,
 .monthly-header-title a:visited {
 	display: inline-block;
-	border: 1px solid #ccc;
+	border: 1px solid rgb(51, 51, 51);
 	color: #545454;
 	text-decoration: none;
 	height: 1.75em;
@@ -150,13 +154,13 @@
 	table-layout: fixed;
 	width: 100%;
 	overflow: hidden;
-	background-color: black;
-	height: 97.3%;
+	background-color: rgba(0, 0, 0, 0);
 }
 .monthly-week {
 	display: table-row;
 	width: 100%;
-	background-color: black;
+	background-color: rgba(0, 0, 0, 0);
+	box-shadow: inset 0px 0px 0 1.5px rgb(0, 0, 0);
 }
 /* Calendar Days */
 .monthly-day, .monthly-day-blank {
@@ -168,7 +172,7 @@
 	color: inherit;
 	background: #fff;
 	/*border: 1.0px solid rgb(27, 27, 27);*/
-	box-shadow: 0 0 0 1.5px rgb(0, 0, 0);
+	box-shadow: inset 0px 0px 0 1.2px rgb(0, 0, 0);
 	-webkit-transition: .25s;
 	transition: .25s;
 	padding: 0;
@@ -199,6 +203,7 @@
 	line-height: 1em;
 	top: 0.2em;
 	left: 0.25em;
+	color: rgb(65, 18, 18)
 }
 
 /* Non-Event calendar day number styles */
@@ -285,7 +290,7 @@
 }
 /* Listing of events under calendar */
 .monthly-event-list {
-	background: rgba(233, 235, 236, 0.9);
+	background: rgba(233, 235, 236, 0);
 	overflow: auto;
 	position: absolute;
 	top: 2.5em;
@@ -367,7 +372,7 @@
 
 /* Handle */
 .monthly-event-list::-webkit-scrollbar-thumb {
-	background: #ccc;
+	background: rgba(204, 204, 204, 0);
 	border: 1px solid #E9EBEC;
 	border-radius: 0.5em;
 }
@@ -393,7 +398,7 @@ establish the rules based on the calendar element width rather than the device w
 */
 @media (min-width: 25em) {
 	.monthly-day-event {
-		padding-top: 1.3em;
+		padding-top: 1.1em;
 	}
 	.monthly-day-event > .monthly-indicator-wrap {
 		width: auto;
@@ -414,8 +419,8 @@ establish the rules based on the calendar element width rather than the device w
 		padding: 0px 2px 0px 2px;
 		border-radius: 0;
 		overflow: hidden;
-		background-color: #333;
-		color: #333;
+		background-color: rgba(51, 51, 51, 0);
+		color: rgba(51, 51, 51, 0);
 		text-decoration: none;
 		white-space: nowrap;
 		box-sizing: border-box;
@@ -439,12 +444,16 @@ establish the rules based on the calendar element width rather than the device w
 	}
 
 	.bigger {
-		font-size: .75rem;
-		line-height: 1.2em;
+		font-size: .8rem;
+		line-height: 1.1em;
 	}
 
 	.smaller {
-		font-size: .65rem;
+		font-size: .7rem;
+	}
+
+	.smallest {
+		font-size: .6rem;
 	}
 
 }
@@ -469,14 +478,12 @@ establish the rules based on the calendar element width rather than the device w
 	width: auto;
 	margin: 1px;
 	color: rgb(255, 255, 255);
-	padding-top: 5px;
-	padding-bottom: 7px;
-
+	padding-top: 0px;
+	padding-bottom: 1px;
+	font-family: 'Oswald', sans-serif;
 }
 
 .block {
-	margin-top: 5px;
-	margin-bottom: 5px;
 	padding-bottom: 2px;
 	background-color: black;
 }
@@ -486,14 +493,15 @@ establish the rules based on the calendar element width rather than the device w
 	display: block;
 	width: auto;
 	margin: 1px;
-	color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
 	padding-top: 5px;
 	padding-bottom: 7px;
-	font-size: .6rem;
+	font-size: 20px;
+	font-family: 'Oswald', sans-serif;
 }
 
 .container1 {
-	box-shadow: 0 0 0 1.5px rgb(0, 0, 0);
+	/*box-shadow: 0 0 0 1.5px rgb(0, 0, 0);*/
 	padding-left: 0;
 	padding-right: 0;
 	margin-left: 20px;
@@ -504,4 +512,21 @@ establish the rules based on the calendar element width rather than the device w
 
 .subs {
 	font-size: .6rem;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.sub1 {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.sub2 {
+	font-style: italic;
+	margin-top: 1px;
+	color: rgb(167, 44, 44)
+}
+
+.container1 {
+	page-break-after: always;
 }
