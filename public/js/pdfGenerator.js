@@ -38,16 +38,15 @@ function eraseMonth(date, calObj, callback) {
                 }
             }
 
-
             let entry = {
                 "id": date,
                 "name": dbObj.channelPlan[i].name + ' ' + postTime.slice(0, -3),
                 "startdate": moment(date, 'MMDDYYYY').format('YYYY-MM-DD'),
                 "enddate": "",
-                "starttime": moment(dbObj.channelPlan[i].postTime, 'hh:mm a').format('HH:mm'),
+                "starttime": "",
                 "endtime": "",
                 "color": "#ffffff",
-                "url": ""
+                "url": dbObj.channelPlan[i].notes
             }
             arr.push(entry)
         }
@@ -69,6 +68,7 @@ function eraseMonth(date, calObj, callback) {
               if (sortedArr.length >= 1) {
                 sortedArr[sortedArr.length - 1].enddate = dbObj.subtitles.subtitle2
                 sortedArr[sortedArr.length - 1].endtime = dbObj.subtitles.subtitle1
+                sortedArr[sortedArr.length - 1].starttime = dbObj.subtitles.subtitle3
               }
             let dataToWrite = {
                 "monthly": erasedCalObj.concat(arr).sort(compare)
@@ -102,8 +102,9 @@ generatePdf: function(callback) {
                         format: 'A4',
                         printBackground: true,
                         displayHeaderFooter: true,
-                        footerTemplate: '<p style = "font-size: 10px;">poopy</p>',
-                        margin : {top: '0px',right: '0px',bottom: '50px',left: '0px' },
+                        headerTemplate: '',
+                        footerTemplate: '<p style = "overflow-wrap: break-word; margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">This is the changes line, it supports 2 lines of text. This is the changes line, it supports 2 lines of text. This is the changes line, it supports 2 lines of text.</p>',
+                        margin : {top: '20px',right: '0px',bottom: '60px',left: '0px' },
                     }).then(() => {
                         callback()
                     })

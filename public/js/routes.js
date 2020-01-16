@@ -112,8 +112,8 @@ router.get('/rtn', (req, res) => {
     })
 })
 
-router.get('/schedule', (req, res) => {
-    res.render('scheduleEdit', {date: undefined, schedule: undefined})
+router.get('/schedule/calendar', (req, res) => {
+    res.render('calendarEdit', {date: undefined, schedule: undefined})
 })
 
 router.get('/schedule/rcn/live', (req, res) => {
@@ -149,7 +149,7 @@ router.post('/schedule/rcn/live/getRtnChannels', (req, res) => {
     res.send('success')
 })
 
-router.get('/schedule/rcn/:date', (req, res) => {
+router.get('/schedule/rcn/calendar/:date', (req, res) => {
     var date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
     //if (date == moment().format("MM/DD/YYYY")) {
     //    res.redirect('/schedule/rcn/live')
@@ -157,7 +157,7 @@ router.get('/schedule/rcn/:date', (req, res) => {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
         //console.log(collection)
         let data = collection.findOne({'date': date})
-            res.render('scheduleEdit', {schedule: data, date: date})
+            res.render('calendarEdit', {schedule: data, date: date})
     })
     //}
 })
@@ -178,7 +178,7 @@ router.get('/schedule/calendar/html', (req, res) => {
     res.render('calendar')
 })
 
-router.get('/schedule/calendar', (req, res) => {
+router.get('/schedule/calendar/render', (req, res) => {
     pdfGenerator.generatePdf(function() {
         var data =fs.readFileSync('./public/pdf/hn.pdf');
         res.contentType("application/pdf");

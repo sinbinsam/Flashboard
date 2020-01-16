@@ -1,0 +1,163 @@
+<%- include("partials/header") %>
+
+
+<link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
+<link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
+<script src = '/js/jquery/jquery-ui.min.js'></script>
+<script src = '/js/jquery/jquery.timepicker.min.js'></script>
+<script src = '/js/calendarEdit.js'></script>
+<script src = '/js/moment.min.js'></script>
+
+                                <% if (!date) { %>
+<h1 id = 'date' unmoment = ''>Please select a date below</h1>
+
+                                <% } else {  %>
+<h1 id = 'date' unmoment = ''><%= date %></h1>
+
+                                <% } %>
+
+<!-- <p>Date: <input type="text" id="picker"></p> -->
+<% if (date) { %>
+
+<input id = 'picker' type="button" class="btn btn-info btn-lg" value = '<%= date %>'></input>
+
+<% } else { %>
+<input id = 'picker' type="button" class="btn btn-info btn-lg" value = 'Select Date'></input>
+<% } %>
+
+ <% if (schedule) { %>
+
+
+<% if (date) { %>
+<button id = 'save' type="button" class="btn btn-success">Save</button>
+<% } %>
+
+    <table class="table table-striped">
+        
+        
+            <thead>
+                <th scope="col">Track Name</th>
+                <th scope="col">Post Time</th>
+                <th scope="col">Notes</th>
+            </thead>
+            <tbody id='yes'>
+            
+
+        <% for (i = 0; i < schedule.channelPlan.length; i++) { %>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control name" value = "<%= schedule.channelPlan[i].name %>">
+                    </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "<%= schedule.channelPlan[i].postTime %>">
+                    </td>
+                    <td>
+                        <input class="notes" value = "<%= schedule.channelPlan[i].notes %>">
+                    </td>
+                </tr>
+            <% } %>
+                <tr class = 'cloneItem'>
+                    <td>
+                        <input type="text" class="form-control name" value = "">
+                    </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "">
+                    </td>
+                    <td>
+                        <input class="notes" value = "">
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+            <% } %>
+
+<% if (!schedule && date) { %> <!--to be rendered when no date is present-->
+    <button id = 'save' type="button" class="btn btn-success">Save</button>
+
+    <table class="table table-striped">
+        
+        
+            <thead>
+                <th scope="col">Track Name</th>
+                <th scope="col">Post Time</th>
+                <th scope="col">Notes</th>
+            </thead>
+            <tbody id='yes'>
+                <tr class = 'cloneItem'>
+                    <td>
+                        <input type="text" class="form-control name" value = "">
+                        
+                    </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "">
+                    </td>
+                    <td>
+                        <input class="notes" value = "">
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+
+<% } %>
+
+
+
+<table class="table table-striped">
+    <thead>
+        <th scope="col">Subtitle -1</th>
+        <th scope="col">Subtitle 1</th>
+        <th scope="col">Subtitle 2</th>
+    </thead>
+    <tbody id='yes'>
+        <tr class = 'subtitles'>
+            <td>
+                <% if (schedule) { %>
+                <% if (!schedule.subtitles) { %>
+                <input type="text" class="form-control subtitle3" value = "">
+                <% } else if (schedule.subtitles && schedule.subtitles.subtitle3) { %>
+                <input type="text" class="form-control subtitle3" value = "<%= schedule.subtitles.subtitle3 %>">    
+                <% } else if (!schedule.subtitles.subtitle3) { %>
+                <input type="text" class="form-control subtitle3" value = "">
+                <% } %>
+
+                </td>
+                <td>
+
+                <% if (!schedule.subtitles) { %>
+                <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
+                <% } else if (schedule.subtitles && schedule.subtitles.subtitle1) { %>
+                <input type="text" class="form-control subtitle1" value = "<%= schedule.subtitles.subtitle1 %>">    
+                <% } %>
+
+                </td>
+                <td>
+
+                <% if (schedule.subtitles && schedule.subtitles.subtitle2) { %>
+                <input type="text" class="form-control subtitle2" value = "<%= schedule.subtitles.subtitle2 %>">
+                <% } else { %>
+                <input type="text" class="form-control subtitle2" value = "">
+                <% } %>
+
+                <% } else { %>
+                <input type="text" class="form-control subtitle-1" value = "">
+                </td>
+                <td>
+                <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
+                </td>
+                <td>
+                <input type="text" class="form-control subtitle2" value = "">
+                <% } %>
+            </td>
+        </tr>
+</tbody>
+</table>
+
+
+    <form id = 'update' method = 'POST' action = '/schedule/rcn'>
+        <input type="hidden" id="dateObj" name="dateObj" value="">
+        <input type="hidden" id="dateStr" name="date" value="<%= date %>">
+    </form>
+
+
+    <%- include("partials/footer") %>

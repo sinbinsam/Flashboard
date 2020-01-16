@@ -115,7 +115,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 						month < currentMonth
 						|| (month === currentMonth && dayNumber < currentDay)
 					))),
-					innerMarkup = '<div class="monthly-day-number">' + dayNumber + '</div><div class="monthly-indicator-wrap"></div>';
+					innerMarkup = '<div class="monthly-day-number">' + dayNumber + '</div><div class="monthly-indicator-wrap"><div class="text-wrap"></div></div>';
 					// ADD var HERE
 						
 					//if (_getEventDetail(event, "enddate") && _getEventDetail(event, "id") == )
@@ -133,7 +133,6 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 						+ attr("id", uniqueId + "day" + dayNumber)
 						+ attr("data-number", dayNumber)
 						+ '><div class="monthly-event-list-date">' + dayNames[thisDate.getDay()] + "<br>" + dayNumber + "</div></div>")
-				
 					} else {
 					$(parent + " .monthly-day-wrap").append("<a"
 						+ attr("href", "#")
@@ -179,7 +178,6 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 			}
 			var divs = $(parent + " .m-d");
 			for(index = 0; index < divs.length; index += 7) {
-				console.log(index)
 				if (index == divs.length - 7) {
 				divs.slice(index, index + 7).wrapAll('<div class="monthly-week last-row" style="page-break-inside: avoid;"></div>');
 				} else {
@@ -231,14 +229,16 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventId = _getEventDetail(event, "id"),
 				customClass = eventClass ? " " + eventClass : "",
 				dayStartTag = "<div",
+				endTime = _getEventDetail(event, "endtime"),
 				dayEndTags = "</span></div>";
 
-			if(startTime) {
+
+			/*if(startTime) {
 				var endTime = _getEventDetail(event, "endtime");
 				timeHtml = '<div><div class="monthly-list-time-start">' + formatTime(startTime) + "</div>"
 					+ (endTime ? '<div class="monthly-list-time-end">' + formatTime(endTime) + "</div>" : "")
 					+ "</div>";
-			}
+			}*/
 
 			if(options.linkCalendarToEventUrl && eventURL) {
 				dayStartTag = "<a" + attr("href", eventURL);
@@ -251,7 +251,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					// BG and FG colors must match for left box shadow to create seamless link between dates
 					/*+ (eventColor ? attr("style", "background:" + 'eventColor' + ";color:" + eventColor) : "")*/, //UNCOMMENT FOR COLORs
 				markupListEvent = "<a"
-					+ attr("href", eventURL)
+					//+ attr("href", eventURL)
 					+ attr("class", "listed-event" + customClass)
 					+ attr("data-eventid", eventId)
 					+ (eventColor ? attr("style", "background:" + eventColor) : "")
@@ -273,27 +273,36 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 
 				var doShowTitle = index === showEventTitleOnDay;
 				// Add to calendar view
-				$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append(
+				$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').find('.text-wrap').append(
 						markupDayStart
 						+ attr("class", "monthly-event-indicator" + customClass
 							// Include a class marking if this event continues from the previous day
 							+ (doShowTitle ? "" : " monthly-event-continued")
 							)
-						+ "><span " + textSizeClass(eventTitle) + ">" + (doShowTitle ? eventTitle : "") + dayEndTags);
+						+ "><span " + textSizeClass(eventTitle) + ">" + (doShowTitle ? eventTitle : "") + " " + eventURL + dayEndTags); //ERIC ADD notes
 				// Add to event list
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")
 					.append(markupListEvent);
+						if (eventTitle == 'FL Live ') {
+							console.log('yes')
+							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').closest('.monthly-day-event').attr('style', 'background-image: url("/calendar/horse.png"); height: 100%; background-position: center;  background-repeat: no-repeat; background-size: cover;')
+							//$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').prepend('<img src="/calendar/horse.png" alt="horse" style="width: 100px; position: relative;">')
+						}
 
 						//ERIC APPEND SUBTITLES
 
+						
+						if (startTime) {
+							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub3">' + startTime + '</p>')
+						}
 						if (endTime) {
 							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub1">' + endTime + '</p>')
 						}
 
 						if (endDate) {
 							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').append('<p class = "subs sub2">' + endDate + '</p>')
-						}
+						} 
 
 
 			}
