@@ -157,7 +157,7 @@ router.post('/schedule/rcn/calendar/batch', (req, res) => {
     let obj = req.body
     schedule.rcnScheduleBatch(obj)
     res.send('success')
-    console.log(obj)
+    //console.log(obj)
 })
 
 router.get('/schedule/rcn/calendar/html', (req, res) => {

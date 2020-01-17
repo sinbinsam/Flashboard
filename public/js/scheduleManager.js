@@ -20,7 +20,8 @@ rcnAuthDbUpdate: function(obj) {
 
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        for (y = 0; y < obj.date.length; y++) {
+        callbackForLoop(0)
+        function callbackForLoop(y) {
             let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
                 if (data == null) {
                     collection.insert({
@@ -31,13 +32,19 @@ rcnScheduleBatch: function(obj) {
                     })
                     db.saveDatabase()
                     let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
-                    console.log(data)
+                    //console.log(data)
                         data.subtitles = obj.subtitles
-                        pdfGenerator.generateJson(obj.date[y], data)
+                        //console.log(obj.date[y])
+                        pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
+                            if (y < obj.data.length) {
+                                y++
+                                callbackForLoop(y)
+                            }
+                        })
                 } else {
                     let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')});
                     let newData = [];
-                    console.log(data)
+                    //console.log(data)
                         for (i = 0; i < obj.channelPlan.length; i++) {
                             function isInList(oldObj) { 
                                 return oldObj.name === obj.channelPlan[i].name;
@@ -78,9 +85,15 @@ rcnScheduleBatch: function(obj) {
                         }
                         data.channelPlan = newData
                         data.subtitles = obj.subtitles
-                        collection.update(data);
-                            db.saveDatabase();
-                                pdfGenerator.generateJson(obj.date[y], data)
+                        //collection.update(data);
+                            //db.saveDatabase();
+                            //console.log(obj.date[y])
+                            pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
+                                if (y < obj.data.length) {
+                                    y++
+                                    callbackForLoop(y)
+                                }
+                            })
                 }
         }
     });
