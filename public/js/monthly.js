@@ -279,7 +279,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 							// Include a class marking if this event continues from the previous day
 							+ (doShowTitle ? "" : " monthly-event-continued")
 							)
-						+ "><span " + textSizeClass(eventTitle) + ">" + (doShowTitle ? eventTitle : "") + " " + eventURL + dayEndTags); //ERIC ADD notes
+						+ "><span " + textSizeClass(eventTitle) + ">" + '<span ' + textSizeClass(eventTitle) + ' style = "display: inline;">' + (doShowTitle ? eventTitle : "") + " " + '</span>' + '<span ' + textSizeClass(eventTitle) + ' style= "display: inline; white-space: nowrap;">' + eventURL + '</span>' + dayEndTags); //ERIC ADD notes
 				// Add to event list
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")

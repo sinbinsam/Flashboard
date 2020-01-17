@@ -1,0 +1,10 @@
+.ui-datepicker-today a.ui-state-highlight {
+    border-color: #d3d3d3;
+    background: #e6e6e6 url(/themeroller/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;;
+    color: #555555;    
+}
+.ui-datepicker-today.ui-datepicker-current-day a.ui-state-highlight {
+    border-color: #aaaaaa;
+    background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+    color: #212121;
+}

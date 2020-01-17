@@ -18,6 +18,74 @@ rcnAuthDbUpdate: function(obj) {
     });
 },
 
+rcnScheduleBatch: function(obj) {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        for (y = 0; y < obj.date.length; y++) {
+            let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
+                if (data == null) {
+                    collection.insert({
+                        'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY'),
+                        'isSentAll': false,
+                        'channelPlan': obj.channelPlan,
+                        'isSent': false
+                    })
+                    db.saveDatabase()
+                    let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
+                    console.log(data)
+                        data.subtitles = obj.subtitles
+                        pdfGenerator.generateJson(obj.date[y], data)
+                } else {
+                    let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')});
+                    let newData = [];
+                    console.log(data)
+                        for (i = 0; i < obj.channelPlan.length; i++) {
+                            function isInList(oldObj) { 
+                                return oldObj.name === obj.channelPlan[i].name;
+                              }
+                            let foundEntry = data.channelPlan.find(isInList, obj.channelPlan[i].name)
+                              if (!foundEntry) {
+                                  let pushObj = {
+                                    'name': obj.channelPlan[i].name,
+                                    'channel': obj.channelPlan[i].channel,
+                                    'isHd': obj.channelPlan[i].isHd,
+                                    'isSent': false,
+                                    'postTime': obj.channelPlan[i].postTime,
+                                    'timeToSend': obj.channelPlan[i].timeToSend,
+                                    'notes': obj.channelPlan[i].notes
+                                  }
+                                  newData.push(pushObj)
+                              } else if (foundEntry && obj.channelPlan[i].rcnChan) {
+                                  let pushObj = foundEntry
+                                    pushObj.isSent = obj.channelPlan[i].isSent
+                                    pushObj.rcnChan = obj.channelPlan[i].rcnChan
+                                    pushObj.authName = obj.channelPlan[i].authName
+                                    pushObj.authIp = obj.channelPlan[i].authIp
+                                    pushObj.authStack = obj.channelPlan[i].authStack
+                                    pushObj.isHd = obj.channelPlan[i].isHd
+                                  newData.push(pushObj)
+                              } else if (foundEntry) {
+                                    let pushObj = foundEntry
+                                    pushObj.channel = obj.channelPlan[i].channel
+                                    pushObj.postTime = obj.channelPlan[i].postTime
+                                    pushObj.isHd = obj.channelPlan[i].isHd
+                                    pushObj.isSent = obj.channelPlan[i].isSent
+                                    pushObj.postTime = obj.channelPlan[i].postTime
+                                    pushObj.timeToSend = obj.channelPlan[i].timeToSend
+                                    pushObj.notes = obj.channelPlan[i].notes
+        
+                                    newData.push(pushObj)
+                              }
+                        }
+                        data.channelPlan = newData
+                        data.subtitles = obj.subtitles
+                        collection.update(data);
+                            db.saveDatabase();
+                                pdfGenerator.generateJson(obj.date[y], data)
+                }
+        }
+    });
+},
+
 rcnSchedule: function(obj) {
     //console.log(obj)
     loadDb.loadScheduleCollection('rcn', function(collection, db) {        

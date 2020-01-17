@@ -46,15 +46,16 @@ function eraseMonth(date, calObj, callback) {
                 "starttime": "",
                 "endtime": "",
                 "color": "#ffffff",
-                "url": dbObj.channelPlan[i].notes
+                "url": dbObj.channelPlan[i].notes,
+                "sorttime": moment(dbObj.channelPlan[i].postTime, 'hh:mm a').format('HH:mm')
             }
             arr.push(entry)
         }
         eraseMonth(date, calJson, function(erasedCalObj) {
 
             function compare(a, b) {
-                const compA = a.starttime;
-                const compB = b.starttime;
+                const compA = a.sorttime;
+                const compB = b.sorttime;
               
                 let comparison = 0;
                 if (compA > compB) {
@@ -96,7 +97,7 @@ generatePdf: function(callback) {
     (async () => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto('http://localhost:8080/schedule/calendar/html', {waitUntil: 'networkidle2'});
+        await page.goto('http://localhost:8080/schedule/rcn/calendar/html', {waitUntil: 'networkidle2'});
         await page.emulateMedia('screen')
         await page.pdf({path: './public/pdf/hn.pdf',
                         format: 'A4',

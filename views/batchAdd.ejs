@@ -1,0 +1,74 @@
+<%- include("partials/header") %>
+
+
+<link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
+<link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
+<link rel = 'stylesheet' href = '/css/batchAdd.css'>
+<script src = '/js/jquery/jquery-ui.min.js'></script>
+<script src = '/js/jquery/jquery.timepicker.min.js'></script>
+<script src = '/js/batchAdd.js'></script>
+<script src = '/js/moment.min.js'></script>
+
+
+
+<h1>Pick Dates</h1>
+
+<div id = 'datepicker'></div>
+
+
+
+
+
+
+<button id = 'save' type="button" class="btn btn-success">Save</button>
+
+
+
+
+
+<table class="table table-striped">
+        
+        
+    <thead>
+        <th scope="col">Track Name</th>
+        <th scope="col">Post Time</th>
+        <th scope="col">Notes</th>
+    </thead>
+            <tbody id='yes'>
+                <tr class = 'cloneItem'>
+                    <td>
+                        <input type="text" class="form-control name" value = "">
+                        
+                    </td>
+                    <td>
+                        <input class="timepicker2 time2" value = "">
+                    </td>
+                    <td>
+                        <input class="notes" value = "">
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+
+
+
+    <table class="table table-striped">
+        <thead>
+            <th scope="col">Subtitle -1</th>
+            <th scope="col">Subtitle 1</th>
+            <th scope="col">Subtitle 2</th>
+        </thead>
+        <tbody id='yes'>
+            <tr class = 'subtitles'>
+                <td>
+                    <input type="text" class="form-control subtitle3" value = "">
+                </td>
+                <td>
+                    <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
+                </td>
+                <td>
+                    <input type="text" class="form-control subtitle2" value = "">
+                </td>
+            </tr>
+    </tbody>
+    </table>

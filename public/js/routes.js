@@ -149,6 +149,30 @@ router.post('/schedule/rcn/live/getRtnChannels', (req, res) => {
     res.send('success')
 })
 
+router.get('/schedule/rcn/calendar/batch', (req, res) => {
+    res.render('batchAdd')
+})
+
+router.post('/schedule/rcn/calendar/batch', (req, res) => {
+    let obj = req.body
+    schedule.rcnScheduleBatch(obj)
+    res.send('success')
+    console.log(obj)
+})
+
+router.get('/schedule/rcn/calendar/html', (req, res) => {
+    res.render('calendar')
+})
+
+router.get('/schedule/rcn/calendar/render', (req, res) => {
+    pdfGenerator.generatePdf(function() {
+        var data =fs.readFileSync('./public/pdf/hn.pdf');
+        res.contentType("application/pdf");
+        res.send(data);
+    });
+    //res.render('calendar')
+})
+
 router.get('/schedule/rcn/calendar/:date', (req, res) => {
     var date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
     //if (date == moment().format("MM/DD/YYYY")) {
@@ -174,18 +198,9 @@ router.post('/schedule/rcn/live/getAuth', (req, res) => {
     res.send('success')
 })
 
-router.get('/schedule/calendar/html', (req, res) => {
-    res.render('calendar')
-})
 
-router.get('/schedule/calendar/render', (req, res) => {
-    pdfGenerator.generatePdf(function() {
-        var data =fs.readFileSync('./public/pdf/hn.pdf');
-        res.contentType("application/pdf");
-        res.send(data);
-    });
-    //res.render('calendar')
-})
+
+
 
 
 
