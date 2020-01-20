@@ -8,8 +8,9 @@ const didYouMean = require('didyoumean2').default
 
 module.exports = {
 
-generateJsonBatch: function(date, dbObj, callback) {
-    function addToMonth (date, calObj, dbObj, callback) {
+generateJsonBatch: function(obj, callback) { //submit obj, with date array and partial channelPlan which will update current
+    const objChanPlanDel = []
+    function addToMonth (date, calObj, dbObj, objChanPlanDel, callback) {
         //console.log(dbObj) //contains all submitted calendar objects
         let revisedCalObj = [];
         let compare = []; //contains all current calendar objects
@@ -21,9 +22,9 @@ generateJsonBatch: function(date, dbObj, callback) {
 
                     compare.forEach(element => { //finds existing elements and updates them, removes from dbObj once updated
                         let entry = {
-                            "id": moment(dbObj.date, 'MM/DD/YYYY').format('MMDDYYYY'),
+                            "id": date,
                             "name": "",
-                            "startdate": moment(dbObj.date, 'MM/DD/YYYY').format('YYYY-MM-DD'),
+                            "startdate": moment(date, 'MMDDYYYY').format('YYYY-MM-DD'),
                             "enddate": "",
                             "starttime": "",
                             "endtime": "",
@@ -32,19 +33,28 @@ generateJsonBatch: function(date, dbObj, callback) {
                             "sorttime": "",
                             "postTime": ""
                         }
-                        let isInList = dbObj.channelPlan.find(x => {
+                        function search(nameKey, myArray){
+                            for (var u=0; u < myArray.length; u++) {
+                                if (myArray[u].name === nameKey) {
+                                    return myArray[u];
+                                }
+                            }
+                        }
+                        let isInList = search(element.name, dbObj.channelPlan)
+                        /*
+                        dbObj.channelPlan.find(x => {
                             return x.name === element.name
-                        })
+                        }) */
                             if (isInList) {
-                                element.postTime = moment(isInList.postTime, 'hh:mm a').format('hh:mm')
+                                element.postTime = moment(isInList.postTime, 'hh:mm a').format('h:mm')
                                 element.url = isInList.notes
                                 element.enddate = ""
                                 element.endtime = ""
                                 element.starttime = ""
                                 element.sorttime = moment(isInList.postTime, 'hh:mm a').format('HH:mm')
                                 revisedCalObj.push(element)
-                                var removeIndex = dbObj.channelPlan.map(function(item) { return item.name; }).indexOf(isInList.name);
-                                dbObj.channelPlan.splice(removeIndex, 1);
+                                var removeIndex = objChanPlanDel.map(function(item) { return item.name; }).indexOf(isInList.name);
+                                objChanPlanDel.splice(removeIndex, 1);
                             } else if (!isInList) {
                                 entry.name = element.name
                                 entry.postTime = element.postTime
@@ -54,11 +64,11 @@ generateJsonBatch: function(date, dbObj, callback) {
                             }
                     })
                     let newElementArr = []
-                    dbObj.channelPlan.forEach(element => { //add new elements into newElementArr
+                    objChanPlanDel.forEach(element => { //add new elements into newElementArr
                         let entry = {
-                            "id": moment(dbObj.date, 'MM/DD/YYYY').format('MMDDYYYY'),
+                            "id": date,
                             "name": "",
-                            "startdate": moment(dbObj.date, 'MM/DD/YYYY').format('YYYY-MM-DD'),
+                            "startdate": moment(date, 'MMDDYYYY').format('YYYY-MM-DD'),
                             "enddate": "",
                             "starttime": "",
                             "endtime": "",
@@ -74,7 +84,7 @@ generateJsonBatch: function(date, dbObj, callback) {
                         newElementArr.push(entry)
                     })
                     Array.prototype.push.apply(revisedCalObj, newElementArr); 
-                    callback(revisedCalObj)
+                    callback(revisedCalObj, objChanPlanDel)
                     //dbObj.channelPlan
 
                 /*dbObj.channelPlan.forEach(element => {
@@ -118,7 +128,7 @@ generateJsonBatch: function(date, dbObj, callback) {
             //callback()
     }
 
-    function eraseMonth(date, calObj, callback) {
+    function eraseMonth(date, calObj, objChanPlanDel, callback) {
         let erasedCalObj = []
         for (i = 0; i < calObj.monthly.length; i++) {
             //console.log(calObj.monthly[i].startdate)
@@ -130,14 +140,28 @@ generateJsonBatch: function(date, dbObj, callback) {
         }
     
     
-        callback(erasedCalObj)
+        callback(erasedCalObj, objChanPlanDel)
     }
+//obj.date.length
+
+
+
+
+        for (i = 0; i < obj.channelPlan.length; i++) {
+            objChanPlanDel.push(obj.channelPlan[i])
+        }
+
+addSingleCal(0, objChanPlanDel)
+function addSingleCal(i, objChanPlanDel) {
+
+
+
 
     fs.readFile(path.join(__dirname, '../calendar/calendarObj.json'), (err, data) => {
         if (err) throw err;
         let calJson = JSON.parse(data);
-        addToMonth(date, calJson, dbObj, function(revisedCalObj) {
-            eraseMonth(moment(date, 'MM/DD/YYYY').format('MMDDYYYY'), calJson, function(erasedCalObj) {
+        addToMonth(obj.date[i], calJson, obj, objChanPlanDel, function(revisedCalObj, objChanPlanDel) {
+            eraseMonth(obj.date[i], calJson, objChanPlanDel, function(erasedCalObj, objChanPlanDel) {
                 //erasedCalObj.push(revisedCalObj)
 
                 function compare(a, b) {
@@ -154,22 +178,29 @@ generateJsonBatch: function(date, dbObj, callback) {
                   }
                   let sortedArr = revisedCalObj.sort(compare)
                   if (sortedArr.length >= 1) {
-                    sortedArr[sortedArr.length - 1].enddate = dbObj.subtitles.subtitle2
-                    sortedArr[sortedArr.length - 1].endtime = dbObj.subtitles.subtitle1
-                    sortedArr[sortedArr.length - 1].starttime = dbObj.subtitles.subtitle3
+                    sortedArr[sortedArr.length - 1].enddate = obj.subtitles.subtitle2
+                    sortedArr[sortedArr.length - 1].endtime = obj.subtitles.subtitle1
+                    sortedArr[sortedArr.length - 1].starttime = obj.subtitles.subtitle3
                   }
                 let dataToWrite = {
                     "monthly": erasedCalObj.concat(revisedCalObj).sort(compare)
                 }
                     fs.writeFile(path.join(__dirname, '../calendar/calendarObj.json'), JSON.stringify(dataToWrite), (err) => {
                         if (err) throw err;
-                        callback() //callback to shedulemanager
+                        if (i < obj.date.length - 1) {
+                            i++
+                            addSingleCal(i, objChanPlanDel)
+                        } else {
+                            console.log('finished cal edit')
+                        }
                     })
 
 
             })
         })
     })
+}
+callback()
 },
 
 
@@ -251,7 +282,6 @@ function eraseMonth(date, calObj, callback) {
             let dataToWrite = {
                 "monthly": erasedCalObj.concat(arr).sort(compare)
             }
-            console.log(arr)
             fs.writeFile(path.join(__dirname, '../calendar/calendarObj.json'), JSON.stringify(dataToWrite), (err) => {
                 if (err) throw err;
 

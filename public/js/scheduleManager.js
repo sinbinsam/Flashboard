@@ -29,10 +29,18 @@ clearScheduleDb: function() {
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
         //callbackForLoop(0)
-        for (i = 0; i < obj.date.length; i++) {
-            console.log(obj.date.length)
+                const objChanPlan = []
+                const objChanPlanDel = []
+                for (i = 0; i < obj.channelPlan.length; i++) {
+                    objChanPlan.push(obj.channelPlan[i])
+                    objChanPlanDel.push(obj.channelPlan[i])
+                }
+                
+                
+        for (i = 0; i < obj.date.length; i++) { //loops over submitted dates
             let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
-            console.log('Date working on: ' + obj.date[i])
+            
+
                 //console.log(data)
                 if (data == null) { //data returns no value
                     collection.insert({
@@ -58,7 +66,7 @@ rcnScheduleBatch: function(obj) {
 
                     
 
-                            if (!data.channelPlan[0]) {
+                            /*if (!data) {
                                 console.log('no data found, inserting')
                                 data.channelPlan = obj.channelPlan
                                 collection.update(data);
@@ -72,13 +80,7 @@ rcnScheduleBatch: function(obj) {
                                             console.log('channelOBJ after finding no entry: ' + data.channelPlan)
                                         
                                     pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
-                                        //console.log(data)
-                                        /*if (y < obj.date.length - 1) {
-                                            y++
-                                            //await sleep(1000)
-                                            callbackForLoop(y)
-        
-                                        }*/
+
         
         
                                     });
@@ -86,19 +88,14 @@ rcnScheduleBatch: function(obj) {
 
                                         }
                                     })
-                            } else {
+                            } else {*/
                                 
 
 
-                            data.channelPlan.map((element, index) => { //loops over every current db entry
+                            //data.channelPlan.map((element, index) => { //loops over every current db entry
 
-                            function isInListe(obj, element) {
-                                obj.channelPlan.find(x => {
-                                    console.log('comparing "' + x.name + ':' + element.name + '"')
-                                    return x.name == element.name
-                                })
-                            }
-
+                                function checkForExisting(obj, data, objChanPlan, callback) {
+                                    for (var q = 0; q < data.channelPlan.length; q++) {
                                 let entry = {
                                     "name": "",
                                     "channel": "",
@@ -108,112 +105,65 @@ rcnScheduleBatch: function(obj) {
                                 }
 
                                 function search(nameKey, myArray){
-                                    console.log('search function started')
-                                    console.log('NAMEKEY: ' + nameKey)
-                                    for (var i=0; i < myArray.length; i++) {
-                                        if (myArray[i].name === nameKey) {
-                                            return myArray[i];
+                                    for (var u=0; u < myArray.length; u++) {
+                                        if (myArray[u].name === nameKey) {
+                                            return myArray[u];
                                         }
                                     }
                                 }
 
-                                let isInList = search(element.name, obj.channelPlan)
+                                let isInList = search(data.channelPlan[q].name, objChanPlan)
 
                                 //let isInList = isInListe(obj, element)
                                 /*let isInList = obj.channelPlan.find(x => {
                                     return x.name === element.name
                                 })*/
-                                console.log('ISINLIST: ' + isInList)
-                                console.log('List To Check: ' + element.name)
+
                                     if (isInList) {
-                                        console.log('NEW POST TIME: ' + isInList.postTime)
-                                        element.postTime = isInList.postTime
-                                        element.notes = isInList.notes
-                                        newData.push(element)
-                                        var removeIndex = obj.channelPlan.map(function(item) { return item.name; }).indexOf(isInList.name);
-                                        obj.channelPlan.splice(removeIndex, 1);
+                                        //data.channelPlan[q].postTime = isInList.postTime
+                                        //data.channelPlan[q].notes = isInList.notes
+                                        newData.push(isInList)
+                                        var removeIndex = objChanPlanDel.map(function(item) { return item.name; }).indexOf(isInList.name);
+                                        objChanPlanDel.splice(removeIndex, 1);
                                     } else if (!isInList) {
-                                        entry.postTime = element.postTime
-                                        entry.notes = element.notes
-                                        entry.name = element.name
-                                        newData.push(entry)
+                                        /*entry.postTime = obj.channelPlan[q].postTime
+                                        entry.notes = obj.channelPlan[q].notes
+                                        entry.name = obj.channelPlan[q].name*/
+                                        newData.push(data.channelPlan[q])
                                     }
-                                    //console.log(element)
-                                    console.log('index: ' + index)
-                                    if (index === data.channelPlan.length - 1) {
-                                        console.log('finished forEAch!')
+                                    
+                                }
+                                callback(obj, newData)
+                                }
 
+                                checkForExisting(obj, data, objChanPlan, function() {
+                                        Array.prototype.push.apply(newData, objChanPlanDel);
 
-                                        Array.prototype.push.apply(newData, obj.channelPlan);
                                         data.channelPlan = newData
-                                        console.log('FINAL CHANNELOBJ: ' + JSON.stringify(data.channelPlan))
+
                                         data.subtitles = obj.subtitles
-                                        //console.log(data)
-                                        //collection.update(data);
-                                        //console.log(data)
-                                        //db.saveDatabase(function(err) {
-                                                //if (err) {
-                                                    //console.log(err)
-                                                //} else {
-                                                    //console.log('saved database!')
+                                            db.saveDatabase(function(err) {
+                                                if (err) {
+                                                    console.log(err)
+                                                } else {
                                                 
-                                            //pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
 
-                
-                
-                                            //});
-
-
-                                                //}
-                                            //})
-                
-                                        
-
-
-
-
-                                        
-                                    }
-                            })
-
-                        }
-                        
-                        /*Array.prototype.push.apply(newData, obj.channelPlan);
-                        data.channelPlan = newData
-                        //console.log(data)
-                        collection.update(data);
-                        //console.log(data)
-                        data.subtitles = obj.subtitles
-
-                        db.saveDatabase(async function(err) {
-                                if (err) {
-                                    console.log(err)
-                                } else {
-                                    console.log('saved database!')
-                                
-                                }
-                            })
-
-
-                            pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
-                                //console.log(data)
-                                if (y < obj.date.length - 1) {
-                                    y++
-                                    //await sleep(1000)
-                                    callbackForLoop(y)
-
-                                }
-
-
-                            });*/
-
-
-
-                        
-
+                                        }
+                                    })
+                                })
                 }
         }
+        //end of loops
+ 
+
+
     });
+       pdfGenerator.generateJsonBatch(obj, function() {
+
+                
+                
+        });
+
 },
 
 rcnSchedule: function(obj) {
