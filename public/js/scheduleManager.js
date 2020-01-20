@@ -18,82 +18,199 @@ rcnAuthDbUpdate: function(obj) {
     });
 },
 
+clearScheduleDb: function() {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        collection.clear()
+        db.saveDatabase()
+        console.log('database hopefully cleared')
+    })
+},
+
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        callbackForLoop(0)
-        function callbackForLoop(y) {
-            let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
-                if (data == null) {
+        //callbackForLoop(0)
+        for (i = 0; i < obj.date.length; i++) {
+            console.log(obj.date.length)
+            let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
+            console.log('Date working on: ' + obj.date[i])
+                //console.log(data)
+                if (data == null) { //data returns no value
                     collection.insert({
-                        'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY'),
+                        'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY'),
                         'isSentAll': false,
                         'channelPlan': obj.channelPlan,
                         'isSent': false
                     })
-                    db.saveDatabase()
-                    let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')})
+                    db.saveDatabase(function() {
+                        //let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')})
+                        //console.log(data)
+                        //data.subtitles = obj.subtitles
+                        //pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
+                        //})
+                    })
+                    
+ 
+                } else { //data returns value
+                    let newData = []; //push new channelPlan object to this
                     //console.log(data)
-                        data.subtitles = obj.subtitles
-                        //console.log(obj.date[y])
-                        pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
-                            if (y < obj.data.length) {
-                                y++
-                                callbackForLoop(y)
-                            }
-                        })
-                } else {
-                    let data = collection.findOne({'date': moment(obj.date[y], 'MMDDYYYY').format('MM/DD/YYYY')});
-                    let newData = [];
-                    //console.log(data)
-                        for (i = 0; i < obj.channelPlan.length; i++) {
-                            function isInList(oldObj) { 
-                                return oldObj.name === obj.channelPlan[i].name;
-                              }
-                            let foundEntry = data.channelPlan.find(isInList, obj.channelPlan[i].name)
-                              if (!foundEntry) {
-                                  let pushObj = {
-                                    'name': obj.channelPlan[i].name,
-                                    'channel': obj.channelPlan[i].channel,
-                                    'isHd': obj.channelPlan[i].isHd,
-                                    'isSent': false,
-                                    'postTime': obj.channelPlan[i].postTime,
-                                    'timeToSend': obj.channelPlan[i].timeToSend,
-                                    'notes': obj.channelPlan[i].notes
-                                  }
-                                  newData.push(pushObj)
-                              } else if (foundEntry && obj.channelPlan[i].rcnChan) {
-                                  let pushObj = foundEntry
-                                    pushObj.isSent = obj.channelPlan[i].isSent
-                                    pushObj.rcnChan = obj.channelPlan[i].rcnChan
-                                    pushObj.authName = obj.channelPlan[i].authName
-                                    pushObj.authIp = obj.channelPlan[i].authIp
-                                    pushObj.authStack = obj.channelPlan[i].authStack
-                                    pushObj.isHd = obj.channelPlan[i].isHd
-                                  newData.push(pushObj)
-                              } else if (foundEntry) {
-                                    let pushObj = foundEntry
-                                    pushObj.channel = obj.channelPlan[i].channel
-                                    pushObj.postTime = obj.channelPlan[i].postTime
-                                    pushObj.isHd = obj.channelPlan[i].isHd
-                                    pushObj.isSent = obj.channelPlan[i].isSent
-                                    pushObj.postTime = obj.channelPlan[i].postTime
-                                    pushObj.timeToSend = obj.channelPlan[i].timeToSend
-                                    pushObj.notes = obj.channelPlan[i].notes
+
+
+
+                    
+
+                            if (!data.channelPlan[0]) {
+                                console.log('no data found, inserting')
+                                data.channelPlan = obj.channelPlan
+                                collection.update(data);
+                                data.subtitles = obj.subtitles
         
-                                    newData.push(pushObj)
-                              }
+                                db.saveDatabase(function(err) {
+                                        if (err) {
+                                            console.log(err)
+                                        } else {
+                                            console.log('saved database!')
+                                            console.log('channelOBJ after finding no entry: ' + data.channelPlan)
+                                        
+                                    pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
+                                        //console.log(data)
+                                        /*if (y < obj.date.length - 1) {
+                                            y++
+                                            //await sleep(1000)
+                                            callbackForLoop(y)
+        
+                                        }*/
+        
+        
+                                    });
+
+
+                                        }
+                                    })
+                            } else {
+                                
+
+
+                            data.channelPlan.map((element, index) => { //loops over every current db entry
+
+                            function isInListe(obj, element) {
+                                obj.channelPlan.find(x => {
+                                    console.log('comparing "' + x.name + ':' + element.name + '"')
+                                    return x.name == element.name
+                                })
+                            }
+
+                                let entry = {
+                                    "name": "",
+                                    "channel": "",
+                                    "isHd": "",
+                                    "timeToSend": "",
+                                    "notes": ""
+                                }
+
+                                function search(nameKey, myArray){
+                                    console.log('search function started')
+                                    console.log('NAMEKEY: ' + nameKey)
+                                    for (var i=0; i < myArray.length; i++) {
+                                        if (myArray[i].name === nameKey) {
+                                            return myArray[i];
+                                        }
+                                    }
+                                }
+
+                                let isInList = search(element.name, obj.channelPlan)
+
+                                //let isInList = isInListe(obj, element)
+                                /*let isInList = obj.channelPlan.find(x => {
+                                    return x.name === element.name
+                                })*/
+                                console.log('ISINLIST: ' + isInList)
+                                console.log('List To Check: ' + element.name)
+                                    if (isInList) {
+                                        console.log('NEW POST TIME: ' + isInList.postTime)
+                                        element.postTime = isInList.postTime
+                                        element.notes = isInList.notes
+                                        newData.push(element)
+                                        var removeIndex = obj.channelPlan.map(function(item) { return item.name; }).indexOf(isInList.name);
+                                        obj.channelPlan.splice(removeIndex, 1);
+                                    } else if (!isInList) {
+                                        entry.postTime = element.postTime
+                                        entry.notes = element.notes
+                                        entry.name = element.name
+                                        newData.push(entry)
+                                    }
+                                    //console.log(element)
+                                    console.log('index: ' + index)
+                                    if (index === data.channelPlan.length - 1) {
+                                        console.log('finished forEAch!')
+
+
+                                        Array.prototype.push.apply(newData, obj.channelPlan);
+                                        data.channelPlan = newData
+                                        console.log('FINAL CHANNELOBJ: ' + JSON.stringify(data.channelPlan))
+                                        data.subtitles = obj.subtitles
+                                        //console.log(data)
+                                        //collection.update(data);
+                                        //console.log(data)
+                                        //db.saveDatabase(function(err) {
+                                                //if (err) {
+                                                    //console.log(err)
+                                                //} else {
+                                                    //console.log('saved database!')
+                                                
+                                            //pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
+
+                
+                
+                                            //});
+
+
+                                                //}
+                                            //})
+                
+                                        
+
+
+
+
+                                        
+                                    }
+                            })
+
                         }
+                        
+                        /*Array.prototype.push.apply(newData, obj.channelPlan);
                         data.channelPlan = newData
+                        //console.log(data)
+                        collection.update(data);
+                        //console.log(data)
                         data.subtitles = obj.subtitles
-                        //collection.update(data);
-                            //db.saveDatabase();
-                            //console.log(obj.date[y])
-                            pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
-                                if (y < obj.data.length) {
-                                    y++
-                                    callbackForLoop(y)
+
+                        db.saveDatabase(async function(err) {
+                                if (err) {
+                                    console.log(err)
+                                } else {
+                                    console.log('saved database!')
+                                
                                 }
                             })
+
+
+                            pdfGenerator.generateJsonBatch(obj.date[y], data, function() {
+                                //console.log(data)
+                                if (y < obj.date.length - 1) {
+                                    y++
+                                    //await sleep(1000)
+                                    callbackForLoop(y)
+
+                                }
+
+
+                            });*/
+
+
+
+                        
+
                 }
         }
     });
@@ -159,7 +276,7 @@ rcnSchedule: function(obj) {
                 data.subtitles = obj.subtitles
                 collection.update(data);
                     db.saveDatabase();
-                        pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                        //pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         }
     })
 },

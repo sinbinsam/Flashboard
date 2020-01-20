@@ -227,6 +227,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventColor = _getEventDetail(event, "color"),
 				endDate = _getEventDetail(event, "enddate"),
 				eventId = _getEventDetail(event, "id"),
+				postTime = _getEventDetail(event, "postTime"),
 				customClass = eventClass ? " " + eventClass : "",
 				dayStartTag = "<div",
 				endTime = _getEventDetail(event, "endtime"),
@@ -279,12 +280,12 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 							// Include a class marking if this event continues from the previous day
 							+ (doShowTitle ? "" : " monthly-event-continued")
 							)
-						+ "><span " + textSizeClass(eventTitle) + ">" + '<span ' + textSizeClass(eventTitle) + ' style = "display: inline;">' + (doShowTitle ? eventTitle : "") + " " + '</span>' + '<span ' + textSizeClass(eventTitle) + ' style= "display: inline; white-space: nowrap;">' + eventURL + '</span>' + dayEndTags); //ERIC ADD notes
+						+ "><span " + textSizeClass(eventTitle) + ">" + '<span ' + textSizeClass(eventTitle) + ' style = "display: block;">' + (doShowTitle ? eventTitle : "") + ' ' + postTime + '</span>' + '<span ' + textSizeClass(eventTitle) + ' style= "display: inline; white-space: nowrap;">' + ' ' + eventURL + '</span>' + dayEndTags); //ERIC ADD notes
 				// Add to event list
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")
 					.append(markupListEvent);
-						if (eventTitle == 'FL Live ') {
+						if (eventTitle == 'FL Live') {
 							console.log('yes')
 							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').closest('.monthly-day-event').attr('style', 'background-image: url("/calendar/horse.png"); height: 100%; background-position: center;  background-repeat: no-repeat; background-size: cover;')
 							//$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').prepend('<img src="/calendar/horse.png" alt="horse" style="width: 100px; position: relative;">')

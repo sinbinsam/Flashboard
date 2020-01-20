@@ -165,5 +165,16 @@ $('#datepicker').datepicker({
           });
     })
 
+    $('#reset').on('click', function() {
+        $.ajax({
+            type: "GET",
+            url: "/schedule/rcn/calendar/clearDb",
+            data: "",
+            success: function(){},
+            dataType: "json",
+            contentType : "application/json"
+          });
+    })
+
 
 });

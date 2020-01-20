@@ -153,6 +153,11 @@ router.get('/schedule/rcn/calendar/batch', (req, res) => {
     res.render('batchAdd')
 })
 
+router.get('/schedule/rcn/calendar/clearDb', (req, res) => {
+    schedule.clearScheduleDb()
+    res.send('success')
+})
+
 router.post('/schedule/rcn/calendar/batch', (req, res) => {
     let obj = req.body
     schedule.rcnScheduleBatch(obj)
