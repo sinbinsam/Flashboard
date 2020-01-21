@@ -260,9 +260,11 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					+ ">" + eventTitle + " " + timeHtml + "</a>";
 
 						function textSizeClass(title) { //adds class if length is long or short
-							if (title.length < 15) {
+							console.log(title.length)
+							let length = title.length + postTime.length
+							if (length < 12) {
 								return 'class = "bigger"'
-							} else if (title.length >= 15 && title.length <= 20) {
+							} else if (length >= 15 && length <= 20) {
 								return 'class = "medium"'
 							} else {
 								return 'class = "smallest"'
@@ -280,7 +282,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 							// Include a class marking if this event continues from the previous day
 							+ (doShowTitle ? "" : " monthly-event-continued")
 							)
-						+ "><span " + textSizeClass(eventTitle) + ">" + '<span ' + textSizeClass(eventTitle) + ' style = "display: block;">' + (doShowTitle ? eventTitle : "") + ' ' + postTime + '</span>' + '<span ' + textSizeClass(eventTitle) + ' style= "display: inline; white-space: nowrap;">' + ' ' + eventURL + '</span>' + dayEndTags); //ERIC ADD notes
+						+ "><span " + textSizeClass(eventTitle) + " style='display: block;'" + ">" + '<span ' + textSizeClass(eventTitle) + ' style = "display: inline;">' + (doShowTitle ? eventTitle : "") + ' ' + postTime + '</span>' + '<span ' + textSizeClass(eventTitle) + ' style= "display: inline; white-space: nowrap;">' + ' ' + eventURL + '</span>' + dayEndTags); //ERIC ADD notes
 				// Add to event list
 				$(parent + ' .monthly-list-item[data-number="' + index + '"]')
 					.addClass("item-has-event")

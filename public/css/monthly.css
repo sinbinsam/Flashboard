@@ -172,7 +172,7 @@
 	color: inherit;
 	background: #fff;
 	/*border: 1.0px solid rgb(27, 27, 27);*/
-	box-shadow: inset 0px 0px 0 1.2px rgb(0, 0, 0);
+	box-shadow: inset 0px 0px 0 .5px rgb(0, 0, 0);
 	-webkit-transition: .25s;
 	transition: .25s;
 	padding: 0;
@@ -442,6 +442,7 @@ establish the rules based on the calendar element width rather than the device w
 	span {
 		font-size: .65rem;
 		font-family: 'Abel', sans-serif;
+		font-weight: bold;
 	}
 
 	.bigger {
@@ -495,8 +496,8 @@ establish the rules based on the calendar element width rather than the device w
 	width: auto;
 	margin: 1px;
 	color: rgb(0, 0, 0);
-	padding-top: 5px;
-	padding-bottom: 7px;
+	padding-top: 2px;
+	padding-bottom: 5px;
 	font-size: 20px;
 	font-family: 'Oswald', sans-serif;
 }
@@ -531,4 +532,11 @@ establish the rules based on the calendar element width rather than the device w
 
 .container1 {
 	page-break-after: always;
+}
+
+.monthly-day-title-wrap {
+	font-family: 'Archivo Black', sans-serif;
+	font-weight: bold;
+	color: white;
+	background-color: black;
 }

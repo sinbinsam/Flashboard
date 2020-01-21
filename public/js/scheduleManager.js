@@ -28,18 +28,33 @@ clearScheduleDb: function() {
 
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        //callbackForLoop(0) undelete if doesnt work
+            function reloadChanPlan(callback) {
                 const objChanPlan = []
                 const objChanPlanDel = []
                 for (i = 0; i < obj.channelPlan.length; i++) {
                     objChanPlan.push(obj.channelPlan[i])
                     objChanPlanDel.push(obj.channelPlan[i])
                 }
+                callback(objChanPlan, objChanPlanDel)
+            }
                 
-                
-        for (i = 0; i < obj.date.length; i++) { //loops over submitted dates
-            let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
-            
 
+        for (i = 0; i < obj.date.length; i++) { //loops over submitted dates
+                const objChanPlan = []
+                const objChanPlanDel = []
+                for (m = 0; m < obj.channelPlan.length; m++) {
+                    objChanPlan.push(obj.channelPlan[m])
+                    objChanPlanDel.push(obj.channelPlan[m])
+                }
+
+
+
+                
+
+      
+            let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
+                //console.log(data)
                 if (data == null) { //data returns no value
                     collection.insert({
                         'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY'),
@@ -77,8 +92,12 @@ rcnScheduleBatch: function(obj) {
                                         }
                                     }
                                 }
-
+                                
                                 let isInList = search(data.channelPlan[q].name, objChanPlan)
+                                //let isInList = isInListe(obj, element)
+                                /*let isInList = obj.channelPlan.find(x => {
+                                    return x.name === element.name
+                                })*/
 
                                     if (isInList) {
                                         //data.channelPlan[q].postTime = isInList.postTime
@@ -114,7 +133,9 @@ rcnScheduleBatch: function(obj) {
                                     })
                                 })
                 }
+            
         }
+        
         //end of loops
  
 
@@ -188,7 +209,7 @@ rcnSchedule: function(obj) {
                 data.subtitles = obj.subtitles
                 collection.update(data);
                     db.saveDatabase();
-                        //pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                        pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         }
     })
 },
