@@ -28,19 +28,32 @@ clearScheduleDb: function() {
 
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        //callbackForLoop(0)
+        //callbackForLoop(0) undelete if doesnt work
+            function reloadChanPlan(callback) {
                 const objChanPlan = []
                 const objChanPlanDel = []
                 for (i = 0; i < obj.channelPlan.length; i++) {
                     objChanPlan.push(obj.channelPlan[i])
                     objChanPlanDel.push(obj.channelPlan[i])
                 }
+                callback(objChanPlan, objChanPlanDel)
+            }
                 
-                
-        for (i = 0; i < obj.date.length; i++) { //loops over submitted dates
-            let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
-            
 
+        for (i = 0; i < obj.date.length; i++) { //loops over submitted dates
+                const objChanPlan = []
+                const objChanPlanDel = []
+                for (m = 0; m < obj.channelPlan.length; m++) {
+                    objChanPlan.push(obj.channelPlan[m])
+                    objChanPlanDel.push(obj.channelPlan[m])
+                }
+
+
+
+                
+
+      
+            let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
                 //console.log(data)
                 if (data == null) { //data returns no value
                     collection.insert({
@@ -60,39 +73,6 @@ rcnScheduleBatch: function(obj) {
  
                 } else { //data returns value
                     let newData = []; //push new channelPlan object to this
-                    //console.log(data)
-
-
-
-                    
-
-                            /*if (!data) {
-                                console.log('no data found, inserting')
-                                data.channelPlan = obj.channelPlan
-                                collection.update(data);
-                                data.subtitles = obj.subtitles
-        
-                                db.saveDatabase(function(err) {
-                                        if (err) {
-                                            console.log(err)
-                                        } else {
-                                            console.log('saved database!')
-                                            console.log('channelOBJ after finding no entry: ' + data.channelPlan)
-                                        
-                                    pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
-
-        
-        
-                                    });
-
-
-                                        }
-                                    })
-                            } else {*/
-                                
-
-
-                            //data.channelPlan.map((element, index) => { //loops over every current db entry
 
                                 function checkForExisting(obj, data, objChanPlan, callback) {
                                     for (var q = 0; q < data.channelPlan.length; q++) {
@@ -111,9 +91,8 @@ rcnScheduleBatch: function(obj) {
                                         }
                                     }
                                 }
-
+                                
                                 let isInList = search(data.channelPlan[q].name, objChanPlan)
-
                                 //let isInList = isInListe(obj, element)
                                 /*let isInList = obj.channelPlan.find(x => {
                                     return x.name === element.name
@@ -152,7 +131,9 @@ rcnScheduleBatch: function(obj) {
                                     })
                                 })
                 }
+            
         }
+        
         //end of loops
  
 
@@ -226,7 +207,7 @@ rcnSchedule: function(obj) {
                 data.subtitles = obj.subtitles
                 collection.update(data);
                     db.saveDatabase();
-                        //pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                        pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
         }
     })
 },

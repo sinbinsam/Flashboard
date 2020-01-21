@@ -11,6 +11,10 @@ module.exports = {
 generateJsonBatch: function(obj, callback) { //submit obj, with date array and partial channelPlan which will update current
     const objChanPlanDel = []
     function addToMonth (date, calObj, dbObj, objChanPlanDel, callback) {
+        objChanPlanDel = []
+        for (n = 0; n < obj.channelPlan.length; n++) {
+            objChanPlanDel.push(obj.channelPlan[n])
+        }
         //console.log(dbObj) //contains all submitted calendar objects
         let revisedCalObj = [];
         let compare = []; //contains all current calendar objects
@@ -59,7 +63,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 entry.name = element.name
                                 entry.postTime = element.postTime
                                 entry.url = element.url
-                                entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm')
+                                entry.sorttime = element.sorttime
                                 revisedCalObj.push(entry)
                             }
                     })
@@ -78,13 +82,14 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                             "postTime": ""
                         }
                         entry.name = element.name
+                        entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm') //CHECK THIS FOR SORT BUG
                         entry.postTime = element.postTime.slice(0, -3)
                         entry.url = element.notes
-                        entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm')
                         newElementArr.push(entry)
                     })
+
                     Array.prototype.push.apply(revisedCalObj, newElementArr); 
-                    callback(revisedCalObj, objChanPlanDel)
+                    callback(revisedCalObj, objChanPlanDel, dbObj)
                     //dbObj.channelPlan
 
                 /*dbObj.channelPlan.forEach(element => {
@@ -128,7 +133,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
             //callback()
     }
 
-    function eraseMonth(date, calObj, objChanPlanDel, callback) {
+    function eraseMonth(date, calObj, objChanPlanDel, obj, callback) {
         let erasedCalObj = []
         for (i = 0; i < calObj.monthly.length; i++) {
             //console.log(calObj.monthly[i].startdate)
@@ -140,16 +145,16 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
         }
     
     
-        callback(erasedCalObj, objChanPlanDel)
+        callback(erasedCalObj, objChanPlanDel, obj)
     }
 //obj.date.length
 
 
 
 
-        for (i = 0; i < obj.channelPlan.length; i++) {
+        /*for (i = 0; i < obj.channelPlan.length; i++) {
             objChanPlanDel.push(obj.channelPlan[i])
-        }
+        }*/
 
 addSingleCal(0, objChanPlanDel)
 function addSingleCal(i, objChanPlanDel) {
@@ -160,8 +165,8 @@ function addSingleCal(i, objChanPlanDel) {
     fs.readFile(path.join(__dirname, '../calendar/calendarObj.json'), (err, data) => {
         if (err) throw err;
         let calJson = JSON.parse(data);
-        addToMonth(obj.date[i], calJson, obj, objChanPlanDel, function(revisedCalObj, objChanPlanDel) {
-            eraseMonth(obj.date[i], calJson, objChanPlanDel, function(erasedCalObj, objChanPlanDel) {
+        addToMonth(obj.date[i], calJson, obj, objChanPlanDel, function(revisedCalObj, objChanPlanDel, obj) {
+            eraseMonth(obj.date[i], calJson, objChanPlanDel, obj, function(erasedCalObj, objChanPlanDel, obj) {
                 //erasedCalObj.push(revisedCalObj)
 
                 function compare(a, b) {
@@ -176,14 +181,17 @@ function addSingleCal(i, objChanPlanDel) {
                     }
                     return comparison;
                   }
-                  let sortedArr = revisedCalObj.sort(compare)
+                  let sortedArr = erasedCalObj.concat(revisedCalObj).sort(compare)
+                  //revisedCalObj.sort(compare)
                   if (sortedArr.length >= 1) {
+                      console.log(obj.subtitles)
                     sortedArr[sortedArr.length - 1].enddate = obj.subtitles.subtitle2
                     sortedArr[sortedArr.length - 1].endtime = obj.subtitles.subtitle1
                     sortedArr[sortedArr.length - 1].starttime = obj.subtitles.subtitle3
                   }
+                  console.log('yes: ' + JSON.stringify(sortedArr))
                 let dataToWrite = {
-                    "monthly": erasedCalObj.concat(revisedCalObj).sort(compare)
+                    "monthly": sortedArr
                 }
                     fs.writeFile(path.join(__dirname, '../calendar/calendarObj.json'), JSON.stringify(dataToWrite), (err) => {
                         if (err) throw err;
@@ -191,7 +199,7 @@ function addSingleCal(i, objChanPlanDel) {
                             i++
                             addSingleCal(i, objChanPlanDel)
                         } else {
-                            console.log('finished cal edit')
+
                         }
                     })
 
