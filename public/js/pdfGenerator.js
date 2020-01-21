@@ -60,6 +60,9 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 var removeIndex = objChanPlanDel.map(function(item) { return item.name; }).indexOf(isInList.name);
                                 objChanPlanDel.splice(removeIndex, 1);
                             } else if (!isInList) {
+                                entry.enddate = ""
+                                entry.endtime = ""
+                                entry.starttime = ""
                                 entry.name = element.name
                                 entry.postTime = element.postTime
                                 entry.url = element.url
@@ -181,14 +184,12 @@ function addSingleCal(i, objChanPlanDel) {
                     }
                     return comparison;
                   }
+                  revisedCalObj[revisedCalObj.length - 1].enddate = obj.subtitles.subtitle2
+                  revisedCalObj[revisedCalObj.length - 1].endtime = obj.subtitles.subtitle1
+                  revisedCalObj[revisedCalObj.length - 1].starttime = obj.subtitles.subtitle3
+
                   let sortedArr = erasedCalObj.concat(revisedCalObj).sort(compare)
                   //revisedCalObj.sort(compare)
-                  if (sortedArr.length >= 1) {
-                      console.log(obj.subtitles)
-                    sortedArr[sortedArr.length - 1].enddate = obj.subtitles.subtitle2
-                    sortedArr[sortedArr.length - 1].endtime = obj.subtitles.subtitle1
-                    sortedArr[sortedArr.length - 1].starttime = obj.subtitles.subtitle3
-                  }
                   console.log('yes: ' + JSON.stringify(sortedArr))
                 let dataToWrite = {
                     "monthly": sortedArr
