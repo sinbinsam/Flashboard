@@ -3,10 +3,15 @@
 
 <link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
 <link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
+<link rel = 'stylesheet' href = '/css/CalendarEdit.css'>
 <script src = '/js/jquery/jquery-ui.min.js'></script>
 <script src = '/js/jquery/jquery.timepicker.min.js'></script>
 <script src = '/js/calendarEdit.js'></script>
 <script src = '/js/moment.min.js'></script>
+
+<div class = 'container'>
+
+    <%= JSON.stringify(schedule) %>
 
                                 <% if (!date) { %>
 <h1 id = 'date' unmoment = ''>Please select a date below</h1>
@@ -28,7 +33,16 @@
 
 
 <% if (date) { %>
-<button id = 'save' type="button" class="btn btn-success">Save</button>
+<div class = 'buttons'>
+    <button id = 'save' type="button" class="btn btn-success">Save</button>
+    <div class = 'liveday'>
+        <div class="input-group">
+            <div class="input-group-prepend">
+            <button id = 'livedayprepend' class="btn btn-danger live" type="button" value = "false">Live Day</button>
+            </div>
+        <input type="text" class="form-control timepicker2 posttime" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+    </div>
+</div>
 <% } %>
 
     <table class="table table-striped">
@@ -71,7 +85,10 @@
             <% } %>
 
 <% if (!schedule && date) { %> <!--to be rendered when no date is present-->
+<div class = 'buttons'>
     <button id = 'save' type="button" class="btn btn-success">Save</button>
+    <input id = 'live' class="btn btn-primary live" type="button" value = "Not Live Day">
+</div>
 
     <table class="table table-striped">
         
@@ -152,7 +169,7 @@
 </tbody>
 </table>
 
-
+</div>
     <form id = 'update' method = 'POST' action = '/schedule/rcn'>
         <input type="hidden" id="dateObj" name="dateObj" value="">
         <input type="hidden" id="dateStr" name="date" value="<%= date %>">

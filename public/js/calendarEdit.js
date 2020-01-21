@@ -58,8 +58,24 @@ var checkEmptyFun = function() {
 $(document).on('focusout', '.name', checkEmptyFun)
 
 
+$(document).on('click', '.live', function() {
+    console.log($(this).val())
+    $(this).toggleClass('btn-success')
+    $(this).toggleClass('btn-danger')
+    if ($(this).val() == 'true') {
+        $(this).val('false') 
+    } else {
+        $(this).val('true')
+    }
+    
+})
+
+
+
 
 $('#save').on('click', function() {
+    var live = $('#livedayprepend').val()
+    var postTime = $('.posttime').val()
     let obj = []
     $('.name').each(function() {
         if ($(this).val()) {
@@ -84,6 +100,8 @@ $('#save').on('click', function() {
     let objSend = {
         'date': $('#date').html(),
         channelPlan: obj,
+        isLive: live,
+        livePostTime: postTime,
         subtitles: subtitles
     }
     $('#dateObj').attr('value', objSend)

@@ -28,7 +28,6 @@ clearScheduleDb: function() {
 
 rcnScheduleBatch: function(obj) {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
-        //callbackForLoop(0)
                 const objChanPlan = []
                 const objChanPlanDel = []
                 for (i = 0; i < obj.channelPlan.length; i++) {
@@ -41,59 +40,26 @@ rcnScheduleBatch: function(obj) {
             let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
             
 
-                //console.log(data)
                 if (data == null) { //data returns no value
                     collection.insert({
                         'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY'),
+                        'isLive': obj.isLive,
+                        'livePostTime': obj.livePostTime,
                         'isSentAll': false,
                         'channelPlan': obj.channelPlan,
                         'isSent': false
                     })
                     db.saveDatabase(function() {
-                        //let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')})
-                        //console.log(data)
-                        //data.subtitles = obj.subtitles
-                        //pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
-                        //})
+                        /*let data = collection.findOne({'date': moment(date, 'MMDDYYYY').format('MM/DD/YYYY')})
+                        data.subtitles = obj.subtitles
+                        console.log('data null before pdfgenerator: ' + data)
+                        pdfGenerator.generateJsonBatch(date, data, function() {
+                        })*/
                     })
                     
  
                 } else { //data returns value
                     let newData = []; //push new channelPlan object to this
-                    //console.log(data)
-
-
-
-                    
-
-                            /*if (!data) {
-                                console.log('no data found, inserting')
-                                data.channelPlan = obj.channelPlan
-                                collection.update(data);
-                                data.subtitles = obj.subtitles
-        
-                                db.saveDatabase(function(err) {
-                                        if (err) {
-                                            console.log(err)
-                                        } else {
-                                            console.log('saved database!')
-                                            console.log('channelOBJ after finding no entry: ' + data.channelPlan)
-                                        
-                                    pdfGenerator.generateJsonBatch(obj.date[i], data, function() {
-
-        
-        
-                                    });
-
-
-                                        }
-                                    })
-                            } else {*/
-                                
-
-
-                            //data.channelPlan.map((element, index) => { //loops over every current db entry
-
                                 function checkForExisting(obj, data, objChanPlan, callback) {
                                     for (var q = 0; q < data.channelPlan.length; q++) {
                                 let entry = {
@@ -113,11 +79,6 @@ rcnScheduleBatch: function(obj) {
                                 }
 
                                 let isInList = search(data.channelPlan[q].name, objChanPlan)
-
-                                //let isInList = isInListe(obj, element)
-                                /*let isInList = obj.channelPlan.find(x => {
-                                    return x.name === element.name
-                                })*/
 
                                     if (isInList) {
                                         //data.channelPlan[q].postTime = isInList.postTime
@@ -140,7 +101,8 @@ rcnScheduleBatch: function(obj) {
                                         Array.prototype.push.apply(newData, objChanPlanDel);
 
                                         data.channelPlan = newData
-
+                                        data.isLive = obj.isLive
+                                        data.livePostTime = obj.livePostTime
                                         data.subtitles = obj.subtitles
                                             db.saveDatabase(function(err) {
                                                 if (err) {

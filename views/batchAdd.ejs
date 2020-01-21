@@ -9,19 +9,35 @@
 <script src = '/js/batchAdd.js'></script>
 <script src = '/js/moment.min.js'></script>
 
+<div class = 'container'>
 
-
-<h1>Pick Dates</h1>
+    
 
 <div id = 'datepicker'></div>
-
-
-
-
-
-
+<div class = 'buttons'>
 <button id = 'save' type="button" class="btn btn-success">Save</button>
-<button id = 'reset' type="button" class="btn btn-danger">Reset</button>
+
+<p>
+    <button id = 'editlive' class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Edit Live Day
+    </button>
+</p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            
+                
+                    <div class = 'liveday'>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <button id = 'livedayprepend' class="btn btn-danger live" type="button" value = "false">Live Day</button>
+                            </div>
+                        <input type="text" class="form-control timepicker2 posttime" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -73,3 +89,5 @@
             </tr>
     </tbody>
     </table>
+
+</div>

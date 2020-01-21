@@ -15,7 +15,9 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
         let revisedCalObj = [];
         let compare = []; //contains all current calendar objects
             for (i = 0; i < calObj.monthly.length; i++) { //adds current month calendar objects from database into array
-                    if (calObj.monthly[i].id == date) {
+                    if (calObj.monthly[i].id == date + 'live') {
+                        // do nothing if live
+                    } else if (calObj.monthly[i].id == date) {
                         compare.push(calObj.monthly[i])
                     }
             }
@@ -133,7 +135,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
         for (i = 0; i < calObj.monthly.length; i++) {
             //console.log(calObj.monthly[i].startdate)
                 //console.log(monthNum + yearNum)
-                    if (calObj.monthly[i].id !== date) {
+                    if (calObj.monthly[i].id !== date && calObj.monthly[i].id !== date + 'live') {
                         
                         erasedCalObj.push(calObj.monthly[i])
                     } 
@@ -176,6 +178,24 @@ function addSingleCal(i, objChanPlanDel) {
                     }
                     return comparison;
                   }
+                  console.log('ISLIVE: ' + obj.isLive)
+                  if (obj.isLive == 'true') { //add live day if there before sorting
+                    let entry = {
+                        "id": obj.date[i] + 'live',
+                        "name": 'FL Live',
+                        "startdate": moment(obj.date[i], 'MMDDYYYY').format('YYYY-MM-DD'),
+                        "enddate": "",
+                        "starttime": "",
+                        "endtime": "",
+                        "color": "#ffffff",
+                        "url": "",
+                        "sorttime": moment(obj.livePostTime, 'hh:mm a').format('HH:mm'),
+                        "postTime": obj.livePostTime.slice(0, -3)
+                    }
+                    console.log(entry)
+                    revisedCalObj.push(entry)
+                }
+
                   let sortedArr = revisedCalObj.sort(compare)
                   if (sortedArr.length >= 1) {
                     sortedArr[sortedArr.length - 1].enddate = obj.subtitles.subtitle2

@@ -15,7 +15,7 @@ var dates = new Array();
 function addDate(date) {
     if (jQuery.inArray(date, dates) < 0) 
         dates.push(date);
-        console.log(dates)
+
 }
 
 function removeDate(index) {
@@ -140,41 +140,51 @@ $('#datepicker').datepicker({
             }
         })
 
-        if ($('.name').val()) {
+        //if ($('.name').val()) {
             var subtitles = {
                 'subtitle1': $('.subtitle1').val(),
                 'subtitle2': $('.subtitle2').val(),
                 'subtitle3': $('.subtitle3').val()
             }
-        }
-    
+        //}
+
+        var live = $('#livedayprepend').val()
+        var postTime = $('.posttime').val()
+        var editLive = $('#editlive').attr('aria-expanded')
+
         let objSend = {
             'date': dates,
+            editLive: editLive,
+            isLive: live,
+            livePostTime: postTime,
             channelPlan: obj,
             subtitles: subtitles
         }
-        $('#dateObj').attr('value', objSend)
         console.log(objSend)
-        $.ajax({
+        $('#dateObj').attr('value', objSend)
+        /*$.ajax({
             type: "POST",
             url: "/schedule/rcn/calendar/batch",
             data: JSON.stringify(objSend),
             success: function(){},
             dataType: "json",
             contentType : "application/json"
-          });
+          });*/
     })
 
-    $('#reset').on('click', function() {
-        $.ajax({
-            type: "GET",
-            url: "/schedule/rcn/calendar/clearDb",
-            data: "",
-            success: function(){},
-            dataType: "json",
-            contentType : "application/json"
-          });
+    $(document).on('click', '.live', function() {
+        console.log($(this).val())
+        $(this).toggleClass('btn-success')
+        $(this).toggleClass('btn-danger')
+        if ($(this).val() == 'true') {
+            $(this).val('false') 
+        } else {
+            $(this).val('true')
+        }
     })
+
+
+
 
 
 });
