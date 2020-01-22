@@ -11,8 +11,6 @@
 
 <div class = 'container'>
 
-    <%= JSON.stringify(schedule) %>
-
                                 <% if (!date) { %>
 <h1 id = 'date' unmoment = ''>Please select a date below</h1>
 
@@ -38,16 +36,25 @@
     <div class = 'liveday'>
         <div class="input-group">
             <div class="input-group-prepend">
+                <% if (schedule.isLive == 'false') { %>
             <button id = 'livedayprepend' class="btn btn-danger live" type="button" value = "false">Live Day</button>
-            </div>
-        <input type="text" class="form-control timepicker2 posttime" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+                </div>
+            <input type="text" class="form-control timepicker2 posttime" value = "<%= schedule.livePostTime %>" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+                <% } else if (schedule.isLive == 'true') { %>
+            <button id = 'livedayprepend' class="btn btn-success live" type="button" value = "true">Live Day</button>
+                </div>
+            <input type="text" class="form-control timepicker2 posttime" value = "<%= schedule.livePostTime %>" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+                <% } else { %>
+            <button id = 'livedayprepend' class="btn btn-danger live" type="button" value = "false">Live Day</button>
+                </div>
+            <input type="text" class="form-control timepicker2 posttime" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+                <% } %>
+
+        
     </div>
 </div>
 <% } %>
 
-<% if (schedule.channelPlan) { %>
-    <%= JSON.stringify(schedule) %>
-<% } %>
 
     <table class="table table-striped">
         
@@ -91,7 +98,20 @@
 <% if (!schedule && date) { %> <!--to be rendered when no date is present-->
 <div class = 'buttons'>
     <button id = 'save' type="button" class="btn btn-success">Save</button>
-    <input id = 'live' class="btn btn-primary live" type="button" value = "Not Live Day">
+
+    <div class = 'liveday'>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                
+            <button id = 'livedayprepend' class="btn btn-danger live" type="button" value = "false">Live Day</button>
+                </div>
+            <input type="text" class="form-control timepicker2 posttime" id="liveposttime" placeholder = 'post time' aria-describedby="livedayprepend" required>
+            
+
+        
+    </div>
+</div>
+
 </div>
 
     <table class="table table-striped">

@@ -6,6 +6,7 @@
         <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
         <script src = "/js/jquery/jquery-3.4.1.min.js"></script>
         <script src = "/js/bootstrap.js"></script>
+        <script src = "/js/moment.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Oswald:700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Archivo+Black&display=swap" rel="stylesheet">
@@ -20,9 +21,12 @@
 
 <div class = 'container1' style = 'page-break-inside: avoid !important'>
 <div class = 'block'>
+
+        <p id='generatedTime'></p>
+
     <h1 id = 'trackName'>Finger Lakes Race Track</h1>
 </div>
-<h5 id = 'subtitle'>January 2020 live/simulcast racing schedule</h5>
+<h5 id = 'subtitle' monthName = '<%= month %>' year = '<%= year %>'><%= month %> <%= year %> live/simulcast racing schedule</h5>
 
 
 

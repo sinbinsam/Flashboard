@@ -31,9 +31,12 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				uniqueId = $(this).attr("id"),
 				parent = "#" + uniqueId,
 				currentDate = new Date(),
-				currentMonth = currentDate.getMonth() + 1,
-				currentYear = currentDate.getFullYear(),
+				currentMonth = parseInt(moment($('#subtitle').attr('monthName'), 'MMMM').format('M')),
+				currentYear = parseInt($('#subtitle').attr('year')),
 				currentDay = currentDate.getDate(),
+				//currentMonth = currentDate.getMonth() + 1
+				//currentYear = currentDate.getFullYear(),
+				//currentDay = currentDate.getDate(),
 				locale = (options.locale || defaultLocale()).toLowerCase(),
 				monthNameFormat = options.monthNameFormat || "short",
 				weekdayNameFormat = options.weekdayNameFormat || "short",
@@ -42,7 +45,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				markupBlankDay = '<div class="m-d monthly-day-blank"><div class="monthly-day-number"></div></div>',
 				weekStartsOnMonday = options.weekStart === "Mon" || options.weekStart === 1 || options.weekStart === "1",
 				primaryLanguageCode = locale.substring(0, 2).toLowerCase();
-
+console.log(currentMonth)
 		if (options.maxWidth !== false) {
 			$(parent).css("maxWidth", options.maxWidth);
 		}
@@ -537,6 +540,8 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				event.preventDefault();
 			}
 		});
+
+		$('#generatedTime').text('Revised ' + moment().format('dddd, MMMM D, YYYY h:mm a'))
 
 
 		// Clicking an event within the list

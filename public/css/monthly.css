@@ -478,11 +478,12 @@ establish the rules based on the calendar element width rather than the device w
 	text-align: center;
 	display: block;
 	width: auto;
-	margin: 1px;
+	margin: 4px;
 	color: rgb(255, 255, 255);
 	padding-top: 0px;
 	padding-bottom: 1px;
 	font-family: 'Oswald', sans-serif;
+	transform: translate(-80px);
 }
 
 .block {
@@ -530,6 +531,11 @@ establish the rules based on the calendar element width rather than the device w
 	margin-bottom: 3px;
 }
 
+.sub3 {
+	font-weight: normal;
+	font-style: italic;
+}
+
 .container1 {
 	page-break-after: always;
 }
@@ -539,4 +545,22 @@ establish the rules based on the calendar element width rather than the device w
 	font-weight: bold;
 	color: white;
 	background-color: black;
+}
+
+#generatedTime {
+	font-family: 'Abel', sans-serif;
+	font-weight: bold;
+	font-size: .8rem;
+	color: white;
+	display: block;
+	float: left;
+	margin: 0;
+	padding-top: 6px;
+	padding-left: 15px;
+	width: 170px;
+	white-space: normal;
+	overflow: normal;
+	text-overflow: ellipsis;
+	overflow-wrap: break-word;
+	line-height: 20px;
 }

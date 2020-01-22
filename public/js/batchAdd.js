@@ -132,9 +132,27 @@ $('#datepicker').datepicker({
         submitServer(true)
     })
 
+    $('#editlive').on('click', function() {
+        if ($(this).attr('editLive') == 'true') {
+            $(this).attr('editLive', 'false')
+        } else if ($(this).attr('editLive') == 'false') {
+            $(this).attr('editLive', 'true') 
+        }
+    })
+
     function submitServer (deleteBool) {
+
+        
+
+        const live = $('#livedayprepend').val()
+        const postTime = $('.posttime').val()
+        const editLive = $('#editlive').attr('editLive')
+
+        console.log(editLive)
+
         let obj = []
         $('.name').each(function() {
+        if (editLive == 'false') {
             if ($(this).val()) {
             obj.push({
                 'name': $(this).val(),
@@ -145,6 +163,7 @@ $('#datepicker').datepicker({
                 'notes': $(this).closest('tr').find('.notes').val()
             })
             }
+        }
         })
 
         //if ($('.name').val()) {
@@ -155,9 +174,7 @@ $('#datepicker').datepicker({
             }
         //}
 
-        var live = $('#livedayprepend').val()
-        var postTime = $('.posttime').val()
-        var editLive = $('#editlive').attr('aria-expanded')
+
 
         let objSend = {
             'date': dates,

@@ -165,17 +165,30 @@ router.post('/schedule/rcn/calendar/batch', (req, res) => {
     //console.log(obj)
 })
 
-router.get('/schedule/rcn/calendar/html', (req, res) => {
-    res.render('calendar')
+router.get('/schedule/rcn/calendar/html/:month-:year', (req, res) => {
+    let month = req.params.month
+    let year = req.params.year
+    res.render('calendar', {month: month, year: year})
 })
 
-router.get('/schedule/rcn/calendar/render', (req, res) => {
+router.get('/schedule/rcn/calendar/render/', (req, res) => {
     pdfGenerator.generatePdf(function() {
         var data =fs.readFileSync('./public/pdf/hn.pdf');
         res.contentType("application/pdf");
         res.send(data);
     });
     //res.render('calendar')
+})
+
+router.get('/schedule/rcn/calendar/render/:month-:year-:changes', (req, res) => {
+    let month = req.params.month
+    let year = req.params.year
+    let changes = req.params.changes
+    pdfGenerator.generatePdf(month, year, changes, function() {
+        var data =fs.readFileSync('./public/pdf/hn.pdf');
+        res.contentType("application/pdf");
+        res.send(data);
+    })
 })
 
 router.get('/schedule/rcn/calendar/:date', (req, res) => {

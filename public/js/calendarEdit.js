@@ -89,17 +89,19 @@ $('#save').on('click', function() {
         })
         }
     })
-        if ($('.name').val()) {
+
             var subtitles = {
                 'subtitle1': $('.subtitle1').val(),
                 'subtitle2': $('.subtitle2').val(),
                 'subtitle3': $('.subtitle3').val()
             }
-        }
+        
 
     let objSend = {
-        'date': $('#date').html(),
+        'date': [$('#date').html()],
         channelPlan: obj,
+        delete: false,
+        editLive: 'true',
         isLive: live,
         livePostTime: postTime,
         subtitles: subtitles

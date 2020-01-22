@@ -20,13 +20,11 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
         let compare = []; //contains all current calendar objects
             for (i = 0; i < calObj.monthly.length; i++) { //adds current month calendar objects from database into array
                     if (calObj.monthly[i].id == date + 'live' && obj.editLive == "false") {
-                        console.log('PUSHING LIVE THROUGH')
                         compare.push(calObj.monthly[i])//push it through if not editing live
                     } else if (calObj.monthly[i].id == date) {
                         compare.push(calObj.monthly[i])
                     }
             }
-            console.log('COMPARE: ' + compare)
                         function search(nameKey, myArray){
                             for (var u=0; u < myArray.length; u++) {
                                 if (myArray[u].name === nameKey) {
@@ -60,7 +58,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 element.starttime = ""
                                 element.sorttime = moment(isInList.postTime, 'hh:mm a').format('HH:mm')
                                 
-                                if (obj.delete == 'false') {
+                                if (obj.delete == false) {
                                     revisedCalObj.push(element)
                                 }
                                 
@@ -101,9 +99,9 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                         entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm')
                         entry.postTime = element.postTime.slice(0, -3)
                         entry.url = element.notes
-
+                            if (!search(element.name, obj.channelPlan) || obj.delete == false) {
                             newElementArr.push(entry) //DELETE BUG HERE
-                        
+                            }
                         
                     })
 
@@ -201,7 +199,6 @@ function addSingleCal(i, objChanPlanDel) {
                     return comparison;
                   }
                   if (obj.isLive == 'true' && obj.editLive == 'true') { //add live day if there before sorting
-                    console.log('ADDED LIVE')
                     let entry = {
                         "id": obj.date[i] + 'live',
                         "name": 'FL Live',
@@ -216,7 +213,6 @@ function addSingleCal(i, objChanPlanDel) {
                     }
                     revisedCalObj.push(entry)
                 }
-                console.log('REVISED CAL OOBJ' + JSON.stringify(revisedCalObj))
                   if (revisedCalObj.length >= 1) {
                     revisedCalObj[revisedCalObj.length - 1].enddate = obj.subtitles.subtitle2
                     revisedCalObj[revisedCalObj.length - 1].endtime = obj.subtitles.subtitle1
@@ -343,21 +339,21 @@ function eraseMonth(date, calObj, callback) {
 },
 
 
-generatePdf: function(callback) {
+generatePdf: function(month, year, changes, callback) {
 
 
 
     (async () => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto('http://localhost:8080/schedule/rcn/calendar/html', {waitUntil: 'networkidle2'});
+        await page.goto('http://localhost:8080/schedule/rcn/calendar/html/' + month + '-' + year, {waitUntil: 'networkidle2'});
         await page.emulateMedia('screen')
         await page.pdf({path: './public/pdf/hn.pdf',
                         format: 'A4',
                         printBackground: true,
                         displayHeaderFooter: true,
-                        headerTemplate: '',
-                        footerTemplate: '<p style = "overflow-wrap: break-word; margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">This is the changes line, it supports 2 lines of text. This is the changes line, it supports 2 lines of text. This is the changes line, it supports 2 lines of text.</p>',
+                        headerTemplate: '<p style = "margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">poop</P>',
+                        footerTemplate: '<p style = "overflow-wrap: break-word; margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">' + changes + '</p>',
                         margin : {top: '20px',right: '0px',bottom: '60px',left: '0px' },
                     }).then(() => {
                         callback()

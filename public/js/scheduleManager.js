@@ -64,7 +64,7 @@ rcnScheduleBatch: function(obj) {
                     }
                     collection.insert({
                         'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY'),
-                        'isLive': isLive,
+                        'isLive': obj.isLive,
                         'livePostTime': obj.livePostTime,
                         'isSentAll': false,
                         'channelPlan': obj.channelPlan,
@@ -126,9 +126,10 @@ rcnScheduleBatch: function(obj) {
 
                                 checkForExisting(obj, data, objChanPlan, function() {
                                         Array.prototype.push.apply(newData, objChanPlanDel);
-                                        if (obj.editLive == "true") {
+                                        //if (obj.editLive == "true") {
                                             data.isLive = obj.isLive
-                                        }
+                                            console.log(obj.isLive)
+                                        //}
                                         data.channelPlan = newData
                                         data.livePostTime = obj.livePostTime
                                         data.subtitles = obj.subtitles
@@ -161,20 +162,22 @@ rcnScheduleBatch: function(obj) {
 rcnSchedule: function(obj) {
     //console.log(obj)
     loadDb.loadScheduleCollection('rcn', function(collection, db) {        
-        let data = collection.findOne({'date': obj.date})
+        let data = collection.findOne({'date': obj.date[0]})
         if (data == null) {
             collection.insert({
-                'date': obj.date,
+                'date': obj.date[0],
+                'isLive': obj.isLive,
+                'livePostTime': obj.livePostTime,
                 'isSentAll': false,
                 'channelPlan': obj.channelPlan,
                 'isSent': false
             })
             db.saveDatabase()
-            let data = collection.findOne({'date': obj.date})
+            let data = collection.findOne({'date': obj.date[0]})
                 data.subtitles = obj.subtitles
-                pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                pdfGenerator.generateJson(moment(obj.date[0], 'MM/DD/YYYY').format('MMDDYYYY'), data)
         } else {
-            let data = collection.findOne({'date': obj.date});
+            let data = collection.findOne({'date': obj.date[0]});
             let newData = [];
                 for (i = 0; i < obj.channelPlan.length; i++) {
                     function isInList(oldObj) { 
@@ -214,11 +217,21 @@ rcnSchedule: function(obj) {
                             newData.push(pushObj)
                       }
                 }
+                
                 data.channelPlan = newData
+                data.isLive = obj.isLive
+                data.livePostTime = obj.livePostTime
                 data.subtitles = obj.subtitles
                 collection.update(data);
                     db.saveDatabase();
-                        pdfGenerator.generateJson(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                    data.date = [moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY')]
+                    data.delete = obj.delete
+                    data.editLive = obj.editLive
+
+                        //pdfGenerator.generateJsonBatch(moment(obj.date, 'MM/DD/YYYY').format('MMDDYYYY'), data)
+                        pdfGenerator.generateJsonBatch(data, function() {
+
+                        })
         }
     })
 },
