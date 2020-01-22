@@ -56,9 +56,15 @@ rcnScheduleBatch: function(obj) {
             let data = collection.findOne({'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY')}) //db object of one date
                 //console.log(data)
                 if (data == null) { //data returns no value
+                    let isLive
+                    if (obj.editLive == true) {
+                        isLive = false
+                    } else if (obj.editLive == false) {
+                        isLive = obj.isLive
+                    }
                     collection.insert({
                         'date': moment(obj.date[i], 'MMDDYYYY').format('MM/DD/YYYY'),
-                        'isLive': obj.isLive,
+                        'isLive': isLive,
                         'livePostTime': obj.livePostTime,
                         'isSentAll': false,
                         'channelPlan': obj.channelPlan,
@@ -102,7 +108,9 @@ rcnScheduleBatch: function(obj) {
                                     if (isInList) {
                                         //data.channelPlan[q].postTime = isInList.postTime
                                         //data.channelPlan[q].notes = isInList.notes
-                                        newData.push(isInList)
+                                        if (obj.delete == false) {
+                                            newData.push(isInList)
+                                        }
                                         var removeIndex = objChanPlanDel.map(function(item) { return item.name; }).indexOf(isInList.name);
                                         objChanPlanDel.splice(removeIndex, 1);
                                     } else if (!isInList) {
@@ -118,9 +126,10 @@ rcnScheduleBatch: function(obj) {
 
                                 checkForExisting(obj, data, objChanPlan, function() {
                                         Array.prototype.push.apply(newData, objChanPlanDel);
-
+                                        if (obj.editLive == "true") {
+                                            data.isLive = obj.isLive
+                                        }
                                         data.channelPlan = newData
-                                        data.isLive = obj.isLive
                                         data.livePostTime = obj.livePostTime
                                         data.subtitles = obj.subtitles
                                             db.saveDatabase(function(err) {

@@ -126,6 +126,13 @@ $('#datepicker').datepicker({
 
 
      $('#save').on('click', function() {
+        submitServer(false)
+    })
+    $('#delete').on('click', function() {
+        submitServer(true)
+    })
+
+    function submitServer (deleteBool) {
         let obj = []
         $('.name').each(function() {
             if ($(this).val()) {
@@ -154,6 +161,7 @@ $('#datepicker').datepicker({
 
         let objSend = {
             'date': dates,
+            delete: deleteBool,
             editLive: editLive,
             isLive: live,
             livePostTime: postTime,
@@ -162,15 +170,15 @@ $('#datepicker').datepicker({
         }
         console.log(objSend)
         $('#dateObj').attr('value', objSend)
-        /*$.ajax({
+        $.ajax({
             type: "POST",
             url: "/schedule/rcn/calendar/batch",
             data: JSON.stringify(objSend),
             success: function(){},
             dataType: "json",
             contentType : "application/json"
-          });*/
-    })
+          });
+    }
 
     $(document).on('click', '.live', function() {
         console.log($(this).val())

@@ -19,13 +19,21 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
         let revisedCalObj = [];
         let compare = []; //contains all current calendar objects
             for (i = 0; i < calObj.monthly.length; i++) { //adds current month calendar objects from database into array
-                    if (calObj.monthly[i].id == date + 'live') {
-                        // do nothing if live
+                    if (calObj.monthly[i].id == date + 'live' && obj.editLive == "false") {
+                        console.log('PUSHING LIVE THROUGH')
+                        compare.push(calObj.monthly[i])//push it through if not editing live
                     } else if (calObj.monthly[i].id == date) {
                         compare.push(calObj.monthly[i])
                     }
             }
-
+            console.log('COMPARE: ' + compare)
+                        function search(nameKey, myArray){
+                            for (var u=0; u < myArray.length; u++) {
+                                if (myArray[u].name === nameKey) {
+                                    return myArray[u];
+                                }
+                            }
+                        }
                     compare.forEach(element => { //finds existing elements and updates them, removes from dbObj once updated
                         let entry = {
                             "id": date,
@@ -39,18 +47,11 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                             "sorttime": "",
                             "postTime": ""
                         }
-                        function search(nameKey, myArray){
-                            for (var u=0; u < myArray.length; u++) {
-                                if (myArray[u].name === nameKey) {
-                                    return myArray[u];
-                                }
-                            }
-                        }
+
                         let isInList = search(element.name, dbObj.channelPlan)
-                        /*
-                        dbObj.channelPlan.find(x => {
-                            return x.name === element.name
-                        }) */
+                        
+
+
                             if (isInList) {
                                 element.postTime = moment(isInList.postTime, 'hh:mm a').format('h:mm')
                                 element.url = isInList.notes
@@ -58,7 +59,11 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 element.endtime = ""
                                 element.starttime = ""
                                 element.sorttime = moment(isInList.postTime, 'hh:mm a').format('HH:mm')
-                                revisedCalObj.push(element)
+                                
+                                if (obj.delete == 'false') {
+                                    revisedCalObj.push(element)
+                                }
+                                
                                 var removeIndex = objChanPlanDel.map(function(item) { return item.name; }).indexOf(isInList.name);
                                 objChanPlanDel.splice(removeIndex, 1);
                             } else if (!isInList) {
@@ -69,7 +74,13 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 entry.postTime = element.postTime
                                 entry.url = element.url
                                 entry.sorttime = element.sorttime
-                                revisedCalObj.push(entry)
+                                if (element.id == date + 'live') {
+                                    entry.id = element.id
+                                    revisedCalObj.push(entry)
+                                } else {
+                                    revisedCalObj.push(entry)
+                                }
+                                
                             }
                     })
                     let newElementArr = []
@@ -87,10 +98,13 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                             "postTime": ""
                         }
                         entry.name = element.name
-                        entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm') //CHECK THIS FOR SORT BUG
+                        entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm')
                         entry.postTime = element.postTime.slice(0, -3)
                         entry.url = element.notes
-                        newElementArr.push(entry)
+
+                            newElementArr.push(entry) //DELETE BUG HERE
+                        
+                        
                     })
 
                     Array.prototype.push.apply(revisedCalObj, newElementArr); 
@@ -186,8 +200,8 @@ function addSingleCal(i, objChanPlanDel) {
                     }
                     return comparison;
                   }
-                  console.log('ISLIVE: ' + obj.isLive)
-                  if (obj.isLive == 'true') { //add live day if there before sorting
+                  if (obj.isLive == 'true' && obj.editLive == 'true') { //add live day if there before sorting
+                    console.log('ADDED LIVE')
                     let entry = {
                         "id": obj.date[i] + 'live',
                         "name": 'FL Live',
@@ -200,16 +214,18 @@ function addSingleCal(i, objChanPlanDel) {
                         "sorttime": moment(obj.livePostTime, 'hh:mm a').format('HH:mm'),
                         "postTime": obj.livePostTime.slice(0, -3)
                     }
-                    console.log(entry)
                     revisedCalObj.push(entry)
                 }
-
-                  let sortedArr = revisedCalObj.sort(compare)
-                  if (sortedArr.length >= 1) {
-                    sortedArr[sortedArr.length - 1].enddate = obj.subtitles.subtitle2
-                    sortedArr[sortedArr.length - 1].endtime = obj.subtitles.subtitle1
-                    sortedArr[sortedArr.length - 1].starttime = obj.subtitles.subtitle3
+                console.log('REVISED CAL OOBJ' + JSON.stringify(revisedCalObj))
+                  if (revisedCalObj.length >= 1) {
+                    revisedCalObj[revisedCalObj.length - 1].enddate = obj.subtitles.subtitle2
+                    revisedCalObj[revisedCalObj.length - 1].endtime = obj.subtitles.subtitle1
+                    revisedCalObj[revisedCalObj.length - 1].starttime = obj.subtitles.subtitle3
                   }
+
+                
+                  let sortedArr = erasedCalObj.concat(revisedCalObj).sort(compare)
+
                 let dataToWrite = {
                     "monthly": sortedArr
                 }
