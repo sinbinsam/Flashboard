@@ -1,0 +1,22 @@
+.container {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.view {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: auto;
+}
+
+.download {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: auto;
+}

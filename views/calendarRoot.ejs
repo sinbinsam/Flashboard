@@ -1,0 +1,33 @@
+<%- include("partials/header") %>
+<link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
+<link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
+<link rel = 'stylesheet' href = '/KidSysco-jquery-ui-month-picker/src/MonthPicker.css'>
+<link rel = 'stylesheet' href = '/css/calendarRoot.css'>
+<script src = '/js/jquery/jquery-ui.min.js'></script>
+<script src = '/js/calendarRoot.js'></script>
+<script src = '/js/moment.min.js'></script>
+<script src = '/KidSysco-jquery-ui-month-picker/src/MonthPicker.js'></script>
+
+
+
+<div class = 'container'>
+
+<div class = 'monthSelector'></div>
+
+
+
+<button class="btn btn-secondary btn-lg view" type="button">View PDF</button>
+<button class="btn btn-secondary btn-lg download" type="button">Download PDF</button>
+<div class="input-group input-group-lg">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroup-sizing-lg">Changes</span>
+    </div>
+    <textarea class="form-control changes" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+
+
+
+</div>
+
+
+<%- include("partials/footer") %>

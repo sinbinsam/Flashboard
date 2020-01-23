@@ -112,7 +112,7 @@ router.get('/rtn', (req, res) => {
     })
 })
 
-router.get('/schedule/calendar', (req, res) => {
+router.get('/schedule/rcn/calendar', (req, res) => {
     res.render('calendarEdit', {date: undefined, schedule: undefined})
 })
 
@@ -149,6 +149,10 @@ router.post('/schedule/rcn/live/getRtnChannels', (req, res) => {
     res.send('success')
 })
 
+router.get('/schedule/rcn/calendar/render', (req, res) => {
+    res.render('calendarRoot')
+})
+
 router.get('/schedule/rcn/calendar/batch', (req, res) => {
     res.render('batchAdd')
 })
@@ -165,29 +169,44 @@ router.post('/schedule/rcn/calendar/batch', (req, res) => {
     //console.log(obj)
 })
 
+router.get('/schedule/rcn/calendar/html', (req, res) => {
+    res.render('calendar', {month: moment().format('MMMM'), year: moment().format('YYYY')})
+})
+
 router.get('/schedule/rcn/calendar/html/:month-:year', (req, res) => {
     let month = req.params.month
     let year = req.params.year
     res.render('calendar', {month: month, year: year})
 })
 
-router.get('/schedule/rcn/calendar/render/', (req, res) => {
+/*router.get('/schedule/rcn/calendar/render', (req, res) => {
     pdfGenerator.generatePdf(function() {
-        var data =fs.readFileSync('./public/pdf/hn.pdf');
+        var data =fs.readFileSync('./public/pdf/calendar.pdf');
         res.contentType("application/pdf");
         res.send(data);
     });
     //res.render('calendar')
-})
+})*/
 
 router.get('/schedule/rcn/calendar/render/:month-:year-:changes', (req, res) => {
     let month = req.params.month
     let year = req.params.year
     let changes = req.params.changes
     pdfGenerator.generatePdf(month, year, changes, function() {
-        var data =fs.readFileSync('./public/pdf/hn.pdf');
+        var data =fs.readFileSync('./public/pdf/calendar.pdf');
         res.contentType("application/pdf");
         res.send(data);
+        
+    })
+})
+
+router.get('/schedule/rcn/calendar/render/:month-:year-:changes/download', (req, res) => {
+    let month = req.params.month
+    let year = req.params.year
+    let changes = req.params.changes
+    pdfGenerator.generatePdf(month, year, changes, function() {
+        res.contentType("application/pdf");
+        res.download('./public/pdf/calendar.pdf');
     })
 })
 

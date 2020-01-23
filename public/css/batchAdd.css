@@ -11,6 +11,9 @@
 
 .container {
     text-align: center;
+    display: block;
+    float: left;
+    width: 50%;
 }
 
 #datepicker {
@@ -39,4 +42,32 @@
     padding-top: 10px;
     padding-bottom: 10px;
     width: 500px;
+}
+
+.savedelete {
+    margin-bottom: 20px;
+}
+
+#save {
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#delete {
+    padding: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+#editlive {
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.htmlCal {
+    display: block;
+    float: right
 }

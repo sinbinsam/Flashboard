@@ -348,7 +348,7 @@ generatePdf: function(month, year, changes, callback) {
         const page = await browser.newPage();
         await page.goto('http://localhost:8080/schedule/rcn/calendar/html/' + month + '-' + year, {waitUntil: 'networkidle2'});
         await page.emulateMedia('screen')
-        await page.pdf({path: './public/pdf/hn.pdf',
+        await page.pdf({path: './public/pdf/calendar.pdf',
                         format: 'A4',
                         printBackground: true,
                         displayHeaderFooter: true,
