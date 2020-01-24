@@ -14,7 +14,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventList: true,
 				events: "",
 				jsonUrl: "",
-				linkCalendarToEventUrl: false,
+				linkCalendarToEventUrl: true,
 				maxWidth: false,
 				mode: "event",
 				setWidth: false,
@@ -42,7 +42,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				weekdayNameFormat = options.weekdayNameFormat || "short",
 				monthNames = options.monthNames || defaultMonthNames(),
 				dayNames = options.dayNames || defaultDayNames(),
-				markupBlankDay = '<div class="m-d monthly-day-blank"><div class="monthly-day-number"></div></div>',
+				markupBlankDay = '<div class="m-d monthly-day-blank"><div class="monthly-day-number"></div></div>', //TESTING
 				weekStartsOnMonday = options.weekStart === "Mon" || options.weekStart === 1 || options.weekStart === "1",
 				primaryLanguageCode = locale.substring(0, 2).toLowerCase();
 console.log(currentMonth)
@@ -124,7 +124,7 @@ console.log(currentMonth)
 					//if (_getEventDetail(event, "enddate") && _getEventDetail(event, "id") == )
 				if(options.mode === "event") {
 					var thisDate = new Date(year, mZeroed, dayNumber, 0, 0, 0, 0);
-					$(parent + " .monthly-day-wrap").append("<div"
+					$(parent + " .monthly-day-wrap").append( "<div"
 						+ attr("class", "m-d monthly-day monthly-day-event"
 							+ (isInPast ? " monthly-past-day" : "")
 							+ " dt" + thisDate.toISOString().slice(0, 10)
@@ -244,8 +244,9 @@ console.log(currentMonth)
 					+ "</div>";
 			}*/
 
-			if(options.linkCalendarToEventUrl && eventURL) {
-				dayStartTag = "<a" + attr("href", eventURL);
+			if(options.linkCalendarToEventUrl) {
+				let regex = /([0-9])/g
+				dayStartTag = "<a" + attr("href", '/schedule/rcn/calendar/' + eventId.match(regex).join(''));
 				dayEndTags = "</span></a>";
 			}
 

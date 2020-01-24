@@ -101,18 +101,24 @@ $('#save').on('click', function() {
         'date': [$('#date').html()],
         channelPlan: obj,
         delete: false,
+        type: 'sync',
         editLive: 'true',
         isLive: live,
         livePostTime: postTime,
         subtitles: subtitles
     }
+
+    function backToCalendar() {
+        window.location.replace("/schedule/rcn/calendar/html");
+    }
+
     $('#dateObj').attr('value', objSend)
     console.log(objSend)
     $.ajax({
         type: "POST",
         url: "/schedule/rcn",
         data: JSON.stringify(objSend),
-        success: function(){},
+        success: backToCalendar(),
         dataType: "json",
         contentType : "application/json"
       });

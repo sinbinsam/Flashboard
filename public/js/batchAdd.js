@@ -124,12 +124,20 @@ $('#datepicker').datepicker({
      $(document).on('focusout', '.name', checkEmptyFun)
 
 
+     function reloadiframe () {
+         //$('#htmlCal').contentDocument.location.reload(true)
+         var f = document.getElementById('htmlCal');
+        f.src = f.src;
+     }
+
 
      $('#save').on('click', function() {
         submitServer(false)
+        reloadiframe()
     })
     $('#delete').on('click', function() {
         submitServer(true)
+        reloadiframe()
     })
 
     $('#editlive').on('click', function() {
@@ -148,7 +156,6 @@ $('#datepicker').datepicker({
         const postTime = $('.posttime').val()
         const editLive = $('#editlive').attr('editLive')
 
-        console.log(editLive)
 
         let obj = []
         $('.name').each(function() {
@@ -179,6 +186,7 @@ $('#datepicker').datepicker({
         let objSend = {
             'date': dates,
             delete: deleteBool,
+            type: 'add',
             editLive: editLive,
             isLive: live,
             livePostTime: postTime,

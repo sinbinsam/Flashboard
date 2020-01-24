@@ -1,4 +1,16 @@
-<%- include("partials/header") %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>index</title>
+        <link rel = "Stylesheet" href = "/css/bootstrap.css">
+        <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+        <script src = "/js/jquery/jquery-3.4.1.min.js"></script>
+        <script src = "/js/bootstrap.js"></script>
+    </head>
+    <body>
+
+
+        <!-- old header above -->
 
 
 <link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
@@ -9,13 +21,17 @@
 <script src = '/js/calendarEdit.js'></script>
 <script src = '/js/moment.min.js'></script>
 
-<div class = 'container'>
+<div class = 'containerz'>
+
+<a id = 'goBack' href='/schedule/rcn/calendar/html'>
+    <button type = 'button' class="btn btn-info btn-lg">Go Back</button>
+</a>
 
                                 <% if (!date) { %>
 <h1 id = 'date' unmoment = ''>Please select a date below</h1>
 
                                 <% } else {  %>
-<h1 id = 'date' unmoment = ''><%= date %></h1>
+<!-- <h1 id = 'date' unmoment = ''><%= date %></h1> -->
                                 <% } %>
 
 <!-- <p>Date: <input type="text" id="picker"></p> -->

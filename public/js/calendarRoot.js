@@ -32,3 +32,5 @@ $( document ).ready(function() {
         window.open("/schedule/rcn/calendar/render/" + month + '-' + year + '-' + changes + '/download');
     })
 });
+
+

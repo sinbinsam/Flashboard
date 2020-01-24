@@ -75,7 +75,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 if (element.id == date + 'live') {
                                     entry.id = element.id
                                     revisedCalObj.push(entry)
-                                } else {
+                                } else if (obj.type == 'add') {
                                     revisedCalObj.push(entry)
                                 }
                                 
