@@ -1,3 +1,5 @@
+//const moment = require("moment");
+
 $( document ).ready(function() {
 
     /*
@@ -193,7 +195,7 @@ $('#datepicker').datepicker({
             channelPlan: obj,
             subtitles: subtitles
         }
-        console.log(objSend)
+
         $('#dateObj').attr('value', objSend)
         $.ajax({
             type: "POST",
@@ -206,7 +208,7 @@ $('#datepicker').datepicker({
     }
 
     $(document).on('click', '.live', function() {
-        console.log($(this).val())
+
         $(this).toggleClass('btn-success')
         $(this).toggleClass('btn-danger')
         if ($(this).val() == 'true') {
@@ -216,8 +218,26 @@ $('#datepicker').datepicker({
         }
     })
 
+    $('.ui-icon-circle-triangle-e').on('click', function() {
+        //$('#htmlCal').attr('src', '/schedule/rcn/calendar/' + )
+    })
 
+    $('.ui-datepicker-next').on('click', function() {
+        
+    })
 
+    function changeCalHtml() {
+        console.log($('.ui-datepicker-month').text() + '-' + $('.ui-datepicker-year').text())
+        $('#htmlCal').attr('src', '/schedule/rcn/calendar/html/' + $('.ui-datepicker-month').text() + '-' + $('.ui-datepicker-year').text())
+    }
+
+    $(document).on('click', '.ui-datepicker-next', function() {
+        changeCalHtml()
+    })
+
+    $(document).on('click', '.ui-datepicker-prev', function() {
+        changeCalHtml()
+    })
 
 
 });

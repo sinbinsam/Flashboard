@@ -98,7 +98,7 @@ $('#save').on('click', function() {
         
 
     let objSend = {
-        'date': [$('#date').html()],
+        'date': [$('#picker').val()],
         channelPlan: obj,
         delete: false,
         type: 'sync',
@@ -113,7 +113,6 @@ $('#save').on('click', function() {
     }
 
     $('#dateObj').attr('value', objSend)
-    console.log(objSend)
     $.ajax({
         type: "POST",
         url: "/schedule/rcn",

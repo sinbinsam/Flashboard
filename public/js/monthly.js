@@ -45,7 +45,6 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				markupBlankDay = '<div class="m-d monthly-day-blank"><div class="monthly-day-number"></div></div>', //TESTING
 				weekStartsOnMonday = options.weekStart === "Mon" || options.weekStart === 1 || options.weekStart === "1",
 				primaryLanguageCode = locale.substring(0, 2).toLowerCase();
-console.log(currentMonth)
 		if (options.maxWidth !== false) {
 			$(parent).css("maxWidth", options.maxWidth);
 		}
@@ -130,6 +129,7 @@ console.log(currentMonth)
 							+ " dt" + thisDate.toISOString().slice(0, 10)
 							)
 						+ attr("data-number", dayNumber)
+						+ attr("eric", moment(thisDate.toISOString().slice(0, 10), 'YYYY-MM-DD').format('MMDDYYYY'))
 						+ ">" + innerMarkup /* ADD NOTES HERE */ + "</div>");
 					$(parent + " .monthly-event-list").append("<div"
 						+ attr("class", "monthly-list-item")
@@ -264,7 +264,6 @@ console.log(currentMonth)
 					+ ">" + eventTitle + " " + timeHtml + "</a>";
 
 						function textSizeClass(title) { //adds class if length is long or short
-							console.log(title.length)
 							let length = title.length + postTime.length
 							if (length < 12) {
 								return 'class = "bigger"'
@@ -292,7 +291,6 @@ console.log(currentMonth)
 					.addClass("item-has-event")
 					.append(markupListEvent);
 						if (eventTitle == 'FL Live') {
-							console.log('yes')
 							$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').closest('.monthly-day-event').attr('style', 'background-image: url("/calendar/horse.png"); height: 100%; background-position: center;  background-repeat: no-repeat; background-size: cover;')
 							//$(parent + ' *[data-number="' + index + '"] .monthly-indicator-wrap').prepend('<img src="/calendar/horse.png" alt="horse" style="width: 100px; position: relative;">')
 						}
@@ -554,6 +552,15 @@ console.log(currentMonth)
 			}
 		});
 
+			$('.monthly-day').on('click', function() { //href to single edit page
+				//console.log($(this).attr('eric'))
+				window.location.replace('/schedule/rcn/calendar/' + $(this).attr('eric'))
+			})		
+
 	}
 	});
+
+
+
+
 }(jQuery));

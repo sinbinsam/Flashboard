@@ -128,7 +128,6 @@ rcnScheduleBatch: function(obj) {
                                         Array.prototype.push.apply(newData, objChanPlanDel);
                                         //if (obj.editLive == "true") {
                                             data.isLive = obj.isLive
-                                            console.log(obj.isLive)
                                         //}
                                         data.channelPlan = newData
                                         data.livePostTime = obj.livePostTime
@@ -217,7 +216,6 @@ rcnSchedule: function(obj) {
                             newData.push(pushObj)
                       }
                 }
-                
                 data.channelPlan = newData
                 data.isLive = obj.isLive
                 data.livePostTime = obj.livePostTime
