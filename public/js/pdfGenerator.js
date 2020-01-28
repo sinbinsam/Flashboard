@@ -199,6 +199,13 @@ function addSingleCal(i, objChanPlanDel) {
                     return comparison;
                   }
                   if (obj.isLive == 'true' && obj.editLive == 'true') { //add live day if there before sorting
+                    if (obj.livePostTime == '') {
+                        var livePostTime = ''
+                        var sortTimeLive = '01:00'
+                    } else {
+                        var livePostTime = obj.livePostTime.slice(0, -3)
+                        var sortTimeLive = moment(obj.livePostTime, 'hh:mm a').format('HH:mm')
+                    }
                     let entry = {
                         "id": obj.date[i] + 'live',
                         "name": 'FL Live',
@@ -208,8 +215,8 @@ function addSingleCal(i, objChanPlanDel) {
                         "endtime": "",
                         "color": "#ffffff",
                         "url": "",
-                        "sorttime": moment(obj.livePostTime, 'hh:mm a').format('HH:mm'),
-                        "postTime": obj.livePostTime.slice(0, -3)
+                        "sorttime": sortTimeLive,
+                        "postTime": livePostTime
                     }
                     revisedCalObj.push(entry)
                 }
