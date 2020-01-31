@@ -1,7 +1,7 @@
 var express = require('express');
 var moment = require('moment');
 var app = express();
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8008;
 var app = express();
 var loki = require('lokijs');
 var routes = require(__dirname + '/public/js/routes.js');
