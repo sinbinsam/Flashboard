@@ -112,6 +112,23 @@ router.get('/rtn', (req, res) => {
     })
 })
 
+router.get('/schedule/rcn', (req, res) => {
+        res.render('scheduleEdit', {date: undefined, schedule: undefined})
+})
+
+router.get('/schedule/rcn/:date', (req, res) => {
+    var date = moment(req.params.date, 'MMDDYYYY').format('MM/DD/YYYY')
+    //if (date == moment().format("MM/DD/YYYY")) {
+    //    res.redirect('/schedule/rcn/live')
+    //} else {
+    loadDb.loadScheduleCollection('rcn', function(collection, db) {
+        //console.log(collection)
+        let data = collection.findOne({'date': date})
+            res.render('scheduleEdit', {schedule: data, date: date})
+    })
+    //}
+})
+
 router.get('/schedule/rcn/calendar', (req, res) => {
     res.render('calendarEdit', {date: undefined, schedule: undefined})
 })

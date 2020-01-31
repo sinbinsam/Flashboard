@@ -87,9 +87,10 @@ $(document).on('click', '.hd', function() {
 $('#save').on('click', function() {
     let obj = []
     $('.name').each(function() {
-        if ($(this).val()) {
+        console.log('loop')
+        if ($(this).text()) {
         obj.push({
-            'name': $(this).val(),
+            'name': $(this).text(),
             'channel': $(this).closest('tr').find('.channel').val(),
             'isHd': $(this).closest('tr').find('.hd').val(),
             'timeToSend': $(this).closest('tr').find('.time').val(),
@@ -110,14 +111,15 @@ $('#save').on('click', function() {
         subtitles: subtitles
     }
     $('#dateObj').attr('value', objSend)
-    $.ajax({
+    console.log(objSend)
+    /*$.ajax({
         type: "POST",
         url: "/schedule/rcn",
         data: JSON.stringify(objSend),
         success: function(){},
         dataType: "json",
         contentType : "application/json"
-      });
+      });*/
 })
 
 

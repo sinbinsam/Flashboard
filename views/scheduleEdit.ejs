@@ -1,7 +1,5 @@
 <%- include("partials/header") %>
 
-<%= schedule %>
-
 
 <link rel = 'stylesheet' href = '/css/jquery.timepicker.min.css'>
 <link rel = 'stylesheet' href = '/css/jquery-ui.min.css'>
@@ -9,6 +7,9 @@
 <script src = '/js/jquery/jquery.timepicker.min.js'></script>
 <script src = '/js/scheduleEdit.js'></script>
 <script src = '/js/moment.min.js'></script>
+
+<%= JSON.stringify(schedule) %>
+
 
                                 <% if (!date) { %>
 <h1 id = 'date' unmoment = ''>Please select a date below</h1>
@@ -50,16 +51,18 @@
         <% for (i = 0; i < schedule.channelPlan.length; i++) { %>
                 <tr>
                     <td>
-                        <input type="text" class="form-control name" value = "<%= schedule.channelPlan[i].name %>">
+                        <h3 class = 'name'><%= schedule.channelPlan[i].name %></h3>
                     </td>
                     <td>
-                        <input class="form-control channel" type="text" placeholder="disabled" readonly value = "<%= schedule.channelPlan[i].channel %>">
+                        <input class="form-control channel" type="text" placeholder="" value = "<%= schedule.channelPlan[i].channel %>">
                     </td>
                     <td>
                         <% if (schedule.channelPlan[i].isHd == 'false') { %>
                         <input class="btn btn-primary hd" type="button" value = "false">
                         <% } else if (schedule.channelPlan[i].isHd == 'true') { %>
                         <input class="btn btn-primary btn-success hd" type="button" value = "true">
+                        <% } else if (!schedule.channelPlan[i].isHd) { %>
+                        <input class="btn btn-primary hd" type="button" value = "false">
                         <% } %>
                         
                     </td>
@@ -67,32 +70,19 @@
                         <input class="timepicker time" value = "<%= schedule.channelPlan[i].timeToSend %>">
                     </td>
                     <td>
-                        <input class="timepicker2 time2" value = "<%= schedule.channelPlan[i].postTime %>">
+                        <p><%= schedule.channelPlan[i].postTime %></p>
                     </td>
                 </tr>
             <% } %>
-                <tr class = 'cloneItem'>
-                    <td>
-                        <input type="text" class="form-control name" value = "">
-                    </td>
-                    <td>
-                        <input class="form-control channel" type="text" placeholder="disabled" readonly value = "">
-                    </td>
-                    <td>
-                        <input class="btn btn-primary hd" type="button" value = "false">
-                    </td>
-                    <td>
-                        <input class="timepicker time" value = "">
-                    </td>
-                    <td>
-                        <input class="timepicker2 time2" value = "">
-                    </td>
-                </tr>
         </tbody>
     </table>
             <% } %>
 
 <% if (!schedule && date) { %> <!--to be rendered when no date is present-->
+    
+<p>there is no data :(</p>
+
+<!--
     <button id = 'save' type="button" class="btn btn-success">Save</button>
 
     <table class="table table-striped">
@@ -125,43 +115,11 @@
                 </tr>
         </tbody>
     </table>
-
+-->
 
 <% } %>
 
 
-
-<table class="table table-striped">
-    <thead>
-        <th scope="col">Subtitle 1</th>
-        <th scope="col">Subtitle 2</th>
-    </thead>
-    <tbody id='yes'>
-        <tr class = 'subtitles'>
-            <td>
-                <% if (schedule) { %>
-                <% if (!schedule.subtitles) { %>
-                <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
-                <% } else if (schedule.subtitles && schedule.subtitles.subtitle1) { %>
-                <input type="text" class="form-control subtitle1" value = "<%= schedule.subtitles.subtitle1 %>">    
-                <% } %>
-            </td>
-            <td>
-                <% if (schedule.subtitles && schedule.subtitles.subtitle2) { %>
-                <input type="text" class="form-control subtitle2" value = "<%= schedule.subtitles.subtitle2 %>">
-                <% } else { %>
-                <input type="text" class="form-control subtitle2" value = "">
-                <% } %>
-                <% } else { %>
-                <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
-                </td>
-                <td>
-                <input type="text" class="form-control subtitle2" value = "">
-                <% } %>
-            </td>
-        </tr>
-</tbody>
-</table>
 
 
     <form id = 'update' method = 'POST' action = '/schedule/rcn'>
