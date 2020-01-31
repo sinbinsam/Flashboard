@@ -109,7 +109,7 @@ $('#save').on('click', function() {
     }
 
     function backToCalendar() {
-        window.location.replace("http://localhost:8080/schedule/rcn/calendar/html/" + moment($('#picker').val(), 'MM/DD/YYYY').format('MMMM-YYYY'));
+        window.location.replace("/schedule/rcn/calendar/html/" + moment($('#picker').val(), 'MM/DD/YYYY').format('MMMM-YYYY'));
     }
 
     $('#dateObj').attr('value', objSend)
@@ -124,7 +124,7 @@ $('#save').on('click', function() {
 })
 
 $('#goBack').on('click', function() {
-    window.location.replace("http://localhost:8080/schedule/rcn/calendar/html/" + moment($('#picker').val(), 'MM/DD/YYYY').format('MMMM-YYYY'));
+    window.location.replace("/schedule/rcn/calendar/html/" + moment($('#picker').val(), 'MM/DD/YYYY').format('MMMM-YYYY'));
 })
 
 });
