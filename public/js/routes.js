@@ -6,7 +6,7 @@ var moment = require('moment');
 var schedule = require(__dirname + '/scheduleManager.js');
 var pdfGenerator = require(__dirname + '/pdfGenerator.js');
 var fs = require('fs');
-
+var trackList = JSON.parse(fs.readFileSync('tracks.json'))
 
 router.get('/', (req, res) => {
     res.render("index")
@@ -130,7 +130,7 @@ router.get('/schedule/rcn/:date', (req, res) => {
 })
 
 router.get('/schedule/rcn/calendar', (req, res) => {
-    res.render('calendarEdit', {date: undefined, schedule: undefined})
+    res.render('calendarEdit', {date: undefined, schedule: undefined, tracks: undefined})
 })
 
 router.get('/schedule/rcn/live', (req, res) => {
@@ -171,7 +171,7 @@ router.get('/schedule/rcn/calendar/render', (req, res) => {
 })
 
 router.get('/schedule/rcn/calendar/batch', (req, res) => {
-    res.render('batchAdd')
+    res.render('batchAdd', {tracks: trackList})
 })
 
 router.get('/schedule/rcn/calendar/clearDb', (req, res) => {
@@ -235,7 +235,7 @@ router.get('/schedule/rcn/calendar/:date', (req, res) => {
     loadDb.loadScheduleCollection('rcn', function(collection, db) {
         //console.log(collection)
         let data = collection.findOne({'date': date})
-            res.render('calendarEdit', {schedule: data, date: date})
+            res.render('calendarEdit', {schedule: data, date: date, tracks: trackList})
     })
     //}
 })

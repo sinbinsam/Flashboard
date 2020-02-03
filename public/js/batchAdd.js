@@ -12,7 +12,11 @@ $( "#picker" ).datepicker({
 
 
     // Maintain array of dates
+
+
+
 var dates = new Array();
+var trackList = tracks.tracks
 
 function addDate(date) {
     if (jQuery.inArray(date, dates) < 0) 
@@ -109,7 +113,9 @@ $('#datepicker').datepicker({
              }
                 if (checkArray(checkEmpty) == true) {
                     let t = $('.cloneItem').clone().removeClass('cloneItem')
-                    t.find('.name').val('')
+                    t.find('.name').val('').autocomplete({
+                        source: trackList
+                    })
                     t.find('.time2').val('')
                     t.find('.timepicker2').timepicker({
                         timeFormat: 'h:mm p',
@@ -238,6 +244,12 @@ $('#datepicker').datepicker({
     $(document).on('click', '.ui-datepicker-prev', function() {
         changeCalHtml()
     })
+
+
+        $('.name').autocomplete({
+            source: trackList
+        })
+
 
 
 });

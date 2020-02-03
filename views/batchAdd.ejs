@@ -9,9 +9,13 @@
 <script src = '/js/batchAdd.js'></script>
 <script src = '/js/moment.min.js'></script>
 
+<script>
+var tracks = <%- JSON.stringify(tracks) %>
+</script>
+
 <div class = 'container'>
 
-    
+
 
 <div id = 'datepicker'></div>
 <div class = 'buttons'>
@@ -60,7 +64,6 @@
                 <tr class = 'cloneItem'>
                     <td>
                         <input type="text" class="form-control name" value = "">
-                        
                     </td>
                     <td>
                         <input class="timepicker2 time2" value = "">

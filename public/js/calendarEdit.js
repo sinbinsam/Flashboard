@@ -1,7 +1,11 @@
 $( document ).ready(function() {
 
     //$('#picker').val(moment($('#date').attr('unmoment'), 'MMDDYYYY').format('MM/DD/YYYY'))
+    var trackList = tracks.tracks
 
+    $('.name').autocomplete({
+        source: trackList
+    })
 
     $( "#picker" ).datepicker({
         dateFormat:'mmddyy',
@@ -40,7 +44,9 @@ var checkEmptyFun = function() {
          }
             if (checkArray(checkEmpty) == true) {
                 let t = $('.cloneItem').clone().removeClass('cloneItem')
-                t.find('.name').val('')
+                t.find('.name').val('').autocomplete({
+                    source: trackList
+                })
                 t.find('.time2').val('')
                 t.find('.timepicker2').timepicker({
                     timeFormat: 'h:mm p',

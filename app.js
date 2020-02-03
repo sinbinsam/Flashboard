@@ -91,7 +91,6 @@ let scheduleObj = {
 //pdfGenerator.generatePdf();
 
 
-
 // start the server
 app.listen(port, (err) => {
     if (err) {
