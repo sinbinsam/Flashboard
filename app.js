@@ -21,6 +21,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static(__dirname + '/public')); //stylesheets and js
 app.use('/', routes); //routes file
+app.set('env', 'production')
 
 
 //timer.timedRcnCheck()

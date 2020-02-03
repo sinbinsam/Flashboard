@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-    $('.monthSelector').MonthPicker({ StartYear: 2020, Disabled: false, SelectedMonth: parseInt(moment().format('MM')) - 1})
+    $('.monthSelector').MonthPicker({ StartYear: 2020, Disabled: false, SelectedMonth: parseInt(moment().format('MM')) - 2})
     $('.monthSelector').MonthPicker('option', 'MonthFormat', 'MMMM' )
 
     $('.view').on('click', function() {
