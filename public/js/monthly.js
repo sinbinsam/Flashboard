@@ -14,7 +14,7 @@ Monthly 2.2.2 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventList: true,
 				events: "",
 				jsonUrl: "",
-				linkCalendarToEventUrl: true,
+				linkCalendarToEventUrl: false,
 				maxWidth: false,
 				mode: "event",
 				setWidth: false,
