@@ -359,9 +359,8 @@ generatePdf: function(month, year, changes, callback) {
                         format: 'A4',
                         printBackground: true,
                         displayHeaderFooter: true,
-                        headerTemplate: '<p style = "margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">poop</P>',
                         footerTemplate: '<p style = "overflow-wrap: break-word; margin-left: 30px; margin-right: 30px; font-size: 10px; text-align: center; width: 530px;">' + changes + '</p>',
-                        margin : {top: '20px',right: '0px',bottom: '60px',left: '0px' },
+                        margin : {top: '0px',right: '0px',bottom: '60px',left: '0px' },
                     }).then(() => {
                         callback()
                     })

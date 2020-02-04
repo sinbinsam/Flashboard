@@ -436,7 +436,8 @@ establish the rules based on the calendar element width rather than the device w
 		padding: 0;
 		white-space: normal;
 		overflow: hidden;
-		text-overflow: ellipsis;
+		/*text-overflow: ellipsis;*/
+		word-break: break-word;
 	}
 
 	span {
