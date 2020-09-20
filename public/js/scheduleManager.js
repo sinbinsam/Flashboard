@@ -191,7 +191,8 @@ rcnSchedule: function(obj) {
                             'isSent': false,
                             'postTime': obj.channelPlan[i].postTime,
                             'timeToSend': obj.channelPlan[i].timeToSend,
-                            'notes': obj.channelPlan[i].notes
+                            'notes': obj.channelPlan[i].notes,
+                            'below': obj.channelPlan[i].below
                           }
                           newData.push(pushObj)
                       } else if (foundEntry && obj.channelPlan[i].rcnChan) {
@@ -212,6 +213,7 @@ rcnSchedule: function(obj) {
                             pushObj.postTime = obj.channelPlan[i].postTime
                             pushObj.timeToSend = obj.channelPlan[i].timeToSend
                             pushObj.notes = obj.channelPlan[i].notes
+                            pushObj.below = obj.channelPlan[i].below
 
                             newData.push(pushObj)
                       }

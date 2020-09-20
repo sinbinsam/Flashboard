@@ -91,7 +91,8 @@ $('#save').on('click', function() {
             'isHd': '',
             'timeToSend': '',
             'postTime': $(this).closest('tr').find('.time2').val(),
-            'notes': $(this).closest('tr').find('.notes').val()
+            'notes': $(this).closest('tr').find('.notes').val(),
+            'below': $(this).closest('tr').find('.below').is(':checked')
         })
         }
     })

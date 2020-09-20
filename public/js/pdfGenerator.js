@@ -32,6 +32,8 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 }
                             }
                         }
+                        let r = 0
+                        let e = 0
                     compare.forEach(element => { //finds existing elements and updates them, removes from dbObj once updated
                         let entry = {
                             "id": date,
@@ -48,7 +50,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
 
                         let isInList = search(element.name, dbObj.channelPlan)
                         
-
+                        
 
                             if (isInList) {
                                 element.postTime = moment(isInList.postTime, 'hh:mm a').format('h:mm')
@@ -57,6 +59,21 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 element.endtime = ""
                                 element.starttime = ""
                                 element.sorttime = moment(isInList.postTime, 'hh:mm a').format('HH:mm')
+                                element.below = isInList.below
+
+                                if (element.below == true) {
+                                    let newTimee = '23:0' + JSON.stringify(r)
+                                    element.sorttime = newTimee
+                                    r++
+                                }
+                                if (element.sorttime == "Invalid date") {
+                                    let newNewTimeee = '22:0' + JSON.stringify(e)
+                                    element.sorttime = newNewTimeee
+                                    e++
+                                }
+                                if (element.postTime == 'Invalid date') {
+                                    element.postTime = ''
+                                }
                                 
                                 if (obj.delete == false) {
                                     revisedCalObj.push(element)
@@ -72,6 +89,7 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                                 entry.postTime = element.postTime
                                 entry.url = element.url
                                 entry.sorttime = element.sorttime
+                                entry.below = element.below
                                 if (element.id == date + 'live') {
                                     entry.id = element.id
                                     revisedCalObj.push(entry)
@@ -82,6 +100,8 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                             }
                     })
                     let newElementArr = []
+                    let k = 0
+                    let l = 0
                     objChanPlanDel.forEach(element => { //add new elements into newElementArr
                         let entry = {
                             "id": date,
@@ -93,12 +113,25 @@ generateJsonBatch: function(obj, callback) { //submit obj, with date array and p
                             "color": "#ffffff",
                             "url": "",
                             "sorttime": "",
-                            "postTime": ""
+                            "postTime": "",
+                            "below": false
                         }
                         entry.name = element.name
                         entry.sorttime = moment(element.postTime, 'hh:mm a').format('HH:mm')
                         entry.postTime = element.postTime.slice(0, -3)
+                        entry.below = element.below
                         entry.url = element.notes
+                        if (entry.below == true) {
+                            let newTime = '23:0' + JSON.stringify(k)
+                            entry.sorttime = newTime
+                            k++
+                        }
+                        if (entry.sorttime == 'Invalid date') {
+                            let newNewTime = '22:' + JSON.stringify(l)
+                            entry.sorttime = newNewTime
+                            l++
+                        }
+                        
                             if (!search(element.name, obj.channelPlan) || obj.delete == false) {
                             newElementArr.push(entry) //DELETE BUG HERE
                             }
@@ -189,6 +222,7 @@ function addSingleCal(i, objChanPlanDel) {
                 function compare(a, b) {
                     const compA = a.sorttime;
                     const compB = b.sorttime;
+
                   
                     let comparison = 0;
                     if (compA > compB) {
