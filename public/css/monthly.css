@@ -521,6 +521,7 @@ establish the rules based on the calendar element width rather than the device w
 }
 
 .sub1 {
+	color: rgb(167, 44, 44);
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
@@ -534,6 +535,7 @@ establish the rules based on the calendar element width rather than the device w
 
 .sub3 {
 	font-weight: normal;
+	color: rgb(167, 44, 44);
 	font-style: italic;
 }
 

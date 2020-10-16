@@ -186,9 +186,9 @@
 
 <table class="table table-striped">
     <thead>
-        <th scope="col">Subtitle -1</th>
-        <th scope="col">Subtitle 1</th>
-        <th scope="col">Subtitle 2</th>
+        <th scope="col">Subtitle top</th>
+        <th scope="col">Subtitle middle</th>
+        <th scope="col">Subtitle bottom</th>
     </thead>
     <tbody id='yes'>
         <tr class = 'subtitles'>
@@ -209,8 +209,9 @@
                 <input type="text" class="form-control subtitle1" value = "Doors Open 11:30">
                 <% } else if (schedule.subtitles && schedule.subtitles.subtitle1) { %>
                 <input type="text" class="form-control subtitle1" value = "<%= schedule.subtitles.subtitle1 %>">    
+                <% } else if (schedule.subtitles && !schedule.subtitles.subtitle1) { %>
+                    <input type="text" class="form-control subtitle1" value = "">
                 <% } %>
-
                 </td>
                 <td>
 

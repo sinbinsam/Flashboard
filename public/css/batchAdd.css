@@ -9,6 +9,11 @@
     color: #212121;
 }
 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 1px solid #673AB7;
+    background: #3F51B5;
+}
+
 .container {
     text-align: center;
     display: block;
@@ -16,8 +21,14 @@
     width: 50%;
 }
 
+#clearSelections {
+    display: block;
+    margin:0 auto;
+    margin-top: 10px;
+}
+
 #datepicker {
-    padding-top: 40px;
+    padding-top: 10px;
     display:inline-block;
     margin:0 auto;
 }

@@ -18,6 +18,8 @@ $( "#picker" ).datepicker({
 var dates = new Array();
 var trackList = tracks.tracks
 
+
+
 function addDate(date) {
     if (jQuery.inArray(date, dates) < 0) 
         dates.push(date);
@@ -82,7 +84,11 @@ $('#datepicker').datepicker({
      .removeClass('ui-state-highlight');
 
 
+     $('#clearSelections').on('click', async () => {
+        dates = [];
+        $('.ui-state-highlight').removeClass('ui-state-highlight');
 
+    })
 
 
 

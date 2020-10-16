@@ -9,8 +9,7 @@ $( document ).ready(function() {
         //let changes = $('.changes').val()
         let changes
         if (!$('.changes').val()) {
-            changes = 'Made by Eric Drumheller'
-            console.log('yes' + changes)
+            changes = 'Finger Lakes Gaming & Racetrack'
         } else {
             changes = $('.changes').val()
         }
@@ -24,8 +23,7 @@ $( document ).ready(function() {
         //let changes = $('.changes').val()
         let changes
         if (!$('.changes').val()) {
-            changes = 'Made by Eric Drumheller'
-            console.log('yes' + changes)
+            changes = 'Finger Lakes Gaming & Racetrack'
         } else {
             changes = $('.changes').val()
         }
