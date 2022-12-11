@@ -13,7 +13,7 @@
     "body-parser": "^1.19.0",
     "didyoumean2": "^3.1.2",
     "ejs": "^3.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fast-xml-parser": "^3.15.1",
     "html-table-to-json": "^0.4.1",
     "html-to-text": "^5.1.1",
